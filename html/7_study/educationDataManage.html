@@ -1,0 +1,406 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+	
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="study"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<leftstudy leftactive="xj_sjgl"></leftstudy>
+			<!-- 右侧 --><!--数据管理页面-->
+			<div class="view-date" style="padding-left: 226px;" v-show="!changePage">
+				<div class="view-header-wrap wth-view-header">
+					<div class="view-header">
+						<h2 class="nowrap with-tail-btn" title="总演示数据">
+							宣教详情
+						</h2>
+					</div>
+					<div style="left:600px;position: absolute;z-index: 999999; line-height: 64px;">
+						<el-button type="primary" id="additem_science" @click="addItemPage()">新增记录</el-button>
+						<el-select v-model="searchType" clearable placeholder="请选择" style="width:100px;">
+							<el-option
+							  v-for="item in option_search"
+							  :key="item.value"
+							  :label="item.label"
+							  :value="item.value">
+							</el-option>
+						</el-select>
+					    <el-input
+						  placeholder="请输入相关搜索内容"
+						  icon="search"
+						  v-model="searchConcent"
+						  :on-icon-click="handleIconClick"
+						  style="width:200px;">
+						</el-input>
+						 
+
+					</div>
+				</div>
+				
+				<table class="table-normal database-table table-left">
+					<thead>
+						<tr>
+							<th class="db-names">名称</th>
+							<th class="db-type">类型</th>
+							<th class="db-startTime">开始时间</th>
+							<th class="db-endTime">结束时间</th>
+							<th class="db-achievements">成果</th>
+							<th class="db-relevantDate">相关资料</th>
+							<th class="db-remarks">备注</th>
+							<th class="db-edit">编辑</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="user in tableData">
+							<td><span :title="user.name" class="fs12">{{user.name}}</span></td>
+							<td><span :title="user.type" class="fs12">{{user.type}}</span></td>
+							<td><span :title="user.startTime" class="fs12">{{user.startTime}}</span></td>
+							<td><span :title="user.endTime" class="fs12">{{user.endTime}}</span></td>
+							<td><span :title="user.achievements" class="fs12">{{user.achievements}}</span></td>
+							<td><span :title="user.relevantDate" class="fs12">{{user.relevantDate}}</span></td>
+							<td><span class="fs12">--</span></td> <!--备注-->
+							<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="fs12 modify" @click=modifyItem($event,user)>修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
+						</tr>
+					</tbody>
+				</table>
+				<div>
+					<div v-show="totaldata > 10">
+						<el-pagination
+						  @current-change="pageCurrentChange"
+						  layout="total,prev, pager, next, jumper"
+						  :page-size="10"
+						  :total=totaldata>
+						</el-pagination>
+				    </div>
+				</div>
+				<br/><br/><br/><br/><br/>
+					
+			</div>
+			<!--增加记录页面-->
+			<div class="view-date" style="padding-left: 226px;" v-show="changePage">
+				<div class="view-header-wrap wth-view-header">
+					<div class="view-header">
+						<h2 class="nowrap with-tail-btn" title="总演示数据">
+							新增科研记录
+						</h2>
+					</div>
+				</div>
+				<div class="add_item">
+					<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+						<div class="add_item_baseinfo">
+							<div class="item_title">
+								<el-row>
+									<el-col><span style="margin-left:10px;">基本信息</span></el-col>
+								</el-row>
+							</div>
+							<div class="item_content">
+								<el-row :gutter="20">
+								  <el-col :span="9">
+								  	 <el-form-item label="名称" prop="name">
+										<el-input v-model.trim="ruleForm.name"></el-input>
+									 </el-form-item>
+								  </el-col>
+								  <el-col :span="9">
+								  	  <el-form-item label="类型" prop="type">
+										<el-select v-model="ruleForm.type" placeholder="请选择类型">
+										  <el-option label="类型一" value="类型一"></el-option>
+										  <el-option label="类型二" value="类型二"></el-option>
+										</el-select>
+									  </el-form-item>
+								  </el-col>
+								</el-row>
+								<el-row :gutter="20" class="pt8">
+								  <el-col :span="9">
+								  	<el-form-item label="开始时间" required>
+									  <el-form-item prop="startTime">
+										<el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.startTime" style="width: 100%;"></el-date-picker>
+									  </el-form-item>
+								  </el-col>
+								  <el-col :span="9">
+								  	<el-form-item label="结束时间" required>
+									  <el-form-item prop="endTime">
+										<el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.endTime" style="width: 100%;"></el-date-picker>
+									  </el-form-item>
+								  </el-col>
+								</el-row>
+								<el-row :gutter="20" class="pt8">
+								  <el-col :span="9">
+								  	<el-form-item label="效果" prop="effect">
+									    <el-select v-model="ruleForm.effect" placeholder="请选择类型">
+										    <el-option label="非常好" value="非常好"></el-option>
+										    <el-option label="好" value="好"></el-option>
+										    <el-option label="一般" value="一般"></el-option>
+										    <el-option label="差" value="差"></el-option>
+										    <el-option label="非常差" value="非常差"></el-option>
+										</el-select>
+									</el-form-item>
+								  </el-col>
+								</el-row>
+							</div>
+						</div>
+						<div class="add_item_plantinfo">
+							<div class="item_title">
+								<el-row>
+									<el-col><span style="margin-left:10px;">附件信息</span></el-col>
+								</el-row>
+							</div>
+							<div class="item_content">
+								<el-row :gutter="20">
+								    <el-col :span="3" class="tr">相关资料</el-col>
+								    <el-col :span="14">
+								  	    <el-upload
+										    class="upload-demo"
+										    ref="upload"
+										    action="https://jsonplaceholder.typicode.com/posts/"
+										    :on-preview="handlePreview"
+										    :on-remove="handleRemove"
+										    :file-list="relevantDate"
+										    :auto-upload="false">
+										    <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+										    <el-button style="margin-left:10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+										    <div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;line-height:28px;">文件限制提醒</div>
+									    </el-upload>
+								    </el-col>
+								</el-row>
+								<el-row :gutter="20" class="pt8">
+								  <el-form-item label="备注" prop="remarks">
+	                                      <el-input type="textarea" v-model="ruleForm.remarks"></el-input>
+	                                 </el-form-item>
+								</el-row>
+							</div>
+							<div class="item_confirm">
+								<el-form-item style="margin-left:-100px;" v-show="creatItem">
+									<el-button @click="addItem('ruleForm')">创建</el-button>
+									<el-button @click="addItemCancel('ruleForm')">取消</el-button>
+								</el-form-item>
+								<el-form-item style="margin-left:-100px;" v-show="!creatItem">
+									<el-button @click="modify('ruleForm')">提交修改</el-button>
+									<el-button @click="modifyCancel('ruleForm')">取消修改</el-button>
+								</el-form-item>
+							</div>
+							<br/><br/><br/><br/><br/>
+						</div>
+					</el-form>
+				</div>
+			</div>
+
+		</div>
+	</div>
+	<br/><br/><br/><br/>
+</body>
+</html>
+<script>
+var app = new Vue({
+  el: '#app',
+  components: {
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftstudy:leftstudy
+  },
+  data: {
+	once:true,
+	changePage:false,
+	creatItem:false,
+	tableData:[],
+	totaldata:0,
+	obj:{name:"测试项目",type:"植物项目",pageIndex:1,pageSize:10,},  //初始进入默认加载全数据  搜索需要name、type  分页需页码、单页数
+    option_search: [{
+	  value: 'name',
+	  label: '名称'
+	}, {
+	  value: 'type',
+	  label: '类型'
+	}],
+	searchType: '',
+	searchConcent:'', 
+	//addItem
+	dataBox:{},
+	ruleForm:{
+		name:'',
+		type:'',
+		startTime:'',
+		endTime:'',
+		achievements:'',
+		remarks:'',
+		effect:''
+	},
+	rules: {
+	  name: [
+		{ required: true, message: '请输入名称', trigger: 'blur' },
+		{ min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+	  ],
+	  type: [
+		{ required: true, message: '请选择类型', trigger: 'change' }
+	  ],
+	  startTime: [
+		{ type: 'date', required: true, message: '请选择开始日期', trigger: 'change' }
+	  ],
+	  endTime: [
+		{ type: 'date', required: true, message: '请选择结束日期', trigger: 'change' }
+	  ],
+	  achievements: [
+	    { required: true, message: '请输入成果数'},
+	    { type:'number', message: '成果数必须为数字值'}
+	  ],
+	  remarks: [
+        { required: true, message: '请填写备注', trigger: 'blur' }
+      ],
+      effect:[
+        { required: true, message: '请选择效果', trigger: 'change' }
+      ]
+	},
+	relevantDate:[]
+  },
+  methods:{
+	  getonce:function(){ 
+		$.ajax({
+			type: "get",
+			dataType: "json",
+			url: "http://rapapi.org/mockjsdata/24551/sciencedata",
+			//data: app.obj,
+			beforeSend: function( xhr ) { 
+				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
+			}, 
+			success: function (data) {
+				if (data != "") {
+					app.totaldata = data.list.length;
+					app.tableData = data.list;
+					//app.once = true;
+				}
+			}
+		});
+	  },
+	  pageCurrentChange:function(val){
+		  //更新页码
+		  app.obj.pageIndex = val;
+		  //正式使用更改URL
+		  $.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletPatrol,{ byValue: JSON.stringify(app.obj) }, function(data) {
+			  if (data != "") {
+					app.tableData = data.list;
+				    app.totaldata = app.tableData.length
+					app.once = true;
+					console.log(app.totaldata);
+				}
+		  });
+	  },
+	  //搜索
+	  handleIconClick:function(){
+		  if(!this.searchType){alert("请选择搜索类型");return}
+		  if(!this.searchConcent){alert("请输入搜索内容");return}
+		  switch(this.searchType){
+			  case "name":
+				  app.obj.name = this.searchConcent;
+				  console.log(app.obj.name);
+				  break;
+			  case "type":
+				  app.obj.type = this.searchConcent;
+				  console.log(app.obj.type);
+				  break;
+		  }
+		  //正式使用更改URL
+		  $.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletPatrol,{ byValue: JSON.stringify(app.obj) }, function(data) {
+			  if (data != "") {
+					app.tableData = data.list;
+				    app.totaldata = app.tableData.length
+					app.once = true;
+					console.log(app.totaldata);
+				}
+		  });
+	  },
+	 //新增记录页面跳转
+	  addItemPage:function(){
+		  app.changePage = true;
+		  app.creatItem = true;
+	  },
+	  //新增提交
+	  addItem(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!'); 
+			//此处添加提交创建代码
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+	  //取消新增
+	  addItemCancel:function(formName){
+		  this.$refs[formName].resetFields();
+		  app.changePage = false;
+	  },
+	  //修改提交
+	  modify:function(formName){
+		  this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!'); 
+			//此处添加提交修改代码
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+	  },
+	  //取消修改
+	  modifyCancel:function(formName){
+		  this.$refs[formName].resetFields();
+		  app.changePage = false;
+	  },
+	  //查看记录跳转 
+	  checkItem:function(event,user){
+		  
+	  },
+	  //修改记录跳转
+	  modifyItem:function(event,user){
+		  //遍历？待优化
+		  app.dataBox = user;
+		  app.creatItem = false;
+		  app.ruleForm.name = app.dataBox.name;
+		  app.ruleForm.type = app.dataBox.type;
+		  app.ruleForm.startTime = app.dataBox.startTime;  //需要中国标准时间格式  目前模拟数据格式为yyyy-mm-dd 不适用报错待处理
+		  app.ruleForm.endTime = app.dataBox.endTime;   //需要中国标准时间格式  目前模拟数据格式为yyyy-mm-dd 不适用报错待处理
+		  app.ruleForm.achievements = app.dataBox.achievements;
+		  app.ruleForm.remarks = app.dataBox.remarks;
+		  app.changePage = true;
+	  },
+	  //删除记录
+	  deleteItem:function(event){
+		  
+	  },
+	  //上传文件
+	  submitUpload() {
+        this.$refs.upload.submit();
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      }
+  } 
+});
+
+app.getonce();
+</script>

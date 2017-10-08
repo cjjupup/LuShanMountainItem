@@ -1,0 +1,469 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>生态资源监测及风险管控系统-日常巡护</title>
+		<!-- 引入样式 -->
+		<link rel="stylesheet" href="../../css/index.css">
+		<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+		<link rel="stylesheet" href="../../css/all.css">
+		<link rel="stylesheet" href="../../css/dark.css">
+		<!-- 引入组件库 -->
+		<script src="../../js/include.js"></script>
+		<script src="../../js/config.js"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/vue-echarts.js"></script>
+		<script src="../../js/vue-resource.1.3.4.js"></script>
+		<script src="../../js/elementui.js"></script>
+		<script src="../../js/mock.js"></script>
+		<script src="../../js/url.js"></script>
+	</head>
+	<body>
+		<div id="app" :class="once?'show':''">
+			<myheader navactive="work"></myheader>
+			<!-- 内容区域 -->
+			<div class="main header-wraper-height">
+				<!-- 左侧 -->
+				<leftwork leftactive="rcxh"></leftwork>
+				<!-- 右侧 -->
+				<div class="view-date" style="padding-left: 226px;">
+					<div class="view-header-wrap wth-view-header workhead">
+						<div class="view-header">
+							<h2 class="nowrap with-tail-btn" title="总演示数据">巡护统计分析</h2>
+							<span class="wrapper">
+								<el-button :disabled="daybtn" @click = "daybtnclick">当日</el-button>
+								<el-button :disabled="weekbtn" @click = "weekbtnclick">本周</el-button>
+								<el-button :disabled="monthbtn" @click = "monthbtnclick">本月</el-button>		
+								<el-date-picker
+								  v-model="datevalue1"
+								  type="daterange"
+								  placeholder="选择日期范围">
+								</el-date-picker>
+								<button type="button" class="el-button el-button--primary" @click="getjson(datevalue1)"><!----><i class="el-icon-search"></i><span>确定</span></button>
+							</span>
+						</div>
+					</div>
+
+					<div class="workarea" id="chartw">
+						<el-row :gutter="10">
+							<el-col :xs="24" :sm="12" :md="12" :lg="12">
+								<div class="grid-content">
+									<h3><i class="el-icon-caret-right"></i>巡护人数（人）</h3>
+									<h4>巡护人数/总人数：{{baseinfo.pd_xprep}}</h4>
+									<chart :options="polar2" :class="'ec1'" ref="pie2" id="achart2"></chart>
+									<div class="cinfo">
+									</div>
+								</div>
+							</el-col>
+							<el-col :xs="24" :sm="12" :md="12" :lg="12">
+								<div class="grid-content">
+									<h3><i class="el-icon-caret-right"></i>巡护天数（天）</h3>
+									<h4>巡护天数/选择天数：{{baseinfo.pd_xpreday}}</h4>
+									<chart :options="polar3" :class="'ec1'" ref="pie3" id="achart3"></chart>
+									<div class="cinfo">
+									</div>
+								</div>
+							</el-col>
+						</el-row>
+						<el-row :class="'conbg'">
+							<el-col :span="24">
+								<span class="th1 center">{{baseinfo.title}}巡护次数与巡护里程分析图</span>
+								<chart :options="polar" :class="'ec1'" ref="pie" id="achart"></chart>
+							</el-col>
+						</el-row>
+						<br/><br/><br/><br/><br/><br/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+<script>
+//图表自适应宽度
+document.getElementById("achart").style.width = document.body.clientWidth - 320;
+document.getElementById("achart2").style.width = document.getElementById("achart3").style.width = (document.body.clientWidth - 320)/2 - 50;
+window.onresize = function () {
+    document.getElementById("achart").style.width = document.body.clientWidth - 320;
+	document.getElementById("achart2").style.width = document.getElementById("achart3").style.width = (document.body.clientWidth - 320)/2 - 50;
+	app.size = document.body.clientWidth;
+};
+var chartData = {
+	    "tooltip": {
+	        "trigger": "axis",
+	        "axisPointer": {
+	            "type": "cross",
+	            "crossStyle": {
+	                "color": "#999"
+	            }
+	        }
+	    },
+	    "toolbox": {
+	        "feature": {
+	            "dataView": {
+	                "show": true,
+	                "readOnly": false
+	            },
+	            "magicType": {
+	                "show": true,
+	                "type": [
+	                    "line",
+	                    "bar"
+	                ]
+	            },
+	            "restore": {
+	                "show": true
+	            }
+	        }
+	    },
+	    "xAxis": [
+	        {
+	            "type": "category",
+				"axisLine": { "lineStyle": { "color": "#8392A5" } },
+				"splitLine": { "lineStyle": { "color": "#8392A5" } },
+	            "axisPointer": {
+	                "type": "shadow"
+	            }
+	        }
+	    ],
+	    "yAxis": [
+	        {
+	            "type": "value",				
+				"axisLine": { "lineStyle": { "color": "#8392A5" } },
+				"splitLine": { "lineStyle": { "color": "#8392A5" } },
+	            "name": "巡护次数（次）",
+	            "min": 0
+	        },
+	        {
+	            "type": "value",
+				"axisLine": { "lineStyle": { "color": "#8392A5" } },
+				"splitLine": { "lineStyle": { "color": "#8392A5" } },
+	            "name": "巡护里程（KM）",
+	            "min": 0
+	        }
+	    ],
+	    "dataZoom": [
+	        {
+	            "type": "inside",
+	            "start": 0,
+	            "end": 100
+	        },
+	        {
+	            "start": 0,
+	            "end": 20,
+	            "handleIcon": "M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z",
+	            "handleSize": "80%",
+				"borderColor": "#8392A5",
+				"textStyle": {
+					"color": "#8392A5"        
+				},
+	            "handleStyle": {
+	                "color": "#fff",
+	                "shadowBlur": 3,
+	                "shadowColor": "rgba(0, 0, 0, 0.6)",
+	                "shadowOffsetX": 2,
+	                "shadowOffsetY": 2
+	            }
+	        }
+	    ],
+	    "series": [
+	        {
+	            "name": "巡护次数",
+	            "type": "bar"
+	        },
+	        {
+	            "name": "巡护里程",
+	            "type": "line",
+	            "yAxisIndex": 1
+	        }
+	    ],
+	    "color": ["#5182e4","#f7cb4a","#9bcc66","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var char2 = {
+	"tooltip": {
+        "trigger": "item",
+        "formatter": "{a} <br/>{b}: {c} ({d}%)"
+    },
+    "legend": {
+        "orient": "vertical",
+        "x": "right",
+        "data":["巡护人数","未巡护人数"],
+        "textStyle":{
+            "color":"#fff"
+        }
+    },
+    "series": [
+        {
+            "name":"巡护人数",
+            "type":"pie",
+            "radius": ["50%", "70%"],
+            "avoidLabelOverlap": "false",
+            "label": {
+                "normal": {
+                    "show": false,
+                    "position": "center"
+                },
+                "emphasis": {
+                    "show": true,
+                    "textStyle": {
+                        "fontSize": "30",
+                        "fontWeight": "bold"
+                    }
+                }
+            },
+            "labelLine": {
+                "normal": {
+                    "show": false
+                }
+            },
+            "data":[
+                {"value":12, "name":"巡护人数"},
+                {"value":74, "name":"未巡护人数"}
+            ]
+        }
+    ],
+    "color": ["#9bcc66","#5182e4","#f7cb4a","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var char3 = {
+	"tooltip": {
+        "trigger": "item",
+        "formatter": "{a} <br/>{b}: {c} ({d}%)"
+    },
+    "legend": {
+        "orient": "vertical",
+        "x": "right",
+        "data":["巡护天数","未巡护天数"],
+        "textStyle":{
+            "color":"#fff"
+        }
+    },
+    "series": [
+        {
+            "name":"巡护天数",
+            "type":"pie",
+            "radius": ["50%", "70%"],
+            "avoidLabelOverlap": "false",
+            "label": {
+                "normal": {
+                    "show": false,
+                    "position": "center"
+                },
+                "emphasis": {
+                    "show": true,
+                    "textStyle": {
+                        "fontSize": "30",
+                        "fontWeight": "bold"
+                    }
+                }
+            },
+            "labelLine": {
+                "normal": {
+                    "show": false
+                }
+            },
+            "data":[
+                {"value":2, "name":"巡护天数"},
+                {"value":7, "name":"未巡护天数"}
+            ]
+        }
+    ],
+    "color": ["#9bcc66","#5182e4","#f7cb4a","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+
+
+var app = new Vue({
+  el: '#app',
+  components: {
+    // <my-component> 将只在父模板可用
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftwork:leftwork
+  },
+  data: {
+	once:false,
+	size:"",
+	datevalue1:'',
+	tableData: [],
+	baseinfo:{},
+	xinfo:{},
+	visible: false,
+	daybtn:false,
+	weekbtn:true,
+	monthbtn:false,
+	message:'',
+	polar:{},
+	polar2:{},
+	polar3:{}
+  },
+  methods:{
+	  daybtnclick:function(){
+		this.daybtn = !this.daybtn;
+		this.weekbtn = false;
+		this.monthbtn = false;
+		this.getjson("day");
+	  },
+	  weekbtnclick:function(){
+		this.weekbtn = !this.weekbtn;
+		this.daybtn = false;
+		this.monthbtn = false;
+		this.getjson("week");
+	  },
+	  monthbtnclick:function(){
+		this.monthbtn = !this.monthbtn;
+		this.weekbtn = false;
+		this.daybtn = false;
+		this.getjson("month");
+	  },
+	  formatxdays(row, column) {
+        return ~~row.xdays;
+      },
+	  formatxkms(row, column) {
+        return ~~row.xkms;
+      },
+	  formatxcounts(row, column) {
+        return ~~row.xcounts;
+      },
+	  formatxhours(row, column) {
+        return ~~row.xhours;
+      },
+	  getxinfo(index, row){	  
+		this.xinfo = row;
+	    this.visible = true;
+	  },	  
+	  getonce:function(){ 
+		  var obj=new Object();
+		  obj.area='庐山';
+		  obj.data='base';
+		  obj.mode='week';
+		  //获取分析数据
+		  Vue.http.options.emulateJSON = true;
+		  this.$http.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletStatisti,{'byValue': JSON.stringify(obj)}).then(
+		  function(res){
+			this.baseinfo = res.body;
+			var arr =  this.baseinfo.pd_xprep.split("/");
+			char2.series[0].data[0].value = arr[0];
+			char2.series[0].data[1].value = arr[1] - arr[0];
+			var arr2 =  this.baseinfo.pd_xpreday.split("/");
+			char3.series[0].data[0].value = arr2[0];
+			char3.series[0].data[1].value = arr2[1] - arr2[0];
+			this.polar2 = char2;
+			this.polar3 = char3;
+			this.once = !this.once;
+		  },function(){
+			alert('分析数据请求失败'); //失败处理       
+		  });
+		  //获取表格数据
+		  obj.data='table';
+		  this.$http.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletStatisti,{'byValue': JSON.stringify(obj)}).then(
+		  function(res){
+			this.tableData = res.body;        
+		  },function(){
+			alert('表格数据请求失败'); //失败处理       
+		  });
+		  //获取表格数据
+		  var pie = this.$refs.pie;
+		  pie.showLoading({
+			text: '正在加载',
+			color: '#4ea397',
+			maskColor: 'rgba(255, 255, 255, 0.4)'
+		  });
+		  obj.data='chart';
+		  this.$http.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletStatisti,{'byValue': JSON.stringify(obj)}).then(
+		  function(res){
+			  chartData.xAxis[0].data = res.body.xAxis;
+			  chartData.yAxis[0].max = res.body.yAxisMax1;
+			  chartData.yAxis[0].interval = res.body.yAxisInterval1;
+			  chartData.yAxis[1].max = res.body.yAxisMax2;
+			  chartData.yAxis[1].interval = res.body.yAxisInterval2;
+			  chartData.series[0].data = res.body.series1;
+			  chartData.series[1].data = res.body.series2;
+			this.polar = chartData;
+			pie.hideLoading();
+		  },function(){
+			alert('图表数据请求失败'); //失败处理       
+		  });
+	  },
+	  getjson:function(vala,valb){
+		  var mode=vala;
+		  if (vala!='day'&&vala!='week'&&vala!='month') {
+			  mode = dateFormat(vala[0])+","+dateFormat(vala[1]);
+		  }
+		  var obj=new Object();
+		  obj.area='庐山';
+		  obj.mode=mode;
+		  obj.data='base';
+		//获取分析数据
+	    this.$http.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletStatisti,{'byValue': JSON.stringify(obj)}).then(
+		  function(res){
+			this.baseinfo = res.body; 
+			var arr =  this.baseinfo.pd_xprep.split("/");
+			char2.series[0].data[0].value = arr[0];
+			char2.series[0].data[1].value = arr[1] - arr[0];
+			var arr2 =  this.baseinfo.pd_xpreday.split("/");
+			char3.series[0].data[0].value = arr2[0];
+			char3.series[0].data[1].value = arr2[1] - arr2[0];
+			this.polar2 = char2;
+			this.polar3 = char3;
+		  },function(){
+			alert('请求失败处理'); 
+			//失败处理
+		  });
+		//获取表格数据
+		obj.data='table';
+		this.$http.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletStatisti,{'byValue': JSON.stringify(obj)}).then(
+		  function(res){
+			this.tableData = res.body; 
+		  },function(){
+			alert('请求失败处理'); 
+			//失败处理
+		  });
+		//获取表格数据
+		var pie = this.$refs.pie;
+		  pie.showLoading({
+			text: '正在加载',
+			color: '#4ea397',
+			maskColor: 'rgba(255, 255, 255, 0.4)'
+		  });
+		obj.data='chart';
+		this.$http.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletStatisti,{'byValue': JSON.stringify(obj)}).then(
+		function(res){
+			chartData.xAxis[0].data = res.body.xAxis;
+			chartData.yAxis[0].max = res.body.yAxisMax1;
+			chartData.yAxis[0].interval = res.body.yAxisInterval1;
+			chartData.yAxis[1].max = res.body.yAxisMax2;
+			chartData.yAxis[1].interval = res.body.yAxisInterval2;
+			chartData.series[0].data = res.body.series1;
+			chartData.series[1].data = res.body.series2;
+			this.polar = chartData;
+			pie.hideLoading();
+		  },function(){
+			alert('图表数据请求失败'); //失败处理       
+		  });
+	  }
+  },
+  watch:{
+	'size':function(){
+		console.log(this.size);
+		var pie = this.$refs.pie,
+			pie2 = this.$refs.pie2,
+			pie3 = this.$refs.pie3;
+		pie.resize();
+		pie2.resize();
+		pie3.resize();
+	}
+  }
+});
+function lapdZero(num) {
+	if (num<10) {
+		return "0"+num;
+	} else {
+		return ""+num;
+	}
+}
+function dateFormat(d) {
+	return d.getFullYear()+"-"+lapdZero(d.getMonth()+1)+"-"+lapdZero(d.getDate());
+}
+app.getonce();
+</script>

@@ -1,0 +1,539 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<link rel="stylesheet" href="../../js/skin/layer.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../../js/layer.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cGT9892RVDdKkeIKM2f1d8pX"></script>
+    
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+	
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="aplants"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<leftaplants leftactive="animation_sjgl"></leftaplants>
+			<!-- 右侧 --><!--数据管理界面-->
+			<div class="view-date" style="padding-left: 226px;" id="dataManage" v-show="!changePage">
+				<div class="view-header-wrap wth-view-header">
+					<div class="view-header">
+						<h2 class="nowrap with-tail-btn" title="总演示数据">
+							监测记录
+						</h2>
+					</div>
+					<div style="left:600px;position: absolute;z-index: 999999; line-height: 64px;">
+						<el-button type="primary" id="additem_plant" @click="addItemPage()">新增记录</el-button>
+						<el-select v-model="searchType" clearable placeholder="请选择" style="width:100px;">
+							<el-option
+							  v-for="item in option_search"
+							  :key="item.value"
+							  :label="item.label"
+							  :value="item.value">
+							</el-option>
+						</el-select>
+					    <el-input
+						  placeholder="请输入相关搜索内容"
+						  icon="search"
+						  v-model="searchContent"
+						  :on-icon-click="handleIconClick"
+						  style="width:200px;">
+						</el-input>
+						 
+
+					</div>
+				</div>
+				
+				<table class="table-normal database-table table-left">
+					<thead>
+						<tr>
+						    <th class="db-type">鸟类名</br>中文名、拉丁名、英文名</th>
+							<th class="db-station">保护站名</th>
+							<th class="db-id">监测人员</th>
+							<th class="db-date">时间</th>
+							<th class="db-weather">天气</th>
+							<th class="db-gps">GPS</th>
+							<th class="db-num">数量</th>
+							<th class="db-behavior">行为</th>
+							<th class="db-record">是否新纪录</th>
+							<!-- <th class="db-remarks">备注</th> -->
+							<th class="db-edit">编辑</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="user in tableData">
+						    <td><span :title="user.chineseName +'、' + user.latinName + '、' + user.englishName" class="fs12">{{user.chineseName}}、{{user.latinName}}、{{user.englishName}}</span></td>
+							<td><span :title="user.station" class="fs12">{{user.station}}</span></td>
+							<td><span :title="user.id" class="fs12">{{user.id}}</span></td>
+							<td><span :title="user.date" class="fs12">{{user.date}}</span></td>
+							<td><span :title="user.weather" class="fs12">{{user.weather}}</span></td>
+							<td><span :title="user.gps" class="fs12">{{user.gps}}</span></td>  <!--待加入-->
+							<td><span :title="user.num" class="fs12">{{user.num}}</span></td>
+							<td><span :title="user.behavior" class="fs12">{{user.behavior}}</span></td>
+							<td><span :title="user.record" class="fs12">{{user.record}}</span></td>
+							<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
+						</tr>
+					</tbody>
+				</table>
+				<br/><br/><br/><br/><br/>
+				<div>
+					<div v-show="totaldata > 10">
+						<el-pagination
+						  @current-change="pageCurrentChange"
+						  layout="total,prev, pager, next, jumper"
+						  :page-size="10"
+						  :total=totaldata>
+						</el-pagination>
+				    </div>
+				</div>
+					
+			</div>
+			<!--新增记录界面-->
+			<div class="view-date" style="padding-left: 226px;" id="addItemPage" v-show="changePage">
+				<div class="view-header-wrap wth-view-header">
+					<div class="view-header">
+						<h2 class="nowrap with-tail-btn" title="总演示数据">
+							新增监测记录
+						</h2>
+					</div>
+				</div>
+				<div class="add_item">
+				<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+					<div class="add_item_baseinfo">
+						<div class="item_title">
+							<el-row>
+								<el-col><span style="margin-left:10px;">基本信息</span></el-col>
+							</el-row>
+						</div>
+						<div class="item_content">
+							<el-row :gutter="20">
+							  <el-col :span="9">
+							  	 <el-form-item label="保护站名" prop="station">
+									<el-input v-model.trim="ruleForm.station"></el-input>
+								 </el-form-item>
+							  </el-col>
+							  <el-col :span="9">
+							  	 <el-form-item label="监测人员" prop="id">
+									<el-input v-model.trim="ruleForm.id"></el-input>
+								 </el-form-item>
+							  </el-col>
+							</el-row>
+							<el-row :gutter="20" class="pt8">
+							  <el-col :span="9">
+							  	<el-form-item label="时间" required>
+								  <el-form-item prop="date">
+									<el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date" style="width: 100%;"></el-date-picker>
+								  </el-form-item>
+							  </el-col>
+							  <el-col :span="9">
+							  	  <el-form-item label="天气情况" prop="weather">
+									<el-select v-model="ruleForm.weather" placeholder="请选择天气">
+									  <el-option label="晴" value="晴"></el-option>
+									  <el-option label="阴" value="阴"></el-option>
+									  <el-option label="雨" value="雨"></el-option>
+									  <el-option label="雪" value="雪"></el-option>
+									</el-select>
+								  </el-form-item>
+							  </el-col>
+							</el-row>
+							<!--GPS定位-->
+							<el-row :gutter="10" class="pt8">  
+							  <el-col :span="8">
+							  	 <el-form-item label="GPS" prop="gps">
+									<el-input v-model.trim="ruleForm.gps"></el-input>
+								 </el-form-item>
+							  </el-col>
+							  <el-col :span="4">
+							  	 <i class="icon iconfont icon-dizhi" style="cursor: pointer;" @click="showGPSmap()"></i>
+							  </el-col>
+							</el-row>
+						</div>
+					</div>
+					<div class="add_item_plantinfo">
+						<div class="item_title">
+							<el-row>
+								<el-col><span style="margin-left:10px;">鸟类信息</span></el-col>
+							</el-row>
+						</div>
+						<div class="item_content">
+							<el-row :gutter="20">
+							  <el-col :span="9">
+							  	 <el-form-item label="鸟类中文名" prop="chineseName">
+									<el-input v-model.trim="ruleForm.chineseName"></el-input>
+								 </el-form-item>
+							  </el-col>
+							  <el-col :span="9">
+							  	 <el-form-item label="鸟类拉丁名" prop="latinName">
+									<el-input v-model.trim="ruleForm.latinName"></el-input>
+								 </el-form-item>
+							  </el-col>
+							</el-row>
+							<el-row :gutter="20" class="pt8">
+							  <el-col :span="9">
+							  	 <el-form-item label="鸟类英文名" prop="englishName">
+									<el-input v-model.trim="ruleForm.englishName"></el-input>
+								 </el-form-item>
+							  </el-col>
+							  <el-col :span="9">
+							  	 <el-form-item label="数量" prop="number">
+									<el-input v-model.number="ruleForm.number"></el-input>
+								 </el-form-item>
+							  </el-col>
+							</el-row>
+							<el-row :gutter="20" class="pt8">
+							  <el-col :span="9">
+							  	 <el-form-item label="可见次数" prop="times">
+									<el-input v-model.number="ruleForm.times"></el-input>
+								 </el-form-item>
+							  </el-col>
+							  <el-col :span="9">
+							  	  <el-form-item label="栖息地类型" prop="habitat">
+									<el-select v-model="ruleForm.habitat" placeholder="请选择类型">
+									  <el-option label="阔叶林" value="阔叶林"></el-option>
+									  <el-option label="针叶林" value="针叶林"></el-option>
+									  <el-option label="针阔混交林" value="针阔混交林"></el-option>
+									  <el-option label="灌丛" value="灌丛"></el-option>
+									  <el-option label="高山草甸" value="高山草甸"></el-option>
+									  <el-option label="农田" value="农田"></el-option>
+									  <el-option label="水塘" value="水塘"></el-option>
+									  <el-option label="河流" value="河流"></el-option>
+									  <el-option label="水库" value="水库"></el-option>
+									  <el-option label="村庄" value="村庄"></el-option>
+									  <el-option label="其他" value="其他"></el-option>
+									</el-select>
+								  </el-form-item>
+							  </el-col>
+							</el-row>
+							<el-row :gutter="20" class="pt8">
+							  <el-col :span="9">
+							  	  <el-form-item label="行为" prop="behavior">
+									<el-select v-model="ruleForm.behavior" placeholder="请选择行为">
+									  <el-option label="觅食" value="觅食"></el-option>
+									  <el-option label="飞行" value="飞行"></el-option>
+									  <el-option label="站立" value="站立"></el-option>
+									  <el-option label="休息" value="休息"></el-option>
+									  <el-option label="求偶" value="求偶"></el-option>
+									  <el-option label="其他" value="其他"></el-option>
+									</el-select>
+								  </el-form-item>
+							  </el-col>
+							 <el-col :span="9">
+							  	  <el-form-item label="是否新纪录" prop="record">
+									<el-select v-model="ruleForm.record" placeholder="请选择纪录">
+									  <el-option label="是" value="是"></el-option>
+									  <el-option label="否" value="否"></el-option>
+									</el-select>
+								  </el-form-item>
+							  </el-col>
+							</el-row>
+							<el-row :gutter="20" class="pt8">
+                                 <el-form-item label="备注" prop="remarks">
+                                      <el-input type="textarea" v-model="ruleForm.remarks"></el-input>
+                                 </el-form-item>
+							</el-row>
+						</div>
+						<div class="item_confirm">
+							<el-form-item style="margin-left:-100px;" v-show="creatItem">
+								<el-button @click="addItem('ruleForm')">创建</el-button>
+								<el-button @click="addItemCancel('ruleForm')">取消</el-button>
+							</el-form-item>
+							<el-form-item style="margin-left:-100px;" v-show="!creatItem">
+								<el-button @click="modify('ruleForm')">提交修改</el-button>
+								<el-button @click="modifyCancel('ruleForm')">取消修改</el-button>
+							</el-form-item>
+						</div>
+					</div>
+				</el-form>
+				</div>
+				<!--GPS地图-->
+				<div class="selectGPS">
+				  <div id="GPSmap"></div>
+			    </div>
+				</br></br></br></br></br></br></br>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<script>
+var app = new Vue({
+  el: '#app',
+  components: {
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftaplants:leftaplants
+  },
+  data: {
+	once:true,
+	changePage:false,
+	creatItem:true,
+	tableData:[],
+	totaldata:0,
+	obj:{station:"全站",pageIndex:1,pageSize:10,bird:"湿地",id:"张三"},  //五个关键数据：站点、人名、生境、页码、每页数量 后续搜索功能也要用  初始进入默认加载全部数据
+    option_search: [
+		{
+	  value: 'station',
+	  label: '保护站名'
+	}, {
+	  value: 'id',
+	  label: '监测人员'
+	}, {
+	  value: 'bird',
+	  label: '鸟类中文名'
+	}
+	],
+	searchType: '',
+	searchContent:'', 
+	//addItem
+	dataBox:{},
+	ruleForm: {
+	  station: '',
+	  id:'',
+	  date:'',
+	  weather:'',
+	  gps:'',
+	  chineseName:'',
+	  latinName:'',
+	  englishName:'',
+
+	  number:'',
+	  times:'',
+	  habitat:'',
+	  behavior:'',
+	  record:'',
+	  remarks:''
+	},
+	rules: {
+	  station: [
+		{ required: true, message: '请输入保护站名', trigger: 'blur' },
+		{ min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
+	  ],
+	  id: [
+	    { required: true, message: '请输入监测人员', trigger: 'blur' },
+	    { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
+	  ],
+	  date: [
+		{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+	  ],
+	  weather: [
+		{ required: true, message: '请选择天气', trigger: 'change' }
+	  ],
+	  gps: [
+	    { required: true, message: '请输入gps经纬坐标', trigger: 'blur' }
+	  ],
+	  chineseName: [
+	    { required: true, message: '请输入鸟类中文名', trigger: 'blur' },
+	    { min: 2, max: 5, message: '长度在 2 到 5 个字符', trigger: 'blur' }
+	  ],
+	  latinName: [
+	    { required: true, message: '请输入鸟类拉丁名', trigger: 'blur' },
+	    { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+	  ],
+	  englishName: [
+	    { required: true, message: '请输入鸟类英文名', trigger: 'blur' },
+	    { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
+	  ],
+	  number: [
+	    { required: true, message: '请输入数量信息'},
+	    { type:'number', message: '数量必须为数字值'}
+	  ],
+	  times: [
+		{ required: true, message: '请选择次数'},
+	    { type:'number', message: '次数必须为数字值'}
+	  ],
+	  habitat: [
+		{ required: true, message: '请选择栖息地类型', trigger: 'change' }
+	  ],
+	  behavior: [
+		{ required: true, message: '请选择行为', trigger: 'change' }
+	  ],
+	  record: [
+		{ required: true, message: '请选择是否新记录', trigger: 'change' }
+	  ],
+	  remarks: [
+        { required: true, message: '请填写备注', trigger: 'blur' }
+      ]
+	}
+  },
+  methods:{
+	  getonce:function(){ 
+		/////获取通知公告数据
+		
+		$.ajax({
+			type: "get",
+			dataType: "json",
+			url: "http://rapapi.org/mockjsdata/24551/testdata2",
+			//data: app.obj,    不做筛选 默认加载全部数据
+			beforeSend: function( xhr ) { 
+				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
+			}, 
+			success: function (data) {
+				if (data != "") {
+					app.tableData = data.list;
+					app.totaldata = app.tableData.length;
+				}
+			}
+		});
+		
+	  },
+	  pageCurrentChange:function(val){
+		  //更新页码
+		  app.obj.pageIndex = val;
+		  //正式使用更改URL
+		  $.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletPatrol,{ byValue: JSON.stringify(app.obj) }, function(data) {
+			  if (data != "") {
+					app.tableData = data.list;
+				    app.totaldata = app.tableData.length
+					app.once = true;
+					console.log(app.totaldata);
+				}
+		  });
+	  },
+	  handleIconClick:function(){
+		  if(!this.searchType){alert("请选择搜索类型");return}
+		  if(!this.searchContent){alert("请输入搜索内容");return}
+		  switch(this.searchType){
+			  case "station":
+				  app.obj.station = this.searchContent;
+				  break;
+			  case "id":
+				  app.obj.id = this.searchContent;
+				  break;
+			  case "habitat":
+				  app.obj.habitat = this.searchContent;
+				  break;
+		  }
+		  //正式使用更改URL
+		  $.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletPatrol,{ byValue: JSON.stringify(app.obj) }, function(data) {
+			  if (data != "") {
+					app.tableData = data.list;
+				    app.totaldata = app.tableData.length
+					app.once = true;
+					console.log(app.totaldata);
+			  }else{    //数据为空的提示
+				  alert("暂无相关数据") //测试暂做简单处理 后期以页面字段提示
+			  }
+		  });
+	  },
+	  //新增记录页面跳转
+	  addItemPage:function(){
+		  app.changePage = true;
+		  app.creatItem = true;
+	  },
+	  //打开gps选址
+	  showGPSmap:function(){
+		  $(".selectGPS").css("display","block");
+		  var map = new BMap.Map("GPSmap");
+		  var point = new BMap.Point(115.996112, 29.547892);
+		  map.enableScrollWheelZoom(); 
+	      map.centerAndZoom(point, 15);
+		  var marker = new BMap.Marker(point);  // 创建标注
+	      map.addOverlay(marker);               // 将标注添加到地图中
+	      marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+		  map.addEventListener("mousemove",function(e){  //鼠标移动显示坐标
+			  //console.log(e.point.lng + "," + e.point.lat);
+		  });
+		  map.addEventListener("click",function(e){   //鼠标点击定位坐标
+				  //询问框
+				layer.confirm('已选定经纬坐标：'+e.point.lng + " / " + e.point.lat, {
+				  btn: ['确认定位','重新定位'] //按钮
+				}, function(){
+					layer.msg('定位成功',{time:700},{icon: 1} );
+				  app.ruleForm.gps = e.point.lng + "," + e.point.lat;
+				  $(".selectGPS").css("display","none");
+				  //layer.msg('的确很重要', {icon: 1});
+				}, function(){
+				  app.ruleForm.gps ="";
+				  layer.msg('请重新定位');
+			  });
+		  });
+	  },
+	  //新增提交
+	  addItem(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!'); 
+			//此处添加提交创建代码
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+	  //取消新增
+	  addItemCancel:function(formName){
+		  this.$refs[formName].resetFields();
+		  app.changePage = false;
+	  },
+	  //修改提交
+	  modify:function(formName){
+		  this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!'); 
+			//此处添加提交修改代码
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+	  },
+	  //取消修改
+	  modifyCancel:function(formName){
+		  this.$refs[formName].resetFields();
+		  app.changePage = false;
+	  },
+	  //查看记录跳转 
+	  checkItem:function(event,user){
+		  
+	  },
+	  //修改记录跳转
+	  modifyItem:function(event,user){
+		  //遍历？待优化
+		  app.dataBox = user;
+		  app.creatItem = false;
+		  app.ruleForm.station = app.dataBox.station;
+		  app.ruleForm.id = app.dataBox.id;
+		  app.ruleForm.date = app.dataBox.date;  //需要中国标准时间格式  目前模拟数据格式为yyyy-mm-dd 不适用报错待处理
+		  app.ruleForm.weather = app.dataBox.weather;
+		  app.ruleForm.chineseName = app.dataBox.chineseName;
+		  app.ruleForm.latinName = app.dataBox.latinName;
+		  app.ruleForm.englishName = app.dataBox.englishName;
+		  app.ruleForm.altitude = app.dataBox.altitude;
+		  app.ruleForm.aspect = app.dataBox.aspect;
+		  app.ruleForm.slope = app.dataBox.slope;
+		  app.ruleForm.height = app.dataBox.height;
+		  app.ruleForm.DBH = app.dataBox.DBH;
+		  app.ruleForm.age = app.dataBox.age;
+		  app.ruleForm.HUB = app.dataBox.HUB;
+		  app.ruleForm.place = app.dataBox.place;
+		  app.ruleForm.habitat = app.dataBox.habitat;
+		  app.changePage = true;
+	  },
+	  //删除记录
+	  deleteItem:function(event){
+		  
+	  }
+  } 
+});
+
+app.getonce();
+</script>

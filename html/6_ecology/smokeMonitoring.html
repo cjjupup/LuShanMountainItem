@@ -1,0 +1,160 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<link rel="stylesheet" href="../../js/skin/layer.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../../js/layer.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cGT9892RVDdKkeIKM2f1d8pX"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+	
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="aplants"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<leftecology leftactive="yangan_ssck"></leftecology>
+			<!-- 右侧 -->
+			<div class="view-date" style="padding-left: 226px;">
+				<div class="view-header-wrap wth-view-header">
+					<div class="view-header">
+						<h2 class="nowrap with-tail-btn" title="总演示数据">
+							烟感监控查看
+						</h2>
+					</div>
+				</div>
+				<div class="monitorBox">
+					<div id="monitorMap"></div>
+					<div class="monitorTips">
+						<span class="w">运行中：<b class="num">{{work_num}}台</b></span>
+						<span class="w pl8">故障中：<b class="num">{{stop_num}}台</b></span>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<script>
+var app = new Vue({
+  el: '#app',
+  components: {
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftecology:leftecology
+  },
+  data: {
+	once:true,
+	//obj:{date:"2017-09-26",},  //五个关键数据：树名、种类、数量、图片url、日期、经纬度、自定义小图标、默认加载当天日期的数据
+	work_num:0,
+	work_box:[],
+	stop_num:0,
+	stop_box:[]
+  },
+  methods:{
+	  getonce:function(){ 
+		$.ajax({
+			type: "get",   //本地模拟 无post方法
+			dataType: "json",
+			url: "../../localDataTest/smokeMonitorData.json",
+			//data: JSON.stringify(app.obj),    //筛选 加载显示当日新增数据  后续可能添加全部数据
+			beforeSend: function( xhr ) { 
+				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
+			}, 
+			success: function (data) {
+				if (data != "") {
+					data.forEach(function(item){
+						if(item.state == "正常"){app.work_box.push(item);}
+						if(item.state == "故障"){app.stop_box.push(item);}
+					});
+					app.work_num = app.work_box.length;
+					app.stop_num = app.stop_box.length;
+					
+					
+					
+					
+					//
+					map = new BMap.Map("monitorMap");
+					map.addControl(new BMap.MapTypeControl());  //地图类型选择
+	                map.centerAndZoom(new BMap.Point(115.996112, 29.547892), 15);
+					map.enableScrollWheelZoom();
+					for(var i=0; i<app.work_num; i++){
+						(function(x){
+							var point = new BMap.Point(app.work_box[i].lng,app.work_box[i].lat);
+							var myIcon = new BMap.Icon("../../img/work.png", new BMap.Size(100,100));  //替换自定义小图标
+							var marker = new BMap.Marker(point,{icon:myIcon});
+							//var marker = new BMap.Marker(point);
+							var sContent = `<div style="padding:10px 5px;width:230px;">
+								   <img src="../../img/tcq.png" style="position:absolute;width:90px;height:90px;margin-left:120px;">
+                                   <div style="float:left;width:220px;height:90px;display:inline-block;">
+								   <p style="display:block;line-height:30px;">探测器：<span>`+app.work_box[i].name+`</span></p>
+								   <p style="display:block;line-height:30px;">所属站点：<span>`+app.work_box[i].station+`</span></p>
+								   <p style="display:block;line-height:30px;">负责人：<span>`+app.work_box[i].person+`</span></p>
+	                               <p style="display:block;line-height:30px;">状态：<span>`+app.work_box[i].state+`</span></p>
+	                               <p style="display:block;line-height:30px;">坐标：<span>`+app.work_box[i].lng +" , "+ app.work_box[i].lat +`</span></p></div>
+							  </div>`;
+							map.addOverlay(marker);
+							//marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+							marker.addEventListener("click",function(e){
+								var p = e.target;
+								var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+								var infoWindow = new BMap.InfoWindow(sContent);
+								map.openInfoWindow(infoWindow,point);
+							});
+						})(i);
+				    }
+					for(var i=0; i<app.stop_num; i++){
+						(function(x){
+							var point = new BMap.Point(app.stop_box[i].lng,app.stop_box[i].lat);
+							var myIcon = new BMap.Icon("../../img/stop.png", new BMap.Size(100,100));  //替换自定义小图标
+							var marker = new BMap.Marker(point,{icon:myIcon});
+							//var marker = new BMap.Marker(point);
+							var sContent = `<div style="padding:10px 5px;width:230px;">
+								   <img src="../../img/tcq.png" style="position:absolute;width:90px;height:90px;margin-left:120px;">
+                                   <div style="float:left;width:220px;height:90px;display:inline-block;">
+								   <p style="display:block;line-height:30px;">探测器：<span>`+app.stop_box[i].name+`</span></p>
+								   <p style="display:block;line-height:30px;">所属站点：<span>`+app.stop_box[i].station+`</span></p>
+								   <p style="display:block;line-height:30px;">负责人：<span>`+app.stop_box[i].person+`</span></p>
+	                               <p style="display:block;line-height:30px;">状态：<span>`+app.stop_box[i].state+`</span></p>
+	                               <p style="display:block;line-height:30px;">坐标：<span>`+app.stop_box[i].lng +" , "+ app.stop_box[i].lat +`</span></p></div>
+							  </div>`;
+							map.addOverlay(marker);
+							marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+							marker.addEventListener("click",function(e){
+								var p = e.target;
+								var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+								var infoWindow = new BMap.InfoWindow(sContent);
+								map.openInfoWindow(infoWindow,point);
+							});
+						})(i);
+				    }
+			    }
+		    }
+		});
+	  }
+	 
+  }
+
+});
+
+app.getonce();
+</script>

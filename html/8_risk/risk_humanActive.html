@@ -1,0 +1,705 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cGT9892RVDdKkeIKM2f1d8pX"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="risk"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<leftrisk leftactive="rwhd"></leftrisk>
+			<!-- 右侧 -->
+			<div class="view-date" style="padding-left: 226px;">
+			    <div>
+			    	<el-row>
+						<el-col :span="16">
+							<div class="grid-content">
+								<chart :options="polar_1" ref="pie_1" id="achart_1"></chart>
+							</div>
+						</el-col>
+						<el-col :span="8">
+							<div class="grid-content">
+								<chart :options="polar_2" ref="pie_2" id="achart_2"></chart>
+							</div>
+							<div style="position: absolute;top:35px;right:0;width:200px;z-index: 999;">
+								<span class="periodSelect" @click="periodchange($event)" title="bhq_y">本年度</span>
+								<span class="periodSelect">本季度</span>
+								<span class="periodSelect" @click="periodchange($event)" title="bhq_m">本月</span>
+							</div>
+						</el-col>
+					</el-row>
+			    </div>
+			    <div>
+			    	<el-row>
+						<el-col :span="16">
+							<div class="grid-content">
+								<chart :options="polar_3" ref="pie_3" id="achart_3"></chart>
+								<div style="position: absolute;top:30px;right:50%;display:block;width:150px;z-index: 999; line-height: 64px;">
+									<el-select v-model="searchStation_1" clearable placeholder="站点一" @change="selectStation_1" style="width:100%;">
+										<el-option
+										  v-for="item in option_station_1"
+										  :key="item.value"
+										  :label="item.label"
+										  :value="item.value">
+										</el-option>
+									</el-select>
+								</div>
+							</div>
+						</el-col>
+						<el-col :span="8">
+							<div class="grid-content">
+								<chart :options="polar_4" ref="pie_4" id="achart_4"></chart>
+								<div style="position: absolute;top:30px;right:13%;display:block;width:150px;z-index: 999; line-height: 64px;">
+									<el-select v-model="searchStation_2" clearable placeholder="站点一" @change="selectStation_2" style="width:100%;">
+										<el-option
+										  v-for="item in option_station_2"
+										  :key="item.value"
+										  :label="item.label"
+										  :value="item.value">
+										</el-option>
+									</el-select>
+								</div>
+								<div style="position: absolute;top:35px;right:0;width:200px;z-index: 999;">
+									<span class="periodSelect" @click="periodchange($event)" title="zd_y">本年度</span>
+									<span class="periodSelect">本季度</span>
+									<span class="periodSelect" @click="periodchange($event)" title="zd_m">本月</span>
+								</div>
+							</div>
+						</el-col>
+					</el-row>
+			    </div>
+				</br></br></br></br></br></br></br></br>
+			</div>
+		</div>
+	</div>
+<script>
+document.getElementById("achart_1").style.width = 2*(document.body.clientWidth - 264)/3;
+document.getElementById("achart_2").style.width = (document.body.clientWidth - 264)/3;
+document.getElementById("achart_3").style.width = 2*(document.body.clientWidth - 264)/3;
+document.getElementById("achart_4").style.width = (document.body.clientWidth - 264)/3;
+window.onresize = function () {
+    document.getElementById("achart_1").style.width = 2*(document.body.clientWidth - 264)/3;
+	document.getElementById("achart_2").style.width = (document.body.clientWidth - 264)/3;
+	document.getElementById("achart_3").style.width = 2*(document.body.clientWidth - 264)/3;
+	document.getElementById("achart_4").style.width = (document.body.clientWidth - 264)/3;
+	app.size = document.body.clientWidth;
+};
+var chartData_1 = {
+	title:{
+		text:"保护站财产损失",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		},
+		x:"8%"
+	},
+	tooltip:{
+		trigger:"axis",
+		axisPointer:{
+			type:"cross",
+			crossStyle:{
+				color:"#999"
+			}
+		}
+	},
+	toolbox:{
+		show:"true",
+		iconStyle:{
+			normal:{
+				color:"rgba(0, 0, 0, 0.2)",
+				borderColor:"#fff"
+			}
+		},
+		feature:{
+			dataView:{"readonly":false},
+			magicType:{type:["bar","line"]},
+			restore:{},
+			saveAsImage:{}
+		},
+		itemSize:20,
+		right:"10%"
+	},
+	legend:{
+		data:[
+			{name:'盗猎',textStyle:{color:"#fff"}},
+			{name:'盗伐',textStyle:{color:"#fff"}},
+			{name:'违建',textStyle:{color:"#fff"}},
+			{name:'污染',textStyle:{color:"#fff"}}
+		]
+	},
+	backgroundColor:"#24263E",
+	dataZoom: [
+        {
+			type: 'slider',
+			show: true,
+			xAxisIndex: [0],
+			handleSize: 20,
+			height: 12,
+			left: 80, 
+			right: 80,
+			bottom: 10,
+			handleColor: '#5182E4',
+			handleStyle: {
+				borderColor: "#5182E4",
+				borderWidth: 2,
+				shadowBlur: 2,
+				background: "#5182E4",
+				shadowColor: "#5182E4",
+			},
+			fillerColor:"#BABAC0",
+			backgroundColor: '#fff',
+			showDataShadow: true,
+			showDetail: false,
+            start: "30",
+            end: "70"
+        },
+		{
+			type: 'inside',
+			moveOnMouseMove:true,
+			zoomOnMouseWheel:false
+		}
+    ],
+	xAxis:[
+		{
+			type:"category",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	yAxis:[
+		{
+			name:"金额/元",
+			type:"value",
+			min:"0",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	series:[
+		{
+			name:"盗猎",
+			type:"line"
+		},
+		{
+			name:"盗伐",
+			type:"line"
+		},
+		{
+			name:"违建",
+			type:"line"
+		},
+		{
+			name:"污染",
+			type:"line"
+		}
+	],
+	color: ["#00FFFF","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var chartData_2 = {
+	title:{
+		text:"保护站损失占比",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		}
+	},
+	tooltip:{
+		trigger:"item",
+		formatter:"{a} <br/>{b}: {c} ({d}%)"
+	},
+	legend:{
+		orient:"vertical",
+		x:"80%",
+		data:[{name:'盗猎',textStyle:{color:"#fff"}},{name:'盗伐',textStyle:{color:"#fff"}},{name:'违建',textStyle:{color:"#fff"}},{name:'污染',textStyle:{color:"#fff"}}],
+		bottom:"20"
+	},
+	backgroundColor:"#24263E",
+	series:[
+		{
+			name:"损失占比",
+			type:"pie",
+			radius:["50%","70%"],
+			avoidLabelOverlap: false,
+            label: {
+                normal: {
+                    show: false,
+                    position: "center"
+                },
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        fontSize: "30",
+                        fontWeight: "bold"
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: false
+                }
+            },
+			data:[
+				{value:0,name:"盗猎"},
+				{value:0,name:"盗伐"},
+				{value:0,name:"违建"},
+				{value:0,name:"污染"}
+			]
+		}
+	],
+	color: ["#00FFFF","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var chartData_3 = {
+	title:{
+		text:"站点财产损失",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		},
+		x:"8%"
+	},
+	tooltip:{
+		trigger:"axis",
+		axisPointer:{
+			type:"cross",
+			crossStyle:{
+				color:"#999"
+			}
+		}
+	},
+	toolbox:{
+		show:"true",
+		iconStyle:{
+			normal:{
+				color:"rgba(0, 0, 0, 0.2)",
+				borderColor:"#fff"
+			}
+		},
+		feature:{
+			dataView:{"readonly":false},
+			magicType:{type:["bar","line"]},
+			restore:{},
+			saveAsImage:{}
+		},
+		itemSize:20,
+		right:"10%"
+		
+	},
+	legend:{
+		data:[
+			{name:'盗猎',textStyle:{color:"#fff"}},
+			{name:'盗伐',textStyle:{color:"#fff"}},
+			{name:'违建',textStyle:{color:"#fff"}},
+			{name:'污染',textStyle:{color:"#fff"}}
+		],
+		x:"32%",
+		y:"1%"
+		
+	},
+	dataZoom :[
+		{
+			type: 'slider',
+			show: true,
+			xAxisIndex: [0],
+			handleSize: 20,
+			height: 12,
+			left: 130, 
+			right: 130,
+			bottom: 10,
+			handleColor: '#5182E4',
+			handleStyle: {
+				borderColor: "#BABAC0",
+				borderWidth: 2,
+				shadowBlur: 2,
+				background: "#BABAC0",
+				shadowColor: "#BABAC0",
+			},
+			fillerColor:"#BABAC0",
+			backgroundColor: "#fff",
+			showDataShadow: true,
+			showDetail: false,
+			handleIcon: 'M-292,322.2c-3.2,0-6.4-0.6-9.3-1.9c-2.9-1.2-5.4-2.9-7.6-5.1s-3.9-4.8-5.1-7.6c-1.3-3-1.9-6.1-1.9-9.3c0-3.2,0.6-6.4,1.9-9.3c1.2-2.9,2.9-5.4,5.1-7.6s4.8-3.9,7.6-5.1c3-1.3,6.1-1.9,9.3-1.9c3.2,0,6.4,0.6,9.3,1.9c2.9,1.2,5.4,2.9,7.6,5.1s3.9,4.8,5.1,7.6c1.3,3,1.9,6.1,1.9,9.3c0,3.2-0.6,6.4-1.9,9.3c-1.2,2.9-2.9,5.4-5.1,7.6s-4.8,3.9-7.6,5.1C-285.6,321.5-288.8,322.2-292,322.2z',
+			filterMode: 'filter',
+			"start": "40",
+            "end": "70"
+		},
+		{
+			type: 'inside',
+			show: true,
+			moveOnMouseMove:true,
+			zoomOnMouseWheel:false
+		}
+	],
+	backgroundColor:"#24263E",
+	xAxis:[
+		{
+			type:"category",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	yAxis:[
+		{
+			name:"金额/元",
+			type:"value",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	"series":[
+		{
+			name:"盗猎",
+			type:"line"
+		},
+		{
+			name:"盗伐",
+			type:"line"
+		},
+		{
+			name:"违建",
+			type:"line"
+		},
+		{
+			name:"污染",
+			type:"line"
+		}
+	],
+	"color": ["#00FFFF","#5083E5","#9bcc66","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var chartData_4 = {
+	title:{
+		text:"站点损失占比",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		}
+	},
+	tooltip:{
+		trigger:"item",
+		formatter:"{a} <br/>{b}: {c} ({d}%)"
+	},
+	legend:{
+		orient:"vertical",
+		x:"80%",
+		data:[{name:'盗猎',textStyle:{color:"#fff"}},{name:'盗伐',textStyle:{color:"#fff"}},{name:'违建',textStyle:{color:"#fff"}},{name:'污染',textStyle:{color:"#fff"}}],
+		bottom:"20"
+	},
+	backgroundColor:"#24263E",
+	series:[
+		{
+			name:"损失占比",
+			type:"pie",
+			radius:["50%","70%"],
+			avoidLabelOverlap: false,
+            label: {
+                normal: {
+                    show: false,
+                    position: "center"
+                },
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        fontSize: "30",
+                        fontWeight: "bold"
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: false
+                }
+            },
+			data:[
+				{value:0,name:"盗猎"},
+				{value:0,name:"盗伐"},
+				{value:0,name:"违建"},
+				{value:0,name:"污染"}
+			]
+		}
+	],
+	color: ["#00FFFF","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var app = new Vue({
+  el: '#app',
+  components: {
+    // <my-component> 将只在父模板可用
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftrisk:leftrisk
+  },
+  data: {
+	once:true,
+	size:'',
+	formData:[],
+	//总保护区-折线
+	timelist_1:[],
+	losslist_1:[[],[],[],[]],
+	polar_1:{},
+	//总保护区-饼图
+	losslist_2:[[],[],[],[]],
+	polar_2:{},
+	//各保护站
+	option_station_1: [{
+	  value: 0,
+	  label: '站点一'
+	}, {
+	  value: 1,
+	  label: '站点二'
+	}, {
+	  value: 2,
+	  label: '站点三'
+	}],
+	searchStation_1: '',
+	timelist_3:[],
+	losslist_3:[[],[],[],[]],
+	polar_3:{},
+	//各站点饼图
+	option_station_2: [{
+	  value: 0,
+	  label: '站点一'
+	}, {
+	  value: 1,
+	  label: '站点二'
+	}, {
+	  value: 2,
+	  label: '站点三'
+	}],
+	searchStation_2: '',
+	losslist_4:[[],[],[],[]],
+	polar_4:{},
+	//
+	bhqyearloss:[0,0,0,0],
+	bhqmonthloss:[0,0,0,0],
+	//
+	zdyearloss:[0,0,0,0],
+	zdmonthloss:[0,0,0,0]
+	//obj:{},
+	//pValue:{byValue:''},
+  },
+  methods:{
+	  getonce:function(){ 
+		/////获取通知公告数据
+		//app.pValue.byValue = JSON.stringify(app.obj);
+		$.ajax({
+			type: "get",
+			dataType: "json",
+			url: "../../localDataTest/risk_naturalData.json",
+			//data:{},
+			//beforeSend: function( xhr ) { 
+			//	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
+			//},
+			success: function (data) {
+				if (data !== "") {
+					app.formData = data;
+					data[0].forEach(function(item){
+						//保护区总
+						app.timelist_1.push(item.date);
+						app.losslist_1[0].push(item.rain);
+						app.losslist_1[1].push(item.snow);
+						app.losslist_1[2].push(item.thunder);
+						app.losslist_1[3].push(item.lowTemperature);
+					});
+					data[1][0].forEach(function(item){
+						app.timelist_3.push(item.date);
+						app.losslist_3[0].push(item.rain);
+						app.losslist_3[1].push(item.snow);
+						app.losslist_3[2].push(item.thunder);
+						app.losslist_3[3].push(item.lowTemperature);
+					});
+					//保护区总
+					chartData_1.xAxis[0].data = app.timelist_1;
+					chartData_1.series[0].data = app.losslist_1[0];
+					chartData_1.series[1].data = app.losslist_1[1];
+					chartData_1.series[2].data = app.losslist_1[2];
+					chartData_1.series[3].data = app.losslist_1[3];
+					//各站点
+					chartData_3.xAxis[0].data = app.timelist_1;
+					chartData_3.series[0].data = app.losslist_3[0];
+					chartData_3.series[1].data = app.losslist_3[1];
+					chartData_3.series[2].data = app.losslist_3[2];
+					chartData_3.series[3].data = app.losslist_3[3];
+					//
+					//保护区 月损失占比  默认载当前月份
+					var date=new Date;
+					var month=date.getMonth()+1;
+					data[0].forEach(function(item){
+						if(item.date.slice(5,7) == month){
+							app.bhqmonthloss[0] = app.losslist_2[0] = item.rain;
+							app.bhqmonthloss[1] = app.losslist_2[1] = item.snow;
+							app.bhqmonthloss[2] = app.losslist_2[2] = item.thunder;
+							app.bhqmonthloss[3] = app.losslist_2[3] = item.lowTemperature;
+						}
+						app.bhqyearloss[0] += item.rain-0;
+						app.bhqyearloss[1] += item.snow-0;
+						app.bhqyearloss[2] += item.thunder-0;
+						app.bhqyearloss[3] += item.lowTemperature-0;
+					});
+					//console.log(app.bhqyearloss);
+					chartData_2.series[0].data[0].value = app.losslist_2[0];
+					chartData_2.series[0].data[1].value = app.losslist_2[1];
+					chartData_2.series[0].data[2].value = app.losslist_2[2];
+					chartData_2.series[0].data[3].value = app.losslist_2[3];
+					//站点月损失占比 默认载入站点一 当前月份
+					data[1][0].forEach(function(item){
+						if(item.date.slice(5,7) == month){
+							app.zdmonthloss[0] = app.losslist_4[0] = item.rain;
+							app.zdmonthloss[1] = app.losslist_4[1] = item.snow;
+							app.zdmonthloss[2] = app.losslist_4[2] = item.thunder;
+							app.zdmonthloss[3] = app.losslist_4[3] = item.lowTemperature;
+							
+						}
+						app.zdyearloss[0] += item.rain-0;
+						app.zdyearloss[1] += item.snow-0;
+						app.zdyearloss[2] += item.thunder-0;
+						app.zdyearloss[3] += item.lowTemperature-0;
+					});
+					chartData_4.series[0].data[0].value = app.losslist_4[0];
+					chartData_4.series[0].data[1].value = app.losslist_4[1];
+					chartData_4.series[0].data[2].value = app.losslist_4[2];
+					chartData_4.series[0].data[3].value = app.losslist_4[3];
+					//
+//					chartData_4.series[0].data[0].value = app.typelist_4[0].length;
+//					chartData_4.series[0].data[1].value = app.typelist_4[1].length;
+//					chartData_4.series[0].data[2].value = app.typelist_4[2].length;
+//					chartData_4.series[0].data[3].value = app.typelist_4[3].length;
+					app.polar_1 = chartData_1;
+					app.polar_2 = chartData_2;
+					app.polar_3 = chartData_3;
+					app.polar_4 = chartData_4;
+					
+					
+				}
+			}
+		});
+	  },
+	  selectStation_1:function(){
+		  if(app.searchStation_1 !==''){
+			  app.losslist_3 =[[],[],[],[]];
+			  app.formData[1][app.searchStation_1].forEach(function(item){
+			      app.losslist_3[0].push(item.rain);
+				  app.losslist_3[1].push(item.snow);
+				  app.losslist_3[2].push(item.thunder);
+				  app.losslist_3[3].push(item.lowTemperature);
+			  });
+			  chartData_3.series[0].data = app.losslist_3[0];
+			  chartData_3.series[1].data = app.losslist_3[1];
+			  chartData_3.series[2].data = app.losslist_3[2];
+			  chartData_3.series[3].data = app.losslist_3[3];
+		  }
+	  },
+	  selectStation_2:function(){
+		  if(app.searchStation_2 !==''){
+			  app.losslist_4 =[[],[],[],[]];
+			  var date=new Date;
+		      var month=date.getMonth()+1;
+			  app.formData[1][app.searchStation_2].forEach(function(item){
+				  if(item.date.slice(5,7) == month){
+					  app.zdmonthloss[0] = app.losslist_4[0] = item.rain;
+					  app.zdmonthloss[1] = app.losslist_4[1] = item.snow;
+					  app.zdmonthloss[2] = app.losslist_4[2] = item.thunder;
+					  app.zdmonthloss[3] = app.losslist_4[3] = item.lowTemperature;
+				  }
+				  app.zdyearloss[0] += item.rain-0;
+				  app.zdyearloss[1] += item.snow-0;
+				  app.zdyearloss[2] += item.thunder-0;
+				  app.zdyearloss[3] += item.lowTemperature-0;
+			  });//选择站点后 判断 active 是年还是月 待处理
+			  chartData_4.series[0].data[0].value = app.losslist_4[0];
+			  chartData_4.series[0].data[1].value = app.losslist_4[1];
+			  chartData_4.series[0].data[2].value = app.losslist_4[2];
+			  chartData_4.series[0].data[3].value = app.losslist_4[3];
+		  }
+	  },
+	  periodchange:function(e){
+		  var type = e.currentTarget.title;
+		  switch(type){
+			  case "bhq_y":
+				  app.losslist_2[0] = app.bhqyearloss[0];
+				  app.losslist_2[1] = app.bhqyearloss[1];
+				  app.losslist_2[2] = app.bhqyearloss[2];
+				  app.losslist_2[3] = app.bhqyearloss[3];
+				  chartData_2.series[0].data[0].value = app.losslist_2[0];
+				  chartData_2.series[0].data[1].value = app.losslist_2[1];
+				  chartData_2.series[0].data[2].value = app.losslist_2[2];
+				  chartData_2.series[0].data[3].value = app.losslist_2[3];
+				  break;
+			  case "bhq_m":
+				  app.losslist_2[0] = app.bhqmonthloss[0];
+				  app.losslist_2[1] = app.bhqmonthloss[1];
+				  app.losslist_2[2] = app.bhqmonthloss[2];
+				  app.losslist_2[3] = app.bhqmonthloss[3];
+				  chartData_2.series[0].data[0].value = app.losslist_2[0];
+				  chartData_2.series[0].data[1].value = app.losslist_2[1];
+				  chartData_2.series[0].data[2].value = app.losslist_2[2];
+				  chartData_2.series[0].data[3].value = app.losslist_2[3];
+				  break;
+			  case "zd_y":
+				  app.losslist_4[0] = app.zdyearloss[0];
+				  app.losslist_4[1] = app.zdyearloss[1];
+				  app.losslist_4[2] = app.zdyearloss[2];
+				  app.losslist_4[3] = app.zdyearloss[3];
+				  chartData_4.series[0].data[0].value = app.losslist_4[0];
+				  chartData_4.series[0].data[1].value = app.losslist_4[1];
+				  chartData_4.series[0].data[2].value = app.losslist_4[2];
+				  chartData_4.series[0].data[3].value = app.losslist_4[3];
+				  break;
+			  case "zd_m":
+				  chartData_4.series[0].data[0].value = app.zdmonthloss[0];
+				  chartData_4.series[0].data[1].value = app.zdmonthloss[1];
+				  chartData_4.series[0].data[2].value = app.zdmonthloss[2];
+				  chartData_4.series[0].data[3].value = app.zdmonthloss[3];
+				  break;
+		  }
+		  
+	  }
+  },
+ watch:{
+	size:function(){
+		this.$refs.pie_1.resize();
+		this.$refs.pie_2.resize();
+		this.$refs.pie_3.resize();
+		this.$refs.pie_4.resize();
+	}
+ } 
+});
+app.getonce();
+</script>
+</body>
+</html>

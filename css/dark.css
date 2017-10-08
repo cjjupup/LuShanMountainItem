@@ -1,0 +1,120 @@
+html body{background-color:#191A2C}
+body{}
+.workarea{color:rgba(255,255,255,.7)}
+a{color:rgba(255,255,255,.7)}
+a.disabled{color:rgba(255,255,255,.3)}
+a.disabled:hover{color:rgba(255,255,255,.3)!important}
+.input{color:rgba(255,255,255,.7)}
+input[type=radio]{border:1px solid #5182E4;background:rgba(81,129,228,.1)}
+input[type=radio]:checked{border:1px solid #5182E4;background:#5182E4}
+input[type=radio]:checked::before{background-color:#FFF}
+input[type=checkbox]{border:1px solid #5182E4;background-color:rgba(81,129,228,.1)}
+input[type=checkbox]:disabled,input[type=checkbox].check-disabled{background-color:rgba(81,129,228,.1);opacity:.4}
+input[type=checkbox]:checked{background-color:#5182E4}
+input[type=checkbox]:checked::before{background-color:#fff}
+input[type=checkbox]:checked::after{background-color:#fff}
+input:-webkit-autofill{background-color:transparent!important}
+input[type=text],input[type=password],input[type=number],input[type=email]{border:1px solid #bfcbd9;}
+input[type=text]:focus,input[type=password]:focus,input[type=number]:focus,input[type=email]:focus{box-shadow:0 0 1px 0 #5182e4 inset}
+input.input-text-block{}
+textarea,.nick-model textarea{color:rgba(255,255,255,1);background:rgba(81,129,228,.06);-webkit-appearance:none}
+textarea:focus,.nick-model textarea:focus{background:transparent;-webkit-appearance:none}
+.cr{color:#E45151!important}
+.cr-hint{color:#E45151!important}
+.cr-999{color:rgba(255,255,255,.7)}
+.text-disabled{color:rgba(255,255,255,.5)}
+.cr-bdp{color:#5182E4}
+.errTips{background-color:#5153E4;color:#FFF;box-shadow:0 0 6px 0 rgba(0,0,0,.1),0 12px 24px 0 rgba(0,0,0,.3)}
+.operator-help-link{color:rgba(255,255,255,.7)}
+.operator-help-link:hover{color:rgba(255,255,255,1)}
+.box-a{background-color:#24273E}
+.elem-bg-gray,.elem-gray-hover:hover{background-color:rgba(81,130,228,.1)}
+.font-color-999{color:rgba(255,255,255,.7)}
+.font-color-warn-v1{color:#E45151}::selection{background-color:rgba(81,130,228,.2)}::-moz-selection{background-color:rgba(81,130,228,.2)}
+select:-moz-focusring{color:transparent;text-shadow:0 0 0 #FFF}
+input::-webkit-input-placeholder,textarea::-webkit-input-placeholder{color:rgba(255,255,255,.5)}
+input:-moz-placeholder,textarea:-moz-placeholder{color:rgba(255,255,255,.5)}
+input::-moz-placeholder,textarea::-moz-placeholder{color:rgba(255,255,255,.5)}
+input:-ms-input-placeholder,textarea:-ms-input-placeholder{color:rgba(255,255,255,.5)}
+.date-range-wrap{color:rgba(255,255,255,.7)}
+[date-picker] span{border:1px solid transparent}
+[date-picker] .switch{color:rgba(255,255,255,.7)}
+[date-range] [date-picker] .after.before,[date-range-bdp] [date-picker] .after.before{background-color:rgba(81,130,228,.4);color:rgba(255,255,255,1)}
+[date-range] [date-picker] .after.before:hover,
+[date-range] [date-picker] .after.before:active,
+[date-range] [date-picker] .after.before.active,
+[date-range] [date-picker] .after.before.disabled,
+[date-range] [date-picker] .after.before[disabled],
+[date-range-bdp] [date-picker] .after.before:hover,
+[date-range-bdp] [date-picker] .after.before:active,
+[date-range-bdp] [date-picker] .after.before.active,
+[date-range-bdp] [date-picker] .after.before.disabled,
+[date-range-bdp] [date-picker] .after.before[disabled]{background-color:#5182E4;color:rgba(255,255,255,1);border:1px solid transparent}
+[date-range] [date-picker] .after.before:active,
+[date-range] [date-picker] .after.before.active,
+[date-range-bdp] [date-picker] .after.before:active,
+[date-range-bdp] [date-picker] .after.before.active{background-color:#5182E4}
+[date-range] [date-picker] .after.before.disabled,
+[date-range] [date-picker] .after.before[disabled],
+[date-range-bdp] [date-picker] .after.before.disabled,
+[date-range-bdp] [date-picker] .after.before[disabled]{color:rgba(255,255,255,.36);border:1px solid transparent!important;background-color:transparent}
+[date-picker] span.disabled,
+[date-picker] span.disabled:hover{color:rgba(255,255,255,.36);border:1px solid transparent!important;background-color:transparent}
+div[date-picker] .now:hover,div[date-picker] .now{background-color:#5153E4;color:rgba(255,255,255,1)}
+div[date-picker] .active{background-color:#5182E4;color:rgba(255,255,255,1)}
+[date-picker] .active:hover,[date-picker] .active:active,
+[date-picker] .active.active,[date-picker] .active.disabled,
+[date-picker] .active[disabled]{color:rgba(255,255,255,1);background-color:#5182E4}
+div[date-picker] .now:active,
+div[date-picker] .now.active,
+div[date-picker] .now.disabled,
+div[date-picker] .now[disabled]{color:rgba(255,255,255,1);background-color:#5182E4;border:1px solid transparent!important}
+[date-picker] .disabled{color:rgba(255,255,255,.7);background:0 0}
+[date-picker] table thead tr th span:hover{background:0 0}
+[date-picker] td span:hover{border:1px solid #5182E4;background-color:transparent}
+div[date-picker] table thead tr:last-child th{border-bottom:0}
+div[date-picker] table thead tr th span:hover{background:0 0}
+[date-picker] tbody tr td:first-child span,
+[date-picker] tbody tr td:last-child span{background:0 0}
+body{
+/* background: transparent url(../img/product_bg.jpg) no-repeat center center; */
+    background-size: cover;
+}
+
+.nav-wrap .nav-item .nav-item-title{color:rgba(255,255,255,.7)}.nav-wrap .nav-item:hover .nav-item-title,.nav-wrap .nav-item.active .nav-item-title{color:#FFF}
+.nav-wrap .nav-item:hover {
+    background: rgba(81,129,228,.06);
+}
+.nav-wrap .nav-item-title {
+	text-align:center;
+    line-height: 32px;
+    font-size: 14px;
+    margin: 16px;
+}
+.nav-wrap .nav-item-title .icon{
+	font-size:22px;
+	font-weight:400;
+}
+.icon-wrap {
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    display: inline-block;
+    vertical-align: middle;
+}
+.hd-set .hd-set-item a{font-size:14px;line-height:90px}
+.hd-set .hd-set-item:hover a{color:rgba(255,255,255,1)}
+.hd-set .hd-set-item:hover a{transition:all .1s ease-in-out;}
+.dash-sidebar {
+    background: rgba(25,26,44,.96);
+    box-shadow: 1px 0 0 0 rgba(0,0,0,.15),2px 0 0 0 rgba(0,0,0,.06),inset -1px 0 0 0 rgba(255,255,255,.03);
+}
+.drag-btn:hover{background-color:rgba(0,0,0,.2)}
+.dash-sidebar .drag-btn:after {
+    background: rgba(255,255,255,.1);
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.3);
+}
+.project-list-common .cat-op-parent:hover {
+    background-color: rgba(81,130,228,.1);
+}

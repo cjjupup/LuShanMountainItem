@@ -1,0 +1,30 @@
+[
+	[
+		{"date":"2017-01","frequency":"0"},
+		{"date":"2017-02","frequency":"1"},
+		{"date":"2017-03","frequency":"2"},
+		{"date":"2017-04","frequency":"2"},
+		{"date":"2017-05","frequency":"0"},
+		{"date":"2017-06","frequency":"3"},
+		{"date":"2017-07","frequency":"4"},
+		{"date":"2017-08","frequency":"1"},
+		{"date":"2017-09","frequency":"2"},
+		{"date":"2017-10","frequency":"0"},
+		{"date":"2017-11","frequency":"0"},
+		{"date":"2017-12","frequency":"1"}
+	],
+	[
+		{"date":"2017-01","frequency_1":"0","frequency_2":"0","frequency_3":"0"},
+		{"date":"2017-02","frequency_1":"1","frequency_2":"0","frequency_3":"0"},
+		{"date":"2017-03","frequency_1":"0","frequency_2":"1","frequency_3":"0"},
+		{"date":"2017-04","frequency_1":"0","frequency_2":"0","frequency_3":"2"},
+		{"date":"2017-05","frequency_1":"1","frequency_2":"1","frequency_3":"1"},
+		{"date":"2017-06","frequency_1":"1","frequency_2":"0","frequency_3":"0"},
+		{"date":"2017-07","frequency_1":"0","frequency_2":"0","frequency_3":"1"},
+		{"date":"2017-08","frequency_1":"1","frequency_2":"2","frequency_3":"0"},
+		{"date":"2017-09","frequency_1":"2","frequency_2":"1","frequency_3":"1"},
+		{"date":"2017-10","frequency_1":"0","frequency_2":"0","frequency_3":"0"},
+		{"date":"2017-11","frequency_1":"1","frequency_2":"0","frequency_3":"1"},
+		{"date":"2017-12","frequency_1":"0","frequency_2":"2","frequency_3":"0"}
+	]
+]

@@ -1,0 +1,21 @@
+{
+    "title": "当日",
+    "xpeoples": 2,
+	"pd_xpeople": 3,
+	"pw_xpeople": 28,
+    "xcounts": 3,
+	"pd_xcounts": 5,
+	"pw_xcounts": 68,
+    "xdays": 3,
+	"pd_xdays": 3,
+	"pw_xdays": 20,
+    "xkms": 118,
+	"pd_xkms": 35,
+	"pw_xkms": 58,
+    "xpreday": "75.9%",
+	"pd_xpreday": "5/7",
+	"pw_xpreday": "2/7",
+    "xprep": "80%",
+	"pd_xprep": "18/30",
+	"pw_xprep": "12/30"
+}

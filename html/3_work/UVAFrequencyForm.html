@@ -1,0 +1,366 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cGT9892RVDdKkeIKM2f1d8pX"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="work"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<leftwork leftactive="wrjfx"></leftwork>
+			<!-- 右侧 -->
+			<div class="view-date" style="padding-left: 226px;">
+				<div class="view-header-wrap wth-view-header" style="z-index: 1">
+					<div class="view-header">
+						<button class="list_form_btn" @click="jumpPage">列表</button>
+						<button class="list_form_btn active" >图表</button>
+					</div>
+			    </div>
+			    <div>
+			    	<el-row>
+						<el-col :span="24">
+							<div class="grid-content">
+								<chart :options="polar_1" ref="pie_1" id="achart_1"></chart>
+							</div>
+						</el-col>
+					</el-row>
+			    </div>
+			    <div>
+			    	<el-row>
+						<el-col :span="24">
+							<div class="grid-content">
+								<chart :options="polar_2" ref="pie_2" id="achart_2"></chart>
+							</div>
+						</el-col>
+					</el-row>
+			    </div>
+				</br></br></br></br></br></br></br></br>
+			</div>
+		</div>
+	</div>
+<script>
+document.getElementById("achart_1").style.width = document.getElementById("achart_2").style.width =(document.body.clientWidth - 264);
+
+window.onresize = function () {
+    document.getElementById("achart_1").style.width = document.getElementById("achart_2").style.width =(document.body.clientWidth - 264);
+	app.size = document.body.clientWidth;
+};
+var chartData_1 = {
+	title:{
+		text:"保护区无人机巡护总次数 ",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		},
+		x:"8%"
+	},
+	tooltip:{
+		trigger:"axis",
+		axisPointer:{
+			type:"cross",
+			crossStyle:{
+				color:"#999"
+			}
+		}
+	},
+	toolbox:{
+		show:"true",
+		iconStyle:{
+			normal:{
+				color:"rgba(0, 0, 0, 0.2)",
+				borderColor:"#fff"
+			}
+		},
+		feature:{
+			dataView:{"readonly":false},
+			restore:{},
+			saveAsImage:{}
+		},
+		itemSize:20,
+		right:"10%"
+	},
+	backgroundColor:"#24263E",
+	dataZoom: [
+        {
+			type: 'slider',
+			show: true,
+			xAxisIndex: [0],
+			handleSize: 20,
+			height: 12,
+			left: 80, 
+			right: 80,
+			bottom: 10,
+			handleColor: '#5182E4',
+			handleStyle: {
+				borderColor: "#5182E4",
+				borderWidth: 2,
+				shadowBlur: 2,
+				background: "#5182E4",
+				shadowColor: "#5182E4",
+			},
+			fillerColor:"#BABAC0",
+			backgroundColor: '#fff',
+			showDataShadow: true,
+			showDetail: false,
+            start: "30",
+            end: "70"
+        },
+		{
+			type: 'inside',
+			moveOnMouseMove:true,
+			zoomOnMouseWheel:false
+		}
+    ],
+	xAxis:[
+		{
+			type:"category",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	yAxis:[
+		{
+			name:"次数/次",
+			type:"value",
+			min:"0",
+			max:"8",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	series:[
+		{
+			name:"次数",
+			type:"line"
+		}
+	],
+	color: ["#00FFFF","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var chartData_2 = {
+	title:{
+		text:"各站点无人机巡护总次数",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		},
+		x:"8%"
+	},
+	tooltip:{
+		trigger:"axis",
+		axisPointer:{
+			type:"cross",
+			crossStyle:{
+				color:"#999"
+			}
+		}
+	},
+	toolbox:{
+		show:"true",
+		iconStyle:{
+			normal:{
+				color:"rgba(0, 0, 0, 0.2)",
+				borderColor:"#fff"
+			}
+		},
+		feature:{
+			dataView:{"readonly":false},
+			magicType:{type:["bar","line"]},
+			restore:{},
+			saveAsImage:{}
+		},
+		itemSize:20,
+		right:"10%"
+		
+	},
+	legend:{
+		data:[
+			{name:'站点一',textStyle:{color:"#fff"}},
+			{name:'站点二',textStyle:{color:"#fff"}},
+			{name:'站点三',textStyle:{color:"#fff"}}
+		]
+	},
+	dataZoom :[
+		{
+			type: 'slider',
+			show: true,
+			xAxisIndex: [0],
+			handleSize: 20,
+			height: 12,
+			left: 130, 
+			right: 130,
+			bottom: 10,
+			handleColor: '#5182E4',
+			handleStyle: {
+				borderColor: "#BABAC0",
+				borderWidth: 2,
+				shadowBlur: 2,
+				background: "#BABAC0",
+				shadowColor: "#BABAC0",
+			},
+			fillerColor:"#BABAC0",
+			backgroundColor: "#fff",
+			showDataShadow: true,
+			showDetail: false,
+			handleIcon: 'M-292,322.2c-3.2,0-6.4-0.6-9.3-1.9c-2.9-1.2-5.4-2.9-7.6-5.1s-3.9-4.8-5.1-7.6c-1.3-3-1.9-6.1-1.9-9.3c0-3.2,0.6-6.4,1.9-9.3c1.2-2.9,2.9-5.4,5.1-7.6s4.8-3.9,7.6-5.1c3-1.3,6.1-1.9,9.3-1.9c3.2,0,6.4,0.6,9.3,1.9c2.9,1.2,5.4,2.9,7.6,5.1s3.9,4.8,5.1,7.6c1.3,3,1.9,6.1,1.9,9.3c0,3.2-0.6,6.4-1.9,9.3c-1.2,2.9-2.9,5.4-5.1,7.6s-4.8,3.9-7.6,5.1C-285.6,321.5-288.8,322.2-292,322.2z',
+			filterMode: 'filter',
+			"start": "0",
+            "end": "100"
+		},
+		{
+			type: 'inside',
+			show: true,
+			moveOnMouseMove:true,
+			zoomOnMouseWheel:false
+		}
+	],
+	backgroundColor:"#24263E",
+	xAxis:[
+		{
+			type:"category",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	yAxis:[
+		{
+			name:"次数/次",
+			type:"value",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			},
+			max:"6",
+			minInterval:1
+		}
+	],
+	"series":[
+		{
+			"name":"站点一",
+			"type":"line"
+		},
+		{
+			"name":"站点二",
+			"type":"line"
+		},
+		{
+			"name":"站点三",
+			"type":"line"
+		}
+	],
+	"color": ["#00FFFF","#5083E5","#9bcc66","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+
+var app = new Vue({
+  el: '#app',
+  components: {
+    // <my-component> 将只在父模板可用
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftwork:leftwork
+  },
+  data: {
+	once:true,
+	size:'',
+	formData:[],
+	//总保护区-折线
+	timelist_1:[],
+	frequency_1:[],
+	polar_1:{},
+	//各保护站
+	timelist_2:[],
+	frequency_2:[[],[],[]],
+	polar_2:{},
+	//obj:{},
+	//pValue:{byValue:''},
+  },
+  methods:{
+	  getonce:function(){ 
+		/////获取通知公告数据
+		//app.pValue.byValue = JSON.stringify(app.obj);
+		$.ajax({
+			type: "get",
+			dataType: "json",
+			url: "../../localDataTest/UVAData.json",
+			//data:{},
+			//beforeSend: function( xhr ) { 
+			//	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
+			//},
+			success: function (data) {
+				if (data !== "") {
+					app.formData = data;
+					data[0].forEach(function(item){
+						//保护区总
+						app.timelist_1.push(item.date);
+						app.frequency_1.push(item.total);
+						app.timelist_2.push(item.date);
+						app.frequency_2[0].push(item.station_1);
+						app.frequency_2[1].push(item.station_2);
+						app.frequency_2[2].push(item.station_3);
+					})
+					//保护区总
+					chartData_1.xAxis[0].data = app.timelist_1;
+					chartData_1.series[0].data = app.frequency_1;
+					//各站点
+					chartData_2.xAxis[0].data = app.timelist_2;
+					chartData_2.series[0].data = app.frequency_2[0];
+					chartData_2.series[1].data = app.frequency_2[1];
+					chartData_2.series[2].data = app.frequency_2[2];
+					app.polar_1 = chartData_1;
+					app.polar_2 = chartData_2;
+					
+					
+				}
+			}
+		});
+	  },
+	  jumpPage:function(){
+		  
+	  }
+  },
+ watch:{
+	size:function(){
+		this.$refs.pie_1.resize();
+		this.$refs.pie_2.resize();
+	}
+ } 
+});
+app.getonce();
+</script>
+</body>
+</html>

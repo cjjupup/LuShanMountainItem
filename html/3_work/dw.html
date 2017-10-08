@@ -1,0 +1,210 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cGT9892RVDdKkeIKM2f1d8pX"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="work"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<leftwork leftactive="sswz"></leftwork>
+			<!-- 右侧 -->
+			<div class="view-date" style="padding-left: 226px;">
+				<div class="view-header-wrap wth-view-header">
+					<div class="view-header">
+						<h2 class="nowrap with-tail-btn" title="总演示数据">
+							实时位置
+						</h2>
+					</div>
+			    </div>
+			    <div id="container" style="width:100%;height:100%;"></div>
+				<!--热力图-->
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<script>
+sessionStorage.setItem("level", "3");
+sessionStorage.setItem("area", "南昌");
+sessionStorage.setItem("department", "艾溪湖");
+var app=new Vue({
+	el:'#app',
+	components:{
+		// <my-component> 将只在父模板可用
+	    chart:VueECharts,
+		myheader:myheader,
+		myfooter:myfooter,
+		leftwork:leftwork
+	},
+	data:{
+		once:true,
+		//entityArray:[],
+		//entityOnMap:'',
+		datevalue1:'',
+		tableData: '',
+		level:'',
+		//obj:{method:1,department:"局机关",level:"3",area:"庐山",depart:"no"},
+		pValue:{byValue:''},
+		//obj:{method:1,department:"艾溪湖",level:"3",area:"南昌",depart:"no"},
+		//pointArray:[]
+		
+	},
+	methods:{
+		gettonce:function(){
+			/*sessionStorage.level="3";*/
+			//app.pValue.byValue=JSON.stringify(app.obj);
+			var map = new BMap.Map("container");          // 创建地图实例
+			map.addControl(new BMap.MapTypeControl());
+			var opts2 = {offset: new BMap.Size(150, 5)};
+			map.addControl(new BMap.ScaleControl(opts2));
+		    map.addControl(new BMap.NavigationControl());
+		    map.addControl(new BMap.OverviewMapControl());
+		    map.enableScrollWheelZoom();//启动鼠标操作地图
+			
+			var url='https://api.map.baidu.com/location/ip?ak=cGT9892RVDdKkeIKM2f1d8pX&coor=bd09ll';
+			$.ajax(url, {
+				data:{},
+				dataType:'jsonp',
+				crossDomain:true,
+
+				success:function(data){
+					console.log(data);
+					var point=new BMap.Point(data.content.point.x, data.content.point.y);
+					console.log(point);
+					map.centerAndZoom(point, 15);
+					
+				}
+			});
+
+            
+			
+			if(sessionStorage.level=="3"){
+				var obj=new Object();
+				obj.method=1;
+				obj.department=sessionStorage.department;
+				obj.level=sessionStorage.level;
+				obj.area=sessionStorage.area;
+				obj.depart="no";
+				console.info('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletUser);
+				console.info(JSON.stringify(obj));
+				$.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletUser,{ byValue: JSON.stringify(obj) }, function(data) {
+					if(data=="error"){
+						layer.alert('网络异常', {icon: 2});
+					}
+					else{
+						if(data!=""){
+							data = JSON.parse(data);
+							console.info(data)
+							var entityArray = []
+							console.info(data.length)
+							for(var i=0;i<data.length;i++){
+								if(data[i].department != "局机关"){
+									var obj = new Object;
+									obj.name = data[i].name
+									obj.entity = data[i].entity_name
+									entityArray.push(obj)
+								}
+
+							}
+							entityOnMap(map , entityArray)
+
+						}
+						else{
+							layer.alert('网络异常', {icon: 2});
+						}
+					}
+				});
+			}else{
+
+				var entityArray = []
+				var obj = new Object;
+				obj.name = sessionStorage.name
+				obj.entity = sessionStorage.entity_name
+				entityArray.push(obj)
+				entityOnMap(map , entityArray)
+			}
+			
+			
+			
+			
+			
+			
+			////////
+			function entityOnMap(map , entityArray){
+
+				var url = 'http://yingyan.baidu.com/api/v3/entity/list'; 
+				$.ajax({
+					type: "post",
+					dataType: "jsonp",
+					url: 'http://yingyan.baidu.com/api/v3/entity/list',
+					data: {ak: 'cGT9892RVDdKkeIKM2f1d8pX',service_id: urlServer.service_id},
+					beforeSend: function( xhr ) { 
+						xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
+					}, 
+					crossDomain: true,  
+					success: function (data) {
+						if (data != "") {
+							console.log(data);
+							var entityList = data.entities;
+							for(var i = 0;i < entityArray.length;i++){
+								for(var j=0;j<entityList.length;j++){
+									if(entityArray[i].name == entityList[j].entity_name){
+										var latest_location = entityList[j].latest_location
+										var lastDate = latest_location.loc_time;
+										var nowDate = new Date();
+										var date = new Date(lastDate*1000);
+
+										if(nowDate.getFullYear()==date.getFullYear()&& nowDate.getMonth()== date.getMonth() && nowDate.getDate()==date.getDate()&& nowDate.getHours()==date.getHours()){
+											console.info()
+											var title = entityArray[i].name +" "
+											title = title+date.getHours()+"时"
+											title = title+date.getMinutes()+"分"
+											title = title+date.getSeconds()+"秒"
+											var point = new BMap.Point(latest_location.longitude,latest_location.latitude);
+											map.centerAndZoom(point, 15);
+											var marker = new BMap.Marker(point);
+											map.addOverlay(marker);
+											var label = new BMap.Label(title,{offset:new BMap.Size(-30,-40)});
+											marker.setLabel(label);
+											marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+										}
+									}
+								}
+							}
+							
+							
+							
+							
+						}
+					}
+				});
+				
+				
+			}
+		}
+	}
+})
+app.gettonce();
+</script>

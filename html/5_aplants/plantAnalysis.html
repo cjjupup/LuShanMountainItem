@@ -1,0 +1,365 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>植物监测-监测分析</title>
+		<!--css样式引入-->
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/all.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/dark.css"/>
+		<!--引入js样式组件-->
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/include.js"></script>
+		<script src="../../js/config.js"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/vue-echarts.js"></script>
+		<script src="../../js/vue-resource.1.3.4.js"></script>
+		<script src="../../js/elementui.js"></script>
+		<script src="../../js/url.js"></script>
+		<script src="../../js/echarts.js"></script>
+	</head>
+	<body>
+		<div id="app" :class="once?'show':''">
+			<!--引入公共头部-->
+			<myheader navactive="aplants"></myheader>
+			<!--主体内容区域-->
+			<div class="main header-wraper-height">
+				<!--左侧导航栏-->
+				<leftaplants leftactive="plant_jcfx"></leftaplants>
+				<!--右侧主要部分-->
+				<div class="view-date" style="padding-left: 226px;">
+					<div class="analysisContent">
+						<el-row>
+							<el-col :span="24">
+								<div class="grid-content" style="padding: 10px;height: 352px;">
+									<chart style="height: 352px;" :options="chart_1" ref="chart1" id="achart_1"></chart>
+								</div>
+							</el-col>
+						</el-row>
+						<br/><br/>
+						<el-row>
+							<el-col :span="24">
+								<div class="grid-content" style="padding: 10px;height: 352px;">
+										<chart style="height: 352px;" :options="chart_2" ref="chart2" id="plantchart1"></chart>
+										<div style="position: absolute;top:3%;right:15%;display:block;width:150px;z-index: 999; line-height: 64px;">
+										<el-select v-model="searchStation_1" clearable placeholder="巡护站一" @change="selectStation_1" style="width:100%;">
+											<el-option
+											  v-for="item in select"
+											  :key="item.value"
+											  :label="item.label"
+											  :value="item.value">
+											</el-option>
+										</el-select>
+									</div>
+								</div>
+							</el-col>
+						</el-row>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			document.getElementById("achart_1").style.width = document.body.clientWidth - 320;
+			document.getElementById("plantchart1").style.width = (document.body.clientWidth - 320) ;
+			window.onresize = function () {
+			    document.getElementById("achart_1").style.width = document.body.clientWidth - 320;
+				document.getElementById("plantchart1").style.width = (document.body.clientWidth - 320);
+				app.size = document.body.clientWidth;
+			};
+			
+			var chartData1 = {
+				title: {
+			        text: '保护区植物总数量与总种类',
+			        textStyle: {  
+						fontWeight:'normal', 
+						color:'#fff',
+						fontSize:19
+					}
+		    	},
+		    	tooltip: {
+			        trigger: 'axis',
+			        axisPointer:{
+						type:"cross",
+						crossStyle:{
+							color:"#999"
+						}
+					}
+			    },
+			    dataZoom :[
+					{
+						type: 'slider',
+						show: true,
+						xAxisIndex: [0],
+						handleSize: 20,
+						height: 12,
+						left: 130, 
+						right: 130,
+						bottom: 10,
+						handleColor: '#5182E4',
+						handleStyle: {
+							borderColor: "#BABAC0",
+							borderWidth: 2,
+							shadowBlur: 2,
+							background: "#BABAC0",
+							shadowColor: "#BABAC0",
+						},
+						fillerColor:"#BABAC0",
+						backgroundColor: "#fff",
+						showDataShadow: true,
+						showDetail: false,
+						handleIcon: 'M-292,322.2c-3.2,0-6.4-0.6-9.3-1.9c-2.9-1.2-5.4-2.9-7.6-5.1s-3.9-4.8-5.1-7.6c-1.3-3-1.9-6.1-1.9-9.3c0-3.2,0.6-6.4,1.9-9.3c1.2-2.9,2.9-5.4,5.1-7.6s4.8-3.9,7.6-5.1c3-1.3,6.1-1.9,9.3-1.9c3.2,0,6.4,0.6,9.3,1.9c2.9,1.2,5.4,2.9,7.6,5.1s3.9,4.8,5.1,7.6c1.3,3,1.9,6.1,1.9,9.3c0,3.2-0.6,6.4-1.9,9.3c-1.2,2.9-2.9,5.4-5.1,7.6s-4.8,3.9-7.6,5.1C-285.6,321.5-288.8,322.2-292,322.2z',
+						filterMode: 'filter',
+						"start": "30",
+			            "end": "60"
+					},
+					{
+						type: 'inside',
+						show: true,
+						moveOnMouseMove:true,
+						zoomOnMouseWheel:false
+					}
+				],
+			    legend: {
+			        data:[{name:'出现总数量',textStyle:{color:"#fff"}},{name:'出现总种类',textStyle:{color:"#fff"}}]
+			    },
+			    backgroundColor:"#24263E",
+			    xAxis: 
+				[
+					{
+				        type: 'category',
+				        data:[],
+				        axisLine:{  
+						lineStyle:{  
+								color:'#BABAC0',  
+								width:1  
+							}  
+						}
+				    },
+				],
+			    yAxis: 
+				[
+					{
+				        name:'总数量',
+				        type:'value',
+				        axisLine:{  
+							lineStyle:{  
+								color:'#BABAC0',  
+								width:1  
+							}  
+						}
+				    },
+				],
+			    series: [
+			        {
+			            name:'出现总数量',
+			            type:'line',
+			            symbol: 'circle',
+			            symbolSize: 16
+			        },
+			        {
+			            name:'出现总种类',
+			            type:'line',
+			            symbol: 'circle',
+			            symbolSize: 16
+			        }
+			    ],
+			    color: ["aqua","yellow"]
+			};
+			var chartData2 = {
+				title: {
+			        text: '站点植物总数量与总种类',
+			        textStyle: {  
+						fontWeight:'normal', 
+						color:'#fff',
+						fontSize:19
+					}
+		    	},
+		    	tooltip: {
+			        trigger: 'axis',
+			        axisPointer:{
+						type:"cross",
+						crossStyle:{
+							color:"#999"
+						}
+					}
+			    },
+			    dataZoom :[
+					{
+						type: 'slider',
+						show: true,
+						xAxisIndex: [0],
+						handleSize: 20,
+						height: 12,
+						left: 130, 
+						right: 130,
+						bottom: 10,
+						handleColor: '#5182E4',
+						handleStyle: {
+							borderColor: "#BABAC0",
+							borderWidth: 2,
+							shadowBlur: 2,
+							background: "#BABAC0",
+							shadowColor: "#BABAC0",
+						},
+						fillerColor:"#BABAC0",
+						backgroundColor: "#fff",
+						showDataShadow: true,
+						showDetail: false,
+						handleIcon: 'M-292,322.2c-3.2,0-6.4-0.6-9.3-1.9c-2.9-1.2-5.4-2.9-7.6-5.1s-3.9-4.8-5.1-7.6c-1.3-3-1.9-6.1-1.9-9.3c0-3.2,0.6-6.4,1.9-9.3c1.2-2.9,2.9-5.4,5.1-7.6s4.8-3.9,7.6-5.1c3-1.3,6.1-1.9,9.3-1.9c3.2,0,6.4,0.6,9.3,1.9c2.9,1.2,5.4,2.9,7.6,5.1s3.9,4.8,5.1,7.6c1.3,3,1.9,6.1,1.9,9.3c0,3.2-0.6,6.4-1.9,9.3c-1.2,2.9-2.9,5.4-5.1,7.6s-4.8,3.9-7.6,5.1C-285.6,321.5-288.8,322.2-292,322.2z',
+						filterMode: 'filter',
+						"start": "10",
+			            "end": "80"
+					},
+					{
+						type: 'inside',
+						show: true,
+						moveOnMouseMove:true,
+						zoomOnMouseWheel:false
+					}
+				],
+			    legend: {
+			        data:[{name:'出现总数量',textStyle:{color:"#fff"}},{name:'出现总种类',textStyle:{color:"#fff"}}]
+			    },
+			    backgroundColor:"#24263E",
+			    xAxis: 
+				[
+					{
+				        type: 'category',
+				        axisLine:{  
+						lineStyle:{  
+								color:'#BABAC0',  
+								width:1  
+							}  
+						}
+				    },
+				],
+			    yAxis: 
+				[
+					{
+				        name:'总数量',
+				        type:'value',
+				        axisLine:{  
+							lineStyle:{  
+								color:'#BABAC0',  
+								width:1  
+							}  
+						}
+				    },
+				],
+			    series: [
+			        {
+			            name:'出现总数量',
+			            type:'line',
+			            symbol: 'circle',
+			            symbolSize: 16
+			        },
+			        {
+			            name:'出现总种类',
+			            type:'line',
+			            symbol: 'circle',
+			            symbolSize: 16
+			        }
+			    ],
+			    color: ["aqua","yellow"]
+			}
+			
+			var app = new Vue({
+				el:"#app",
+				components:{
+					chart:VueECharts,
+					myheader:myheader,
+					leftaplants:leftaplants
+				},
+				data:{
+					once:true,
+					size:'',
+					select:[{
+						value:1,
+						label:'巡护站一'
+					},{
+						value:2,
+						label:'巡护站二'
+					},{
+						value:3,
+						label:'巡护站三'
+					},{
+						value:4,
+						label:'巡护站四'
+					},{
+						value:5,
+						label:'巡护站五'
+					}],
+					formData:[],
+					searchStation_1: '',
+					datelist:[],
+					data_f:[],
+					data_s:[],
+					datelist2:[],
+					data_f2:[],
+					data_s2:[],
+					chart_1:{},
+					chart_2:{},
+				},
+				methods:{
+					getonce:function(){
+						this.$http({
+							url:"../../localDataTest/plantprotectDate.json",
+							method:"GET"
+						}).then(
+							function(data){
+								app.formData = data.body;
+								data.body.forEach(function(item){
+									app.datelist.push(item.date);
+									app.data_f.push(item.nums1);
+									app.data_s.push(item.nums2);
+									if(item.station == 1)
+									{
+										app.datelist2.push(item.date);
+										app.data_f2.push(item.nums1);
+										app.data_s2.push(item.nums2);
+									}
+								})
+								//保护区植物总数量与总种类
+								chartData1.xAxis[0].data = app.datelist;
+								chartData1.series[0].data = app.data_f;
+								chartData1.series[1].data = app.data_s;
+								this.chart_1 = chartData1;
+								//站点植物总数量与总种类
+								chartData2.xAxis[0].data = app.datelist2;
+								chartData2.series[0].data = app.data_f2;
+								chartData2.series[1].data = app.data_s2;
+								this.chart_2 = chartData2;
+							}
+						)
+					},
+				    selectStation_1:function(){
+					  if(app.searchStation_1 !==''){
+						  app.datelist2 = [];
+						  app.data_f2 =[];
+						  app.data_s2 =[];
+						  app.formData.forEach(function(item){
+						      if(item.station == app.searchStation_1){
+								  app.datelist2.push(item.date);
+							      app.data_f2.push(item.nums1);
+								  app.data_s2.push(item.nums2);
+							  }
+						  });
+						  chartData2.xAxis[0].data = app.datelist2;
+						  chartData2.series[0].data = app.data_f2;
+						  chartData2.series[1].data = app.data_s2;
+					  }
+				    }
+				},
+				watch:{
+					size:function(){
+						this.$refs.chart1.resize();
+						this.$refs.chart2.resize();
+					}
+				}
+			});
+			app.getonce();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,247 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cGT9892RVDdKkeIKM2f1d8pX"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="work"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<leftwork leftactive="hzfx"></leftwork>
+			<!-- 右侧 -->
+			<div class="view-date" style="padding-left: 226px;">
+				<div class="view-header-wrap wth-view-header">
+					<div class="view-header">
+						
+						<span class="wrapper_2">
+							<el-date-picker
+							  v-model="datevalue1"
+							  type="daterange"
+							  placeholder="选择日期范围">
+							</el-date-picker>
+							<button type="button" class="el-button el-button--primary" @click="showTime(datevalue1)"><i class="el-icon-search"></i><span>确定</span></button>
+					    </span>
+					</div>
+			    </div>
+			    <div>
+				    <div id="container" style="width:100%;height:100%;"></div>
+			    </div>
+				<!--热力图-->
+			</div>
+		</div>
+	</div>
+	<script>
+var app = new Vue({
+  el: '#app',
+  components: {
+    // <my-component> 将只在父模板可用
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftwork:leftwork
+  },
+  data: {
+	once:true,
+	datevalue1:'',
+	tableData: '',
+	obj:{method:1,heat:"heat",startTime:"2017-09-01",endTime:"2017-09-31",area:"南昌"},
+	pValue:{byValue:''},
+	pointsbox:[]
+  },
+  methods:{
+	  getonce:function(){ 
+		/////获取通知公告数据
+		app.pValue.byValue = JSON.stringify(app.obj);
+		$.ajax({
+			type: "post",
+			dataType: "json",
+			url: 'http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletFire,
+			data:{byValue:'{"method":1,"heat":"heat","startTime":"2017-09-01","endTime":"2017-09-31","area":"南昌"}'},
+			beforeSend: function( xhr ) { 
+				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
+			},
+			success: function (data) {
+				if (data == "") {
+					var map = new BMap.Map("container");          // 创建地图实例
+					var pointcenter = new BMap.Point(115.989469,28.684993);
+					map.centerAndZoom(pointcenter, 15);// 初始化地图，设置中心点坐标和地图级别
+					map.addControl(new BMap.NavigationControl());//缩放平移控件
+					map.addControl(new BMap.OverviewMapControl());//缩略图控件
+					map.enableScrollWheelZoom(); // 允许滚轮缩放
+					//alert("暂无数据，请更换时间段");
+				}else{
+					app.tableData = data;
+					for(var i=0;i<tableData.length;i++){
+
+						if (tableData[i].level=="较大") {
+							tableData[i].count = 60;
+						}else{
+							tableData[i].count =40;
+						}
+					 }
+					$.each(app.tableData,function(index,item){
+						var point = {lng:item.lng, lat:item.lat, count:item.count};
+						app.pointsbox.push(point);
+					})
+					/////////////////////////
+					var map = new BMap.Map("container");          // 创建地图实例
+					var pointcenter = new BMap.Point(115.989469,28.684993);
+					map.centerAndZoom(pointcenter, 15);// 初始化地图，设置中心点坐标和地图级别
+					map.addControl(new BMap.NavigationControl());//缩放平移控件
+					map.addControl(new BMap.OverviewMapControl());//缩略图控件
+					map.enableScrollWheelZoom(); // 允许滚轮缩放
+					if(!isSupportCanvas()){
+						alert('热力图目前只支持有canvas支持的浏览器,您所使用的浏览器不能使用热力图功能~')
+					}
+					heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20});
+					map.addOverlay(heatmapOverlay);
+					heatmapOverlay.setDataSet({data:app.pointsbox,max:100});
+					//是否显示热力图
+					function openHeatmap(){
+						heatmapOverlay.show();
+					}
+					function closeHeatmap(){
+						heatmapOverlay.hide();
+					}
+					function setGradient(){
+						var gradient = {};
+						var colors = document.querySelectorAll("input[type='color']");
+						colors = [].slice.call(colors,0);
+						colors.forEach(function(ele){
+							gradient[ele.getAttribute("data-key")] = ele.value; 
+						});
+						heatmapOverlay.setOptions({"gradient":gradient});
+					}
+					//判断浏览区是否支持canvas
+					function isSupportCanvas(){
+						var elem = document.createElement('canvas');
+						return !!(elem.getContext && elem.getContext('2d'));
+					}
+					openHeatmap();
+				}
+			}
+		});
+	  },
+	  showTime:function(datevalue1){
+		  var t_0_y = datevalue1[0].getFullYear(),
+			  t_0_m = datevalue1[0].getMonth()+1,
+			  t_0_d = datevalue1[0].getDate(),
+			  t_1_y = datevalue1[1].getFullYear(),
+			  t_1_m = datevalue1[1].getMonth()+1,
+			  t_1_d = datevalue1[1].getDate();
+		  if(t_0_m <= 9){t_0_m = '0' + t_0_m}
+		  if(t_0_d <= 9){t_0_d = '0' + t_0_d}
+		  if(t_1_m <= 9){t_1_m = '0' + t_1_m}
+		  if(t_1_d <= 9){t_1_d = '0' + t_1_d}
+		  timeselect_0 = t_0_y + '-' + t_0_m + '-' + t_0_d;
+		  timeselect_1 = t_1_y + '-' + t_1_m + '-' + t_1_d;
+		  console.log(timeselect_0);
+		  console.log(timeselect_1);
+		  app.obj.startTime = timeselect_0;
+		  app.obj.endTime = timeselect_1;
+		  
+		  $.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletFire,{ byValue: JSON.stringify(app.obj) }, function(data) {
+			  if(data=="error"){
+					alert("错误");
+				}
+				else{
+					if(data!=""){
+						app.tableData = data;
+						data = JSON.parse(data);
+						if(data.length > 0){
+							app.resetpoint();
+						}else{
+							alert("该时间段暂无数据");
+							heatmapOverlay.hide();
+						}
+					}
+					else{
+						alert("该时间段暂无数据");
+						heatmapOverlay.hide();
+					}
+			   }
+		  });  
+	  },
+	resetpoint:function(){
+		app.tableData = JSON.parse(app.tableData)
+		app.pointsbox=[];
+        //////
+        // app.tableData = data;
+        for(var i=0;i<app.tableData.length;i++){
+
+			if (app.tableData[i].level=="较大") {
+				app.tableData[i].count = 60;
+			}else{
+				app.tableData[i].count =40;
+			}
+		}
+
+
+		////////
+		$.each(app.tableData,function(index,item){
+			var point = {lng:item.lng, lat:item.lat, count:item.count};
+			app.pointsbox.push(point);
+		})
+		console.log(app.pointsbox);
+		var map = new BMap.Map("container");          // 创建地图实例
+		var pointcenter = new BMap.Point(115.989469,28.684993);
+		map.centerAndZoom(pointcenter, 15);// 初始化地图，设置中心点坐标和地图级别
+		map.addControl(new BMap.NavigationControl());//缩放平移控件
+		map.addControl(new BMap.OverviewMapControl());//缩略图控件
+		map.enableScrollWheelZoom(); // 允许滚轮缩放
+		if(!isSupportCanvas()){
+			alert('热力图目前只支持有canvas支持的浏览器,您所使用的浏览器不能使用热力图功能~')
+		}
+		heatmapOverlay = new BMapLib.HeatmapOverlay({"radius":20});
+		map.addOverlay(heatmapOverlay);
+		heatmapOverlay.setDataSet({data:app.pointsbox,max:100});
+		//是否显示热力图
+		function openHeatmap(){
+			heatmapOverlay.show();
+		}
+		function closeHeatmap(){
+			heatmapOverlay.hide();
+		}
+		function setGradient(){
+			var gradient = {};
+			var colors = document.querySelectorAll("input[type='color']");
+			colors = [].slice.call(colors,0);
+			colors.forEach(function(ele){
+				gradient[ele.getAttribute("data-key")] = ele.value; 
+			});
+			heatmapOverlay.setOptions({"gradient":gradient});
+		}
+		//判断浏览区是否支持canvas
+		function isSupportCanvas(){
+			var elem = document.createElement('canvas');
+			return !!(elem.getContext && elem.getContext('2d'));
+		}
+		openHeatmap();
+	}
+  } 
+});
+app.getonce();
+</script>
+</body>
+</html>

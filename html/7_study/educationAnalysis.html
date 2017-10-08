@@ -1,0 +1,406 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="study"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<leftstudy leftactive="xjfx"></leftstudy>
+			<!-- 右侧 -->
+			<div class="view-date" style="padding-left: 226px;">
+				<div class="view-header-wrap wth-view-header">
+					<div class="view-header">
+						<h2 class="nowrap with-tail-btn" title="总演示数据">
+							宣教分析
+						</h2>
+					</div>
+				</div>
+				<div class="analysisContent">
+					<el-row>
+						<el-col :span="24">
+							<div class="grid-content">
+								<chart :options="polar_1" ref="pie_1" id="achart_1"></chart>
+							</div>
+						</el-col>
+					</el-row>
+					<br/><br/>
+					<el-row :gutter="20">
+						<el-col :xs="24" :sm="12" :md="12" :lg="12">
+							<div class="grid-content">
+								<chart :options="polar_2" ref="pie_2" id="achart_2"></chart>
+							</div>
+						</el-col>
+						<el-col :xs="24" :sm="12" :md="12" :lg="12">
+							<div class="grid-content">
+								<chart :options="polar_3" ref="pie_3" id="achart_3"></chart>
+							</div>
+						</el-col>
+					</el-row>
+					<br/><br/><br/><br/><br/><br/><br/><br/><br/>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<script>
+document.getElementById("achart_1").style.width = document.body.clientWidth - 320;
+document.getElementById("achart_2").style.width = document.getElementById("achart_3").style.width = (document.body.clientWidth - 320)/2 - 50;
+window.onresize = function () {
+    document.getElementById("achart_1").style.width = document.body.clientWidth - 320;
+	document.getElementById("achart_2").style.width = document.getElementById("achart_3").style.width = (document.body.clientWidth - 320)/2 - 50;
+	app.size = document.body.clientWidth;
+};
+var chartData_1 = {
+	title:{
+		text:"科研成果分析",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		}
+	},
+	tooltip:{
+		rigger:"axis",
+		axisPointer:{
+			type:"cross",
+			crossStyle:{
+				color:"#999"
+			}
+		}
+	},
+	toolbox:{
+		show:"true",
+		iconStyle:{
+			normal:{
+				color:"rgba(0, 0, 0, 0.2)",
+				borderColor:"#fff"
+			}
+		},
+		feature:{
+			dataView:{"readonly":false},
+			magicType:{type:["bar","line"]},
+			restore:{},
+			saveAsImage:{}
+		},
+		itemSize:20
+		
+	},
+	dataZoom :[
+		{
+			type: 'slider',
+			show: true,
+			xAxisIndex: [0],
+			handleSize: 20,
+			height: 12,
+			left: 130, 
+			right: 130,
+			bottom: 10,
+			handleColor: '#5182E4',
+			handleStyle: {
+				borderColor: "#BABAC0",
+				borderWidth: 2,
+				shadowBlur: 2,
+				background: "#BABAC0",
+				shadowColor: "#BABAC0",
+			},
+			fillerColor:"#BABAC0",
+			backgroundColor: "#fff",
+			showDataShadow: true,
+			showDetail: false,
+			handleIcon: 'M-292,322.2c-3.2,0-6.4-0.6-9.3-1.9c-2.9-1.2-5.4-2.9-7.6-5.1s-3.9-4.8-5.1-7.6c-1.3-3-1.9-6.1-1.9-9.3c0-3.2,0.6-6.4,1.9-9.3c1.2-2.9,2.9-5.4,5.1-7.6s4.8-3.9,7.6-5.1c3-1.3,6.1-1.9,9.3-1.9c3.2,0,6.4,0.6,9.3,1.9c2.9,1.2,5.4,2.9,7.6,5.1s3.9,4.8,5.1,7.6c1.3,3,1.9,6.1,1.9,9.3c0,3.2-0.6,6.4-1.9,9.3c-1.2,2.9-2.9,5.4-5.1,7.6s-4.8,3.9-7.6,5.1C-285.6,321.5-288.8,322.2-292,322.2z',
+			filterMode: 'filter',
+			"start": "30",
+            "end": "60"
+		},
+		{
+			type: 'inside',
+			show: true,
+			moveOnMouseMove:true,
+			zoomOnMouseWheel:false
+		}
+	],
+	"legend":{
+		"data":[{name:'科研类型一',textStyle:{color:"#fff"}},{name:'科研类型二',textStyle:{color:"#fff"}}]
+	},
+	backgroundColor:"#24263E",
+	"xAxis":[
+		{
+			"type":"category",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	"yAxis":[
+		{
+			name:"科研类型一成果数",
+			"type":"value",
+			"max":"20",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		},
+		{
+			name:"科研类型二成果数",
+			"type":"value",
+			"max":"20",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			},
+		}
+	],
+	"series":[
+		{
+			"name":"科研类型一",
+			"type":"bar"
+		},
+		{
+			"name":"科研类型二",
+			"type":"bar",
+			"yAxisIndex":1
+		}
+	],
+	"color": ["#9BCD66","#5083E5","#9bcc66","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var chartData_2 = {
+	title:{
+		text:"科研频次分析",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		}
+	},
+	tooltip:{
+		trigger:"axis",
+		axisPointer:{
+			type:"cross",
+			crossStyle:{
+				color:"#999"
+			}
+		}
+	},
+	toolbox:{
+		show:"true",
+		iconStyle:{
+			normal:{
+				color:"rgba(0, 0, 0, 0.2)",
+				borderColor:"#fff"
+			}
+		},
+		feature:{
+			dataView:{"readonly":false},
+			restore:{},
+			saveAsImage:{}
+		},
+		itemSize:20
+	},
+	backgroundColor:"#24263E",
+	dataZoom: [
+        {
+			type: 'slider',
+			show: true,
+			xAxisIndex: [0],
+			handleSize: 20,
+			height: 12,
+			left: 40, 
+			right: 40,
+			bottom: 10,
+			handleColor: '#5182E4',
+			handleStyle: {
+				borderColor: "#5182E4",
+				borderWidth: 2,
+				shadowBlur: 2,
+				background: "#5182E4",
+				shadowColor: "#5182E4",
+			},
+			fillerColor:"#BABAC0",
+			backgroundColor: '#fff',
+			showDataShadow: true,
+			showDetail: false,
+            "start": "30",
+            "end": "70"
+        },
+		{
+			type: 'inside',
+			moveOnMouseMove:true,
+			zoomOnMouseWheel:false
+		}
+    ],
+	"xAxis":[
+		{
+			"type":"category",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	"yAxis":[
+		{
+			name:"科研项目总数",
+			"type":"value",
+			"min":"10",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	"series":[
+		{
+			"name":"科研项目总数",
+			"type":"line"
+		}
+	],
+	"color": ["#00FFFF","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var chartData_3 = {
+	"title":{
+		"text":"科研类型分析",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		}
+	},
+	"tooltip":{
+		"trigger":"item",
+		"formatter":"{a} <br/>{b}: {c} ({d}%)"
+	},
+	legend:{
+		"orient":"vertical",
+		x:"80%",
+		"data":[{name:'科研类型一',textStyle:{color:"#fff"}},{name:'科研类型二',textStyle:{color:"#fff"}}]
+	},
+	backgroundColor:"#24263E",
+	"series":[
+		{
+			"name":"科研类型",
+			"type":"pie",
+			"radius":["50%","70%"],
+			"avoidLabelOverlap": false,
+            "label": {
+                "normal": {
+                    "show": false,
+                    "position": "center"
+                },
+                "emphasis": {
+                    "show": true,
+                    "textStyle": {
+                        "fontSize": "30",
+                        "fontWeight": "bold"
+                    }
+                }
+            },
+            "labelLine": {
+                "normal": {
+                    "show": false
+                }
+            },
+			data:[
+				{"value":0,"name":"科研类型一"},
+				{"value":0,"name":"科研类型二"}
+			]
+		}
+	],
+	"color": ["#5083E5","#00E1E1"]
+};
+var app = new Vue({
+  el: '#app',
+  components: {
+    // <my-component> 将只在父模板可用
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftstudy:leftstudy
+  },
+  data: {
+	once:true,
+	tableData: [],
+	size:'',
+	obj:{},
+	datelist:[],
+	type_1_list:[],
+	type_2_list:[],
+	totallist:[],
+	type_1_total:0,
+	type_2_total:0,
+	polar_1:{},
+	polar_2:{},
+	polar_3:{},
+  },
+  methods:{
+	  getonce:function(){ 
+		  this.$http({url:"../../localDataTest/achiementsDate.json",method:"GET"}).then(
+		  function(responce){
+			 responce.body.forEach(function(item){
+				 app.datelist.push(item.date);
+				 app.type_1_list.push(item.type_1_amount);
+				 app.type_2_list.push(item.type_2_amount);
+				 app.totallist.push(item.total);
+				 app.type_1_total +=item.type_1_amount -0;
+				 app.type_2_total +=item.type_2_amount -0;
+			 })
+			 //科研成果分析
+			 chartData_1.xAxis[0].data = app.datelist;
+			 chartData_1.series[0].data = app.type_1_list;
+			 chartData_1.series[1].data = app.type_2_list;
+			 //科研频次分析
+			 chartData_2.xAxis[0].data = app.datelist;
+			 chartData_2.series[0].data = app.totallist;
+			 //科研类型分析
+			 chartData_3.series[0].data[0].value = app.type_1_total;
+			 chartData_3.series[0].data[1].value = app.type_2_total;
+			 this.polar_1 = chartData_1;
+			 this.polar_2 = chartData_2;
+			 this.polar_3 = chartData_3;
+		  },function(){
+			alert('分析数据请求失败'); //失败处理       
+		  });
+	      
+	  }
+  },
+ watch:{
+	size:function(){
+		this.$refs.pie_1.resize();
+		this.$refs.pie_2.resize();
+		this.$refs.pie_3.resize();
+	}
+  }
+});
+app.getonce(); 
+</script>

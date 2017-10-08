@@ -1,0 +1,165 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="work"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<leftwork leftactive="tzgg"></leftwork>
+			<!-- 右侧 -->
+			<div class="view-date" style="padding-left: 226px;">
+				<div class="view-header-wrap wth-view-header">
+					<div class="view-header">
+						<h2 class="nowrap with-tail-btn" title="总演示数据">
+							通知公告
+						</h2>
+						<!-- <span class="btn-layer"> -->
+							<!-- <a class="dash-add-item-btn ng-scope J-new-chart"> -->
+								<!-- <i class="icon iconfont icon-ditu blue fs16"></i> -->
+								<!-- <span class="btn-layer-opt"> -->
+									<!-- 地图查看 -->
+									<!-- <span class="btn-layer-hover-line"></span> -->
+								<!-- </span> -->
+							<!-- </a> -->
+							<!-- <a class="J-dot-uploadData ng-scope"> -->
+								<!-- <i class="icon iconfont icon-sandiantu blue fs16"></i> -->
+								<!-- <span class="btn-layer-opt"> -->
+									<!-- 散点图查看 -->
+									<!-- <span class="btn-layer-hover-line"></span> -->
+								<!-- </span> -->
+							<!-- </a> -->
+							<!-- <a class="J-dot-uploadData ng-scope"> -->
+								<!-- <i class="icon iconfont icon-zhuzhuangtu blue fs16"></i> -->
+								<!-- <span class="btn-layer-opt"> -->
+									<!-- 柱状图查看 -->
+									<!-- <span class="btn-layer-hover-line"></span> -->
+								<!-- </span> -->
+							<!-- </a> -->
+						<!-- </span> -->
+					</div>
+				</div>
+				<el-dialog
+				  :title="newsinfo.title"
+				  :visible.sync="dialogVisible"
+				  size="small">
+				  <span><iframe class="full_Iframe" id="full_Iframe" width="100%" frameborder="0" :src="newsinfo.url"></iframe></span>
+				  <span slot="footer" class="dialog-footer">
+					<el-button type="primary" @click="dialogVisible = false">关 闭</el-button>
+				  </span>
+				</el-dialog>
+				<table class="table-normal w100 database-table table-left">
+					<thead>
+						<tr>
+							<th class="db-title"><i class="icon iconfont icon-icon7 blue"></i> 标题</th>
+							<th class="db-date"><i class="icon iconfont icon-fabushijian01 blue"></i> 发布时间</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="user in tableData">
+							<td @click="shownews(user)" v-show="user.title">
+								<div class="database-table-name pr">
+									<div>
+										<a class="ds-name">{{user.title}}</a>
+									</div>
+								</div>
+							</td>
+							<td v-show="user.title" class="fs12">
+								<span>{{user.date}}</span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="block" v-show="pagenum > 10">
+				  <el-pagination layout="prev, pager, next"	:total="pagenum" :page-size="10" @current-change="pageCurrentChange"></el-pagination>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+<script>
+var app = new Vue({
+  el: '#app',
+  components: {
+    // <my-component> 将只在父模板可用
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftwork:leftwork
+  },
+  data: {
+	once:false,
+	dialogVisible:false,
+	datevalue1:'',
+	tableData: [],
+	newsinfo:[],
+	pagenum:0,
+	message:'',
+	obj:{userid:"116",area:"庐山",type:"pc",pageIndex:1,pageSize:10}
+  },
+  methods:{
+	  getonce:function(){ 
+		/////获取通知公告数据
+		$.ajax({
+			type: "post",
+			dataType: "json",
+			url: 'http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletNotice,
+			data: app.obj,
+			success: function (data) {
+				if (data != "") {
+					app.tableData = data;
+					app.pagenum = data[10].total;
+					app.once = !app.once;
+				}
+			}
+		});
+	  },
+	  calltel:function(telnumber){
+		window.location.href = "tel:"+telnumber;
+	  },
+	  shownews:function(data){
+		console.log(data);
+		this.newsinfo = data;
+		this.dialogVisible = true;
+	  },
+	  pageCurrentChange:function(val){
+		console.log(`当前页: ${val}`);
+		/////获取通知公告数据
+		app.obj.pageIndex = val;
+		$.ajax({
+			type: "post",
+			dataType: "json",
+			url: 'http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletNotice,
+			data: app.obj,
+			success: function (data) {
+				if (data != "") {
+					app.tableData = data;
+				}
+			}
+		});
+	  }
+  } 
+});
+app.getonce();
+</script>

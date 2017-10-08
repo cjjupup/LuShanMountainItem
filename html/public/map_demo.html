@@ -1,0 +1,183 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cGT9892RVDdKkeIKM2f1d8pX"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+	<script type="text/javascript" src="../../js/patrol_test.js"></script>
+	<script src="../../js/points.js"></script>
+	 <script type="text/javascript" src="../../百度地图离线开发/baidumap_apiV2_offline/map_demo/layer/layer.js"></script>
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="work"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<leftwork leftactive="maptest"></leftwork>
+			<!-- 右侧 -->
+			<div class="view-date" style="padding-left: 226px;">
+				<div class="view-header-wrap wth-view-header" style="z-index: 1">
+					<div class="view-header">
+						<h2 class="nowrap with-tail-btn" title="总演示数据">
+							地图监控测试
+						</h2>
+					</div>
+			    </div>
+				<div id="map" style="width:88%;height:80%"></div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>
+<script>
+var app = new Vue({
+  el: '#app',
+  components: {
+    // <my-component> 将只在父模板可用
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftwork:leftwork
+  },
+  data: {
+	once:true,
+	dialogVisible:false,
+	datevalue1:'',
+	tableData: [],
+	total:'',
+	patrol_data:{},
+	hxq_1_points:[],
+	hxq_2_points:[],
+	hcq_1_points:[],
+	hcq_2_points:[],
+	syq_1_points:[],
+	syq_2_points:[]
+  },
+  methods:{
+	  getonce:function(){ 
+		var map = new BMap.Map("map");          // 创建地图实例
+		var pointcenter = new BMap.Point(115.996112, 29.547892);
+		map.centerAndZoom(pointcenter, 13);// 初始化地图，设置中心点坐标和地图级别
+		map.addControl(new BMap.NavigationControl());//缩放平移控件
+		map.addControl(new BMap.OverviewMapControl());//缩略图控件
+		map.addControl(new BMap.MapTypeControl());  //地图类型选择
+		map.enableScrollWheelZoom(); // 允许滚轮缩放
+		var styleOptions = {            
+		strokeColor: "red",
+        fillColor:"none",      //填充颜色。当参数为空时，圆形将没有填充效果。      
+        strokeWeight: 2,       //边线的宽度，以像素为单位。      
+        strokeOpacity: 0.0,    //边线透明度，取值范围0 - 1。      
+        fillOpacity: 0.0,      //填充的透明度，取值范围0 - 1。      
+        strokeStyle: 'dashed' //边线的样式，solid或dashed。      
+        } 
+		//试验区
+		for(var i = 0;i<syq_1.length;i++){
+			app.syq_1_points.push(new BMap.Point(syq_1[i][0],syq_1[i][1]));
+		}
+        var polygon = new BMap.Polygon(app.syq_1_points, {strokeWeight: 2, strokeColor: "#00f", strokeStyle: "dashed", strokeOpacity:0.0, fillOpacity: 0.0, fillColor: "none"});
+        map.addOverlay(polygon);
+		for(var i = 0;i<syq_2.length;i++){
+			app.syq_2_points.push(new BMap.Point(syq_2[i][0],syq_2[i][1]));
+		}
+        var polygon = new BMap.Polygon(app.syq_2_points, {strokeWeight: 2, strokeColor: "#00f", strokeStyle: "dashed", strokeOpacity:0.0, fillOpacity: 0.0, fillColor: "none"});
+        map.addOverlay(polygon);
+		  
+		//缓冲区一
+		for(var i = 0;i<hcq_1.length;i++){
+			app.hcq_1_points.push(new BMap.Point(hcq_1[i][0],hcq_1[i][1]));
+		}
+        var polygon = new BMap.Polygon(app.hcq_1_points, {strokeWeight: 2, strokeColor: "#0f0", strokeStyle: "solid", strokeOpacity:0.0, fillOpacity: 0.0, fillColor: "none"});
+        map.addOverlay(polygon);
+		polygon.addEventListener("mouseout", function(target) {
+		});
+		polygon.addEventListener("mouseover", function(target) {
+		}); 
+		  
+		//缓冲区二
+		for(var i = 0;i<hcq_2.length;i++){
+			app.hcq_2_points.push(new BMap.Point(hcq_2[i][0],hcq_2[i][1]));
+		}
+        var polygon = new BMap.Polygon(app.hcq_2_points, {strokeWeight: 2, strokeColor: "#0f0", strokeStyle: "solid", strokeOpacity:0.0, fillOpacity: 0.0, fillColor: "none"});
+        map.addOverlay(polygon);
+		polygon.addEventListener("mouseout", function(target) {
+		});
+		polygon.addEventListener("mouseover", function(target) {
+		});
+		  
+		//核心区一
+		for(var i = 0;i<hxq_1.length;i++){
+			app.hxq_1_points.push(new BMap.Point(hxq_1[i][0],hxq_1[i][1]));
+		}
+        var polygon = new BMap.Polygon(app.hxq_1_points, styleOptions);
+        map.addOverlay(polygon);
+		polygon.addEventListener("mouseout", function(target) {
+		});
+		polygon.addEventListener("mouseover", function(target) {
+		});
+		  
+		//核心区二
+		for(var i = 0;i<hxq_2.length;i++){
+			app.hxq_2_points.push(new BMap.Point(hxq_2[i][0],hxq_2[i][1]));
+		}
+		var polygon = new BMap.Polygon(app.hxq_2_points,styleOptions);
+		map.addOverlay(polygon);
+        polygon.addEventListener("mouseout", function(target) {
+		});
+		polygon.addEventListener("mouseover", function(target) {
+		});
+		  
+		//保护站
+		var station_info = [[115.945429, 29.435085,"地址：归宗保护站"],
+					 [115.972794,29.571344,"地址：牯岭保护站"],
+					 [116.078093,29.662841,"地址：威家保护站"],
+					 [115.886345,29.515498,"地址：通远保护站"]
+					];
+		var opts = {
+					width : 60,     // 信息窗口宽度
+					height: 40,     // 信息窗口高度
+					title : "保护站信息" , // 信息窗口标题
+					enableMessage:true//设置允许信息窗发送短息
+				   };
+		for(var i=0;i<station_info.length;i++){
+			var marker = new BMap.Marker(new BMap.Point(station_info[i][0],station_info[i][1]));  // 创建标注
+			var content = station_info[i][2];
+			map.addOverlay(marker);               // 将标注添加到地图中
+			marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+			
+			addClickHandler(content,marker);
+		}
+		function addClickHandler(content,marker){
+			marker.addEventListener("click",function(){
+				var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象 
+			    this.openInfoWindow(infoWindow); //开启信息窗口
+			});
+		}
+		  
+		  
+		  
+		  
+		  
+      }
+  }
+});
+app.getonce();
+
+</script>

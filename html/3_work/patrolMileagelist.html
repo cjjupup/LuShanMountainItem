@@ -1,0 +1,211 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cGT9892RVDdKkeIKM2f1d8pX"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="work"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<leftwork leftactive="xhfx"></leftwork>
+			<!-- 右侧 -->
+			<div class="view-date" style="padding-left: 226px;">
+				<div class="view-header-wrap wth-view-header" style="z-index: 1">
+					<div class="view-header">
+						<button class="list_form_btn active">巡护里程列表</button>
+						<button class="list_form_btn" @click="jumpPage">巡护里程图表</button>
+					</div>
+		            <div style="left:600px;position: absolute;z-index: 999999; line-height: 64px;">
+						<el-select v-model="searchType" clearable placeholder="请选择" style="width:100px;">
+							<el-option
+							  v-for="item in option_search"
+							  :key="item.value"
+							  :label="item.label"
+							  :value="item.value">
+							</el-option>
+						</el-select>
+					    <el-input
+						  placeholder="请输入相关搜索内容"
+						  icon="search"
+						  v-model="searchContent"
+						  :on-icon-click="handleIconClick"
+						  style="width:200px;">
+						</el-input>
+					</div>
+			    </div>
+			    
+			    <table class="table-normal database-table table-center">
+					<thead>
+						<tr>
+							<th class="db-mileage">巡护里程</th>
+							<th class="db-people">巡护员</th>
+							<th class="db-depart">管理站</th>
+							<th class="db-state">状态</th>
+							<th class="db-check">地图轨迹</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="user in tableData">
+							<td>
+								<span :title="user.mileage" class="fs12">{{user.mileage}}</span>
+							</td>
+							<td>
+								<span :title="user.name" class="fs12">{{user.name}}</span>
+							</td>
+							<td>
+								<span :title="user.depart" class="fs12">{{user.depart}}</span>
+							</td>
+							<td>
+								<span :title="user.state" class="fs12">{{user.state}}</span>
+							</td>
+							<td>
+								<span @click="checkRoute($event)" :title="user.pid + ',' + user.name + ',' + user.userid + ',' + user.entity_name + ',' + user.service_id + ',' + user.timeStart + ',' + user.timeEnd + ',' + user.speed + ',' + user.mileage + ',' + user.totalTime" class="checkRoute">查看</span>
+							</td>
+						</tr>
+						<tr>
+							<td>共<span>{{totalData[0].total}}</span>条数据</td>
+							<td v-show="totalData[0].total > 10">
+								<el-pagination
+								  @current-change="pageCurrentChange"
+								  layout="prev, pager, next, jumper"
+								  :page-size="10"
+								  :total=totalData[0].total>
+								</el-pagination>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div id="map" style="display:none;z-index:2;position: absolute;top:90px;left:226px;width:88%;height:80%"></div>
+				<div class="close_map" style="display:none" @click="closemap()"></div>
+				<div id="mapInfo" style="display:none;z-index:3;position: absolute;top:120px;left:326px"></div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>
+<script>
+var app = new Vue({
+  el: '#app',
+  components: {
+    // <my-component> 将只在父模板可用
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftwork:leftwork
+  },
+  data: {
+	once:false,
+	dialogVisible:false,
+	tableData: [],
+	totalData:[],
+	total:0,
+	newsinfo:[],
+	message:'',
+	obj:{method:6,startTime:"2017-09-01",endTime:"2017-09-30",depart:"全站",type:2,pageIndex:1,pageSize:10,level:"3",department:"局机关",userid:"116"},
+	pValue:{byValue:''},
+	patrol_data:{},
+	option_search: [{
+	  value: 'name',
+	  label: '巡护员'
+	}, {
+	  value: 'station',
+	  label: '巡护站'
+	}],
+	searchType: '',
+	searchContent:'', 
+  },
+  methods:{
+	  getonce:function(){ 
+		/////获取人员数据  默认获取全部数据
+		app.pValue.byValue = JSON.stringify(app.obj);
+		$.ajax({
+			type: "post",
+			dataType: "json",
+			url: 'http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletPatrol,
+			data: { byValue: '{"method":6,"startTime":"2017-09-01","endTime":"2017-09-30","depart":"全站","type":2,"pageIndex":1,"pageSize":10,"level":"3","department":"局机关","userid":"116"}'},
+			beforeSend: function( xhr ) { 
+				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
+			}, 
+			success: function (data) {
+				if (data != "") {
+					app.totalData = data.splice(-1,1);
+					app.tableData = data;
+					app.once = true;
+				}
+			}
+		});
+	  },
+	  pageCurrentChange:function(val){
+		app.obj.pageIndex = val;
+		$.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletPatrol,{ byValue: JSON.stringify(app.obj) }, function(data) {
+			  if (data != "") {
+				    data = JSON.parse(data);
+					app.totalData = data.splice(-1,1);
+					app.tableData = data;
+					app.once = true;
+				}
+		  });
+	  },
+	  checkRoute:function(event){
+          app.patrol_data = event.currentTarget.title;
+		  onloadMap(this.patrol_data);
+	  },
+	  closemap:function(){
+		  $('.close_map').css("display", "none");
+		  $('#mapInfo').css("display", "none");
+		  $('#map').css("display", "none");
+	  },
+	  //搜索
+	  handleIconClick:function(){
+		  if(!this.searchType){alert("请选择搜索类型");return}
+		  if(!this.searchContent){alert("请输入搜索内容");return}
+		  switch(this.searchType){
+			  case "name":
+				  app.obj.name = this.searchType;
+				  console.log(app.searchContent);
+				  break;
+			  case "station":
+				  app.obj.station = this.searchType;
+				  console.log(app.searchContent);
+				  break;
+		  }
+		  //正式使用更改URL
+		  /*$.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletPatrol,{ byValue: JSON.stringify(app.obj) }, function(data) {
+			  if (data != "") {
+					app.tableData = data.list;
+				    app.totaldata = app.tableData.length
+					app.once = true;
+					console.log(app.totaldata);
+				}
+		  });*/
+	  },
+	  jumpPage:function(){
+		  window.location.href = "patrolMileageform.html";
+	  }
+	  
+  } 
+});
+app.getonce();
+
+</script>

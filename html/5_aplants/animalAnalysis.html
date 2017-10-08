@@ -1,0 +1,695 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cGT9892RVDdKkeIKM2f1d8pX"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="aplants"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<leftaplants leftactive="animation_jcfx"></leftaplants>
+			<!-- 右侧 --><!--巡护时间分析-->
+			<div class="view-date" style="padding-left: 226px;">
+			    <div>
+			    	<el-row>
+						<el-col :span="24">
+							<div class="grid-content">
+								<chart :options="polar_1" ref="pie_1" id="achart_1"></chart>
+							</div>
+						</el-col>
+					</el-row>
+			    </div>
+			    <div>
+			    	<el-row>
+						<el-col :span="24">
+							<div class="grid-content">
+								<chart :options="polar_2" ref="pie_2" id="achart_2"></chart>
+							</div>
+						</el-col>
+					</el-row>
+			    </div>
+			    <div>
+			    	<el-row>
+						<el-col :span="24">
+							<div class="grid-content" style="position: relative;">
+								<chart :options="polar_3" ref="pie_3" id="achart_3"></chart>
+								<div style="position: absolute;top:30px;right:20%;display:block;width:150px;z-index: 999; line-height: 64px;">
+									<el-select v-model="searchStation_1" clearable placeholder="站点一" @change="selectStation_1" style="width:100%;">
+										<el-option
+										  v-for="item in option_station_1"
+										  :key="item.value"
+										  :label="item.label"
+										  :value="item.value">
+										</el-option>
+									</el-select>
+								</div>
+							</div>
+						</el-col>
+					</el-row>
+			     </div>
+			     <div>
+			    	<el-row>
+						<el-col :span="24">
+							<div class="grid-content" style="position: relative;">
+								<chart :options="polar_4" ref="pie_4" id="achart_4"></chart>
+								<div style="position: absolute;top:30px;right:0;width:30%;z-index: 999; line-height: 64px;">
+									<el-select v-model="searchStation_2" clearable placeholder="站点一" @change="selectStation_2" style="width:30%;">
+										<el-option
+										  v-for="item in option_station_2"
+										  :key="item.value"
+										  :label="item.label"
+										  :value="item.value">
+										</el-option>
+									</el-select>
+								</div>
+							</div>
+						</el-col>
+					</el-row>
+			     </div>
+				</br></br></br></br></br></br></br></br>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>
+<script>
+document.getElementById("achart_1").style.width = document.body.clientWidth - 320;
+document.getElementById("achart_2").style.width = document.body.clientWidth - 320;
+document.getElementById("achart_3").style.width = document.body.clientWidth - 320;
+document.getElementById("achart_4").style.width = document.body.clientWidth - 320;
+window.onresize = function () {
+    document.getElementById("achart_1").style.width = document.body.clientWidth - 320;
+	document.getElementById("achart_2").style.width = document.body.clientWidth - 320;
+	document.getElementById("achart_3").style.width = document.body.clientWidth - 320;
+	document.getElementById("achart_4").style.width = document.body.clientWidth - 320;
+	app.size = document.body.clientWidth;
+};
+var chartData_1 = {
+	title:{
+		text:"保护区日发现动物数量/种类",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		}
+	},
+	tooltip:{
+		trigger:"axis",
+		axisPointer:{
+			type:"cross",
+			crossStyle:{
+				color:"#999"
+			}
+		}
+	},
+	legend: {
+        data:[
+			{name:'种类',textStyle:{color:"#fff"}},
+			{name:'数量',textStyle:{color:"#fff"}}
+		]
+    },
+	toolbox:{
+		show:"true",
+		iconStyle:{
+			normal:{
+				color:"rgba(0, 0, 0, 0.2)",
+				borderColor:"#fff"
+			}
+		},
+		feature:{
+			dataView:{"readonly":false},
+			magicType:{type:["bar","line"]},
+			restore:{},
+			saveAsImage:{}
+		},
+		itemSize:20
+	},
+	backgroundColor:"#24263E",
+	dataZoom: [
+        {
+			type: 'slider',
+			show: true,
+			xAxisIndex: [0],
+			handleSize: 20,
+			height: 12,
+			left: 40, 
+			right: 40,
+			bottom: 10,
+			handleColor: '#5182E4',
+			handleStyle: {
+				borderColor: "#5182E4",
+				borderWidth: 2,
+				shadowBlur: 2,
+				background: "#5182E4",
+				shadowColor: "#5182E4",
+			},
+			fillerColor:"#BABAC0",
+			backgroundColor: '#fff',
+			showDataShadow: true,
+			showDetail: false,
+            start: "30",
+            end: "70"
+        },
+		{
+			type: 'inside',
+			moveOnMouseMove:true,
+			zoomOnMouseWheel:false
+		}
+    ],
+	xAxis:[
+		{
+			type:"category",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	yAxis:[
+		{
+			name:"种类/种",
+			type:"value",
+			min:"0",
+			max:"6",
+			interval: 1,
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			},
+            axisLabel: {
+                formatter: '{value} 种'
+            }
+		},
+		{
+			name:"数量/只",
+			type:"value",
+			min:"0",
+			max:"6",
+			interval: 1,
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			},
+            axisLabel: {
+                formatter: '{value} 只'
+            }
+		}
+	],
+	series:[
+		{
+			name:"种类",
+			type:"line"
+		},
+		{
+			name:"数量",
+			type:"line"
+		}
+	],
+	color: ["#00FFFF","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var chartData_2 = {
+	title:{
+		text:"保护区总动物数量",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		}
+	},
+	tooltip:{
+		trigger:"axis",
+		axisPointer:{
+			type:"cross",
+			crossStyle:{
+				color:"#999"
+			}
+		}
+	},
+	toolbox:{
+		show:"true",
+		iconStyle:{
+			normal:{
+				color:"rgba(0, 0, 0, 0.2)",
+				borderColor:"#fff"
+			}
+		},
+		feature:{
+			dataView:{"readonly":false},
+			magicType:{type:["bar","line"]},
+			restore:{},
+			saveAsImage:{}
+		},
+		itemSize:20
+		
+	},
+	dataZoom :[
+		{
+			type: 'slider',
+			show: true,
+			xAxisIndex: [0],
+			handleSize: 20,
+			height: 12,
+			left: 130, 
+			right: 130,
+			bottom: 10,
+			handleColor: '#5182E4',
+			handleStyle: {
+				borderColor: "#BABAC0",
+				borderWidth: 2,
+				shadowBlur: 2,
+				background: "#BABAC0",
+				shadowColor: "#BABAC0",
+			},
+			fillerColor:"#BABAC0",
+			backgroundColor: "#fff",
+			showDataShadow: true,
+			showDetail: false,
+			handleIcon: 'M-292,322.2c-3.2,0-6.4-0.6-9.3-1.9c-2.9-1.2-5.4-2.9-7.6-5.1s-3.9-4.8-5.1-7.6c-1.3-3-1.9-6.1-1.9-9.3c0-3.2,0.6-6.4,1.9-9.3c1.2-2.9,2.9-5.4,5.1-7.6s4.8-3.9,7.6-5.1c3-1.3,6.1-1.9,9.3-1.9c3.2,0,6.4,0.6,9.3,1.9c2.9,1.2,5.4,2.9,7.6,5.1s3.9,4.8,5.1,7.6c1.3,3,1.9,6.1,1.9,9.3c0,3.2-0.6,6.4-1.9,9.3c-1.2,2.9-2.9,5.4-5.1,7.6s-4.8,3.9-7.6,5.1C-285.6,321.5-288.8,322.2-292,322.2z',
+			filterMode: 'filter',
+			"start": "0",
+            "end": "100"
+		},
+		{
+			type: 'inside',
+			show: true,
+			moveOnMouseMove:true,
+			zoomOnMouseWheel:false
+		}
+	],
+	backgroundColor:"#24263E",
+	xAxis:[
+		{
+			type:"category",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	yAxis:[
+		{
+			name:"总数量/只",
+			type:"value",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			},
+			min:310,
+			max:333
+		}
+	],
+	"series":[
+		{
+			"name":"总数量/只",
+			"type":"line"
+		}
+	],
+	"color": ["#00FFFF","#5083E5","#9bcc66","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var chartData_3 = {
+	title:{
+		text:"各站点日发现动物数量种类",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		}
+	},
+	tooltip:{
+		trigger:"axis",
+		axisPointer:{
+			type:"cross",
+			crossStyle:{
+				color:"#999"
+			}
+		}
+	},
+	toolbox:{
+		show:"true",
+		iconStyle:{
+			normal:{
+				color:"rgba(0, 0, 0, 0.2)",
+				borderColor:"#fff"
+			}
+		},
+		feature:{
+			dataView:{"readonly":false},
+			magicType:{type:["bar","line"]},
+			restore:{},
+			saveAsImage:{}
+		},
+		itemSize:20
+	},
+	legend: {
+        data:[
+			{name:'种类',textStyle:{color:"#fff"}},
+			{name:'数量',textStyle:{color:"#fff"}}
+		]
+    },
+	backgroundColor:"#24263E",
+	dataZoom: [
+        {
+			type: 'slider',
+			show: true,
+			xAxisIndex: [0],
+			handleSize: 20,
+			height: 12,
+			left: 40, 
+			right: 40,
+			bottom: 10,
+			handleColor: '#5182E4',
+			handleStyle: {
+				borderColor: "#5182E4",
+				borderWidth: 2,
+				shadowBlur: 2,
+				background: "#5182E4",
+				shadowColor: "#5182E4",
+			},
+			fillerColor:"#BABAC0",
+			backgroundColor: '#fff',
+			showDataShadow: true,
+			showDetail: false,
+            start: "30",
+            end: "70"
+        },
+		{
+			type: 'inside',
+			moveOnMouseMove:true,
+			zoomOnMouseWheel:false
+		}
+    ],
+	xAxis:[
+		{
+			type:"category",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	yAxis:[
+		{
+			name:"种类/种",
+			type:"value",
+			min:"0",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		},
+		{
+			name:"数量/只",
+			type:"value",
+			min:"0",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	series:[
+		{
+			name:"种类",
+			type:"line"
+		},
+		{
+			name:"数量",
+			type:"line"
+		}
+	],
+	color: ["#00FFFF","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var chartData_4 = {
+	title:{
+		text:"各站点总动物数量",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		}
+	},
+	tooltip:{
+		trigger:"axis",
+		axisPointer:{
+			type:"cross",
+			crossStyle:{
+				color:"#999"
+			}
+		}
+	},
+	toolbox:{
+		show:"true",
+		iconStyle:{
+			normal:{
+				color:"rgba(0, 0, 0, 0.2)",
+				borderColor:"#fff"
+			}
+		},
+		feature:{
+			dataView:{"readonly":false},
+			magicType:{type:["bar","line"]},
+			restore:{},
+			saveAsImage:{}
+		},
+		itemSize:20
+		
+	},
+	dataZoom :[
+		{
+			type: 'slider',
+			show: true,
+			xAxisIndex: [0],
+			handleSize: 20,
+			height: 12,
+			left: 130, 
+			right: 130,
+			bottom: 10,
+			handleColor: '#5182E4',
+			handleStyle: {
+				borderColor: "#BABAC0",
+				borderWidth: 2,
+				shadowBlur: 2,
+				background: "#BABAC0",
+				shadowColor: "#BABAC0",
+			},
+			fillerColor:"#BABAC0",
+			backgroundColor: "#fff",
+			showDataShadow: true,
+			showDetail: false,
+			handleIcon: 'M-292,322.2c-3.2,0-6.4-0.6-9.3-1.9c-2.9-1.2-5.4-2.9-7.6-5.1s-3.9-4.8-5.1-7.6c-1.3-3-1.9-6.1-1.9-9.3c0-3.2,0.6-6.4,1.9-9.3c1.2-2.9,2.9-5.4,5.1-7.6s4.8-3.9,7.6-5.1c3-1.3,6.1-1.9,9.3-1.9c3.2,0,6.4,0.6,9.3,1.9c2.9,1.2,5.4,2.9,7.6,5.1s3.9,4.8,5.1,7.6c1.3,3,1.9,6.1,1.9,9.3c0,3.2-0.6,6.4-1.9,9.3c-1.2,2.9-2.9,5.4-5.1,7.6s-4.8,3.9-7.6,5.1C-285.6,321.5-288.8,322.2-292,322.2z',
+			filterMode: 'filter',
+			"start": "0",
+            "end": "100"
+		},
+		{
+			type: 'inside',
+			show: true,
+			moveOnMouseMove:true,
+			zoomOnMouseWheel:false
+		}
+	],
+	backgroundColor:"#24263E",
+	xAxis:[
+		{
+			type:"category",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	yAxis:[
+		{
+			name:"总数量/只",
+			type:"value",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			},
+			min:80,
+			max:140
+		}
+	],
+	"series":[
+		{
+			"name":"总数量/只",
+			"type":"line"
+		}
+	],
+	"color": ["#00FFFF","#5083E5","#9bcc66","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var app = new Vue({
+  el: '#app',
+  components: {
+    // <my-component> 将只在父模板可用
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftaplants:leftaplants
+  },
+  data: {
+	once:true,
+	size:'',
+	formData:[],
+	//总保护区每日发现动物数量种类
+	timelist_1:[],
+	typelist_1:[],
+	totallist_1:[],
+	polar_1:{},
+	//总保护区总的动物数量
+	timelist_2:[],
+	totallist_2:[],
+	polar_2:{},
+	//各站点每日发现动物数量种类
+	option_station_1: [{
+	  value: 0,
+	  label: '站点一'
+	}, {
+	  value: 1,
+	  label: '站点二'
+	}, {
+	  value: 2,
+	  label: '站点三'
+	}],
+	searchStation_1: '',
+	timelist_3:[],
+	typelist_3:[],
+	totallist_3:[],
+	polar_3:{},
+	//各站点总的动物数量
+	option_station_2: [{
+	  value: 0,
+	  label: '站点一'
+	  }, {
+	  value: 1,
+	  label: '站点二'
+	}, {
+	  value: 2,
+	  label: '站点三'
+	}],
+	searchStation_2: '',
+	timelist_4:[],
+	totallist_4:[],
+	polar_4:{},
+  },
+  methods:{
+	  getonce:function(){ 
+		this.$http({url:"../../localDataTest/animalMonitorData.json",method:"GET"}).then(
+		  function(res){
+			 //保护区每日发现动物数量种类
+			 app.formData = res;
+			 res.body[0].forEach(function(item){
+				 app.timelist_1.push(item.date);
+				 app.typelist_1.push(item.type_num);
+				 app.totallist_1.push(item.total_num);
+			     });
+			 chartData_1.xAxis[0].data = app.timelist_1;
+			 chartData_1.series[0].data = app.typelist_1;
+			 chartData_1.series[1].data = app.totallist_1;
+			 this.polar_1 = chartData_1;
+			 //保护区总动物数量
+			 res.body[1].forEach(function(item){
+				 app.timelist_2.push(item.date);
+				 app.totallist_2.push(item.total_num);
+			 });
+			 
+			 chartData_2.xAxis[0].data = app.timelist_2;
+			 chartData_2.series[0].data = app.totallist_2;
+			 this.polar_2 = chartData_2;
+			 //各站点每日发现动物数量种类
+			 res.body[2][0].forEach(function(item){
+				app.timelist_3.push(item.date); 
+				app.typelist_3.push(item.type_num);
+				app.totallist_3.push(item.total_num);
+			 });
+			 chartData_3.xAxis[0].data = app.timelist_3;
+			 chartData_3.series[0].data = app.typelist_3;
+			 chartData_3.series[1].data = app.totallist_3;
+			 this.polar_3 = chartData_3;
+			  
+			 //各站点总动物数量
+			 res.body[3][0].forEach(function(item){
+				app.timelist_4.push(item.date); 
+				app.totallist_4.push(item.total_num);
+			 });
+			 chartData_4.xAxis[0].data = app.timelist_4;
+			 chartData_4.series[0].data = app.totallist_4; 
+			 this.polar_4 = chartData_4;
+			  
+			 },function(){
+				alert('分析数据请求失败'); //失败处理       
+			 }
+		);
+	  },
+	  selectStation_1:function(){
+		  if(this.searchStation_1 !==''){
+			  app.typelist_3 = [];
+			  app.totallist_3 =[];
+			  app.formData.body[2][this.searchStation_1].forEach(function(item){
+			      app.typelist_3.push(item.type_num);
+				  app.totallist_3.push(item.total_num);
+			  });
+			  chartData_3.series[0].data = app.typelist_3;
+			  chartData_3.series[1].data = app.totallist_3;
+		  }
+	  },
+	  selectStation_2:function(){
+		  if(this.searchStation_2 !==''){
+			  app.totallist_4 =[];
+			  app.formData.body[3][this.searchStation_2].forEach(function(item){
+			  app.totallist_4.push(item.total_num); 
+			  });
+			  chartData_4.series[0].data = app.totallist_4;
+		  }
+	  }
+	  
+ },
+ watch:{
+	size:function(){
+		this.$refs.pie_1.resize();
+		this.$refs.pie_2.resize();
+		this.$refs.pie_3.resize();
+		this.$refs.pie_4.resize();
+	}
+}
+});
+app.getonce();
+
+</script>

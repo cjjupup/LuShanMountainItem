@@ -1,0 +1,601 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cGT9892RVDdKkeIKM2f1d8pX"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="work"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<leftwork leftactive="wffx"></leftwork>
+			<!-- 右侧 -->
+			<div class="view-date" style="padding-left: 226px;">
+				<div class="view-header-wrap wth-view-header" style="z-index: 1">
+					<div class="view-header">
+						<button class="list_form_btn" @click="jumpPage">列表</button>
+						<button class="list_form_btn active" >图表</button>
+					</div>
+			    </div>
+			    <div>
+			    	<el-row>
+						<el-col :span="16">
+							<div class="grid-content">
+								<chart :options="polar_1" ref="pie_1" id="achart_1"></chart>
+							</div>
+						</el-col>
+						<el-col :span="8">
+							<div class="grid-content">
+								<chart :options="polar_2" ref="pie_2" id="achart_2"></chart>
+							</div>
+						</el-col>
+					</el-row>
+			    </div>
+			    <div>
+			    	<el-row>
+						<el-col :span="16">
+							<div class="grid-content">
+								<chart :options="polar_3" ref="pie_3" id="achart_3"></chart>
+								<div style="position: absolute;top:30px;right:50%;display:block;width:150px;z-index: 999; line-height: 64px;">
+									<el-select v-model="searchStation_1" clearable placeholder="站点一" @change="selectStation_1" style="width:100%;">
+										<el-option
+										  v-for="item in option_station_1"
+										  :key="item.value"
+										  :label="item.label"
+										  :value="item.value">
+										</el-option>
+									</el-select>
+								</div>
+							</div>
+						</el-col>
+						<el-col :span="8">
+							<div class="grid-content">
+								<chart :options="polar_4" ref="pie_4" id="achart_4"></chart>
+								<div style="position: absolute;top:30px;right:10%;display:block;width:150px;z-index: 999; line-height: 64px;">
+									<el-select v-model="searchStation_2" clearable placeholder="站点一" @change="selectStation_2" style="width:100%;">
+										<el-option
+										  v-for="item in option_station_2"
+										  :key="item.value"
+										  :label="item.label"
+										  :value="item.value">
+										</el-option>
+									</el-select>
+								</div>
+							</div>
+						</el-col>
+					</el-row>
+			    </div>
+				</br></br></br></br></br></br></br></br>
+			</div>
+		</div>
+	</div>
+<script>
+document.getElementById("achart_1").style.width = 2*(document.body.clientWidth - 264)/3;
+document.getElementById("achart_2").style.width = (document.body.clientWidth - 264)/3;
+document.getElementById("achart_3").style.width = 2*(document.body.clientWidth - 264)/3;
+document.getElementById("achart_4").style.width = (document.body.clientWidth - 264)/3;
+window.onresize = function () {
+    document.getElementById("achart_1").style.width = 2*(document.body.clientWidth - 264)/3;
+	document.getElementById("achart_2").style.width = (document.body.clientWidth - 264)/3;
+	document.getElementById("achart_3").style.width = 2*(document.body.clientWidth - 264)/3;
+	document.getElementById("achart_4").style.width = (document.body.clientWidth - 264)/3;
+	app.size = document.body.clientWidth;
+};
+var chartData_1 = {
+	title:{
+		text:"保护区火灾等级",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		},
+		x:"8%"
+	},
+	tooltip:{
+		trigger:"axis",
+		axisPointer:{
+			type:"cross",
+			crossStyle:{
+				color:"#999"
+			}
+		}
+	},
+	toolbox:{
+		show:"true",
+		iconStyle:{
+			normal:{
+				color:"rgba(0, 0, 0, 0.2)",
+				borderColor:"#fff"
+			}
+		},
+		feature:{
+			dataView:{"readonly":false},
+			restore:{},
+			saveAsImage:{}
+		},
+		itemSize:20,
+		right:"10%"
+	},
+	backgroundColor:"#24263E",
+	dataZoom: [
+        {
+			type: 'slider',
+			show: true,
+			xAxisIndex: [0],
+			handleSize: 20,
+			height: 12,
+			left: 80, 
+			right: 80,
+			bottom: 10,
+			handleColor: '#5182E4',
+			handleStyle: {
+				borderColor: "#5182E4",
+				borderWidth: 2,
+				shadowBlur: 2,
+				background: "#5182E4",
+				shadowColor: "#5182E4",
+			},
+			fillerColor:"#BABAC0",
+			backgroundColor: '#fff',
+			showDataShadow: true,
+			showDetail: false,
+            start: "30",
+            end: "70"
+        },
+		{
+			type: 'inside',
+			moveOnMouseMove:true,
+			zoomOnMouseWheel:false
+		}
+    ],
+	xAxis:[
+		{
+			type:"category",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	yAxis:[
+		{
+			name:"等级",
+			type:"value",
+			min:"0",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	series:[
+		{
+			name:"火灾等级",
+			type:"line"
+		}
+	],
+	color: ["#00FFFF","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var chartData_2 = {
+	title:{
+		text:"火灾等级占比",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		},
+		x:"8%"
+	},
+	tooltip:{
+		trigger:"item",
+		formatter:"{a} <br/>{b}: {c} ({d}%)"
+	},
+	legend:{
+		orient:"vertical",
+		x:"80%",
+		data:[{name:'一级',textStyle:{color:"#fff"}},{name:'二级',textStyle:{color:"#fff"}},{name:'三级',textStyle:{color:"#fff"}},{name:'四级',textStyle:{color:"#fff"}}]
+	},
+	backgroundColor:"#24263E",
+	series:[
+		{
+			name:"火灾等级",
+			type:"pie",
+			radius:["50%","70%"],
+			avoidLabelOverlap: false,
+            label: {
+                normal: {
+                    show: false,
+                    position: "center"
+                },
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        fontSize: "30",
+                        fontWeight: "bold"
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: false
+                }
+            },
+			data:[
+				{value:0,name:"一级"},
+				{value:0,name:"二级"},
+				{value:0,name:"三级"},
+				{value:0,name:"四级"}
+			]
+		}
+	],
+	color: ["#00FFFF","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var chartData_3 = {
+	title:{
+		text:"各站点火灾等级",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		},
+		x:"8%"
+	},
+	tooltip:{
+		trigger:"axis",
+		axisPointer:{
+			type:"cross",
+			crossStyle:{
+				color:"#999"
+			}
+		}
+	},
+	toolbox:{
+		show:"true",
+		iconStyle:{
+			normal:{
+				color:"rgba(0, 0, 0, 0.2)",
+				borderColor:"#fff"
+			}
+		},
+		feature:{
+			dataView:{"readonly":false},
+			magicType:{type:["bar","line"]},
+			restore:{},
+			saveAsImage:{}
+		},
+		itemSize:20,
+		right:"10%"
+		
+	},
+	dataZoom :[
+		{
+			type: 'slider',
+			show: true,
+			xAxisIndex: [0],
+			handleSize: 20,
+			height: 12,
+			left: 130, 
+			right: 130,
+			bottom: 10,
+			handleColor: '#5182E4',
+			handleStyle: {
+				borderColor: "#BABAC0",
+				borderWidth: 2,
+				shadowBlur: 2,
+				background: "#BABAC0",
+				shadowColor: "#BABAC0",
+			},
+			fillerColor:"#BABAC0",
+			backgroundColor: "#fff",
+			showDataShadow: true,
+			showDetail: false,
+			handleIcon: 'M-292,322.2c-3.2,0-6.4-0.6-9.3-1.9c-2.9-1.2-5.4-2.9-7.6-5.1s-3.9-4.8-5.1-7.6c-1.3-3-1.9-6.1-1.9-9.3c0-3.2,0.6-6.4,1.9-9.3c1.2-2.9,2.9-5.4,5.1-7.6s4.8-3.9,7.6-5.1c3-1.3,6.1-1.9,9.3-1.9c3.2,0,6.4,0.6,9.3,1.9c2.9,1.2,5.4,2.9,7.6,5.1s3.9,4.8,5.1,7.6c1.3,3,1.9,6.1,1.9,9.3c0,3.2-0.6,6.4-1.9,9.3c-1.2,2.9-2.9,5.4-5.1,7.6s-4.8,3.9-7.6,5.1C-285.6,321.5-288.8,322.2-292,322.2z',
+			filterMode: 'filter',
+			"start": "0",
+            "end": "100"
+		},
+		{
+			type: 'inside',
+			show: true,
+			moveOnMouseMove:true,
+			zoomOnMouseWheel:false
+		}
+	],
+	backgroundColor:"#24263E",
+	xAxis:[
+		{
+			type:"category",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	yAxis:[
+		{
+			name:"等级",
+			type:"value",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			},
+			max:"5"
+		}
+	],
+	"series":[
+		{
+			"name":"等级",
+			"type":"line"
+		}
+	],
+	"color": ["#00FFFF","#5083E5","#9bcc66","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var chartData_4 = {
+	title:{
+		text:"火灾等级占比",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		},
+		x:"8%"
+	},
+	tooltip:{
+		trigger:"item",
+		formatter:"{a} <br/>{b}: {c} ({d}%)"
+	},
+	legend:{
+		orient:"vertical",
+		x:"80%",
+		data:[{name:'一级',textStyle:{color:"#fff"}},{name:'二级',textStyle:{color:"#fff"}},{name:'三级',textStyle:{color:"#fff"}},{name:'四级',textStyle:{color:"#fff"}}]
+	},
+	backgroundColor:"#24263E",
+	series:[
+		{
+			name:"火灾等级",
+			type:"pie",
+			radius:["50%","70%"],
+			avoidLabelOverlap: false,
+            label: {
+                normal: {
+                    show: false,
+                    position: "center"
+                },
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        fontSize: "30",
+                        fontWeight: "bold"
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: false
+                }
+            },
+			data:[
+				{value:0,name:"一级"},
+				{value:0,name:"二级"},
+				{value:0,name:"三级"},
+				{value:0,name:"四级"}
+			]
+		}
+	],
+	color: ["#00FFFF","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var app = new Vue({
+  el: '#app',
+  components: {
+    // <my-component> 将只在父模板可用
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftwork:leftwork
+  },
+  data: {
+	once:true,
+	size:'',
+	formData:[],
+	//总保护区-折线
+	timelist_1:[],
+	gradelist_1:[],
+	polar_1:{},
+	//总保护区-饼图
+	typelist_2:[[],[],[],[]],
+	polar_2:{},
+	//各保护站
+	option_station_1: [{
+	  value: 1,
+	  label: '站点一'
+	}, {
+	  value: 2,
+	  label: '站点二'
+	}, {
+	  value: 3,
+	  label: '站点三'
+	}],
+	searchStation_1: '',
+	timelist_3:[],
+	gradelist_3:[],
+	polar_3:{},
+	//各站点饼图
+	option_station_2: [{
+	  value: 1,
+	  label: '站点一'
+	}, {
+	  value: 2,
+	  label: '站点二'
+	}, {
+	  value: 3,
+	  label: '站点三'
+	}],
+	searchStation_2: '',
+	typelist_4:[[],[],[],[]],
+	polar_4:{},
+	//obj:{},
+	//pValue:{byValue:''},
+  },
+  methods:{
+	  getonce:function(){ 
+		/////获取通知公告数据
+		//app.pValue.byValue = JSON.stringify(app.obj);
+		$.ajax({
+			type: "get",
+			dataType: "json",
+			url: "../../localDataTest/fireData.json",
+			//data:{},
+			//beforeSend: function( xhr ) { 
+			//	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
+			//},
+			success: function (data) {
+				if (data !== "") {
+					app.formData = data;
+					data.forEach(function(item){
+						//保护区总
+						app.timelist_1.push(item.date);
+						app.gradelist_1.push(item.grade);
+						//各站点 默认站点一
+						if(item.station == 1){
+							app.timelist_3.push(item.date);
+						    app.gradelist_3.push(item.grade);
+						}
+						//保护区等级饼图
+						if(item.grade == 1){
+							app.typelist_2[0].push(item.grade);
+						}
+						if(item.grade == 2){
+							app.typelist_2[1].push(item.grade);
+						}
+						if(item.grade == 3){
+							app.typelist_2[2].push(item.grade);
+						}
+						if(item.grade == 4){
+							app.typelist_2[3].push(item.grade);
+						}
+						//各站点饼图
+						if(item.station == 1){
+							if(item.grade == 1){
+								app.typelist_4[0].push(item.grade);
+							}
+							if(item.grade == 2){
+								app.typelist_4[1].push(item.grade);
+							}
+							if(item.grade == 3){
+								app.typelist_4[2].push(item.grade);
+							}
+							if(item.grade == 4){
+								app.typelist_4[3].push(item.grade);
+							}
+						}
+					})
+					/*console.log(app.typelist_2[0].length);
+					console.log(app.typelist_2[1].length);
+					console.log(app.typelist_2[2].length);
+					console.log(app.typelist_2[3].length);*/
+					//保护区总
+					chartData_1.xAxis[0].data = app.timelist_1;
+					chartData_1.series[0].data = app.gradelist_1;
+					//各站点
+					chartData_3.xAxis[0].data = app.timelist_3;
+					chartData_3.series[0].data = app.gradelist_3;
+					//
+					chartData_2.series[0].data[0].value = app.typelist_2[0].length;
+					chartData_2.series[0].data[1].value = app.typelist_2[1].length;
+					chartData_2.series[0].data[2].value = app.typelist_2[2].length;
+					chartData_2.series[0].data[3].value = app.typelist_2[3].length;
+					//
+					chartData_4.series[0].data[0].value = app.typelist_4[0].length;
+					chartData_4.series[0].data[1].value = app.typelist_4[1].length;
+					chartData_4.series[0].data[2].value = app.typelist_4[2].length;
+					chartData_4.series[0].data[3].value = app.typelist_4[3].length;
+					app.polar_1 = chartData_1;
+					app.polar_2 = chartData_2;
+					app.polar_3 = chartData_3;
+					app.polar_4 = chartData_4;
+					
+					
+				}
+			}
+		});
+	  },
+	  selectStation_1:function(){
+		  if(app.searchStation_1 !==''){
+			  app.timelist_3 = [];
+			  app.gradelist_3 =[];
+			  app.formData.forEach(function(item){
+			      if(item.station == app.searchStation_1){
+					  app.timelist_3.push(item.date);
+				      app.gradelist_3.push(item.grade);
+				  }
+			  });
+			  chartData_3.xAxis[0].data = app.timelist_3;
+			  chartData_3.series[0].data = app.gradelist_3;
+		  }
+	  },
+	  selectStation_2:function(){
+		  if(app.searchStation_2 !==''){
+			  app.typelist_4 =[[],[],[],[]];
+			  app.formData.forEach(function(item){
+			      if(item.station == app.searchStation_2){
+					    if(item.grade == 1){
+							app.typelist_4[0].push(item.grade);
+						}
+						if(item.grade == 2){
+							app.typelist_4[1].push(item.grade);
+						}
+						if(item.grade == 3){
+							app.typelist_4[2].push(item.grade);
+						}
+						if(item.grade == 4){
+							app.typelist_4[3].push(item.grade);
+						}
+				  }
+			  });
+			  chartData_4.series[0].data[0].value = app.typelist_4[0].length;
+			  chartData_4.series[0].data[1].value = app.typelist_4[1].length;
+			  chartData_4.series[0].data[2].value = app.typelist_4[2].length;
+			  chartData_4.series[0].data[3].value = app.typelist_4[3].length;
+		  }
+	  },
+	  jumpPage:function(){
+		  window.location.href = "../../html/patrolFrequencylist.html";
+	  }
+  },
+ watch:{
+	size:function(){
+		this.$refs.pie_1.resize();
+		this.$refs.pie_2.resize();
+		this.$refs.pie_3.resize();
+		this.$refs.pie_4.resize();
+	}
+ } 
+});
+app.getonce();
+</script>
+</body>
+</html>

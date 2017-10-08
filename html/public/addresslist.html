@@ -1,0 +1,128 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-人员管理</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+</head>
+<body>
+<div id="app" :class = "once?'show':''">
+	<myheader navactive="work"></myheader>
+	<!-- 内容区域 -->
+	<div class="main header-wraper-height">
+		<!-- 左侧 -->
+		<leftwork leftactive="rygl"></leftwork>
+		<!-- 右侧 -->
+		<div class="view-date" style="padding-left: 226px;">
+			<div class="view-header-wrap wth-view-header">
+				<div class="view-header">
+					<h2 class="nowrap with-tail-btn" title="总演示数据">
+						人员管理
+					</h2>
+					<span class="btn-layer">
+						<a class="dash-add-item-btn ng-scope J-new-chart">
+							<i class="icon iconfont icon-wode-wode blue fs16"></i>
+							<span class="btn-layer-opt">
+								人员同步
+								<span class="btn-layer-hover-line"></span>
+							</span>
+						</a>
+					</span>
+				</div>
+			</div>
+			<table class="table-normal w100 database-table table-left">
+                <thead>
+                    <tr>
+                        <th class="db-name"><i class="icon iconfont icon-chakanjingjirenzhuye blue"></i> 姓名</th>
+                        <th class="db-tel"><i class="icon iconfont icon-dianhuazixun-dianhua blue"></i> 联系方式</th>
+                        <th class="db-job"><i class="icon iconfont icon-shangwu blue"></i> 职位</th>
+                        <th class="db-of"><i class="icon iconfont icon-dituzhaofang blue"></i> 保护站所属</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="user in tableData">
+                        <td>
+                            <div class="database-table-name pr">
+                                <div>
+                                    <a class="ds-name">{{user.name}}</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td v-on:click="calltel(user.tel)">
+                            <span>{{user.tel}}</span>
+                        </td>
+                        <td>
+                            <span :title="user.department" class="fs12">{{user.position}}</span>
+                        </td>
+                        <td>
+                            <span :title="user.position" class="fs12">{{user.department}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+		</div>
+	</div>
+</div>
+</body>
+</html>
+<script>
+var app = new Vue({
+  el: '#app',
+  components: {
+    // <my-component> 将只在父模板可用
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftwork:leftwork
+  },
+  data: {
+	once:false,
+	datevalue1:'',
+	tableData: [],
+	message:'',
+	obj:{method:11,department:"局机关",level:3,area:"庐山",depart:"no"},
+	pValue:{byValue:''}
+  },
+  methods:{
+	  getonce:function(){ 
+		/////获取人员数据
+		app.pValue.byValue = JSON.stringify(app.obj);
+		$.ajax({
+			type: "post",
+			dataType: "json",
+			url: 'http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletUser,
+			data: { byValue: '{"method":11,"department":"局机关","level":"3","area":"庐山","depart":"no"}'},
+			beforeSend: function( xhr ) { 
+				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
+			}, 
+			success: function (data) {
+				if (data != "") {
+					app.tableData = data;
+					//app.pagenum = data[10].total;
+					app.once = true;
+				}
+			}
+		});
+	  },
+	  calltel:function(telnumber){
+		window.location.href = "tel:"+telnumber;
+	  }
+  } 
+});
+app.getonce();
+</script>
