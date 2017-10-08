@@ -41,35 +41,35 @@
 				</div>
 				<!--存放图片-->
 				<div class="contentBox">
-					<div class="picBox">
+					<!--<div class="picBox">
 						<p class="picDate">2017-10-01</p>
 						<div class="picContent">
-							<div class="picItem">
+							<div class="picItems">
 								<img src="../../img/yaogan.png" class="picBody">
 								<i class="icon iconfont icon-guanbi picClose"></i>
 								<p class="picTip">我是一只可爱的标题</p>
 							</div>
-							<div class="picItem">
+							<div class="picItems">
 								<img src="../../img/yaogan.png" class="picBody">
 								<i class="icon iconfont icon-guanbi picClose"></i>
 								<p class="picTip">我是一只可爱的标题</p>
 							</div>
-							<div class="picItem">
+							<div class="picItems">
 								<img src="../../img/yaogan.png" class="picBody">
 								<i class="icon iconfont icon-guanbi picClose"></i>
 								<p class="picTip">我是一只可爱的标题</p>
 							</div>
-							<div class="picItem">
+							<div class="picItems">
 								<img src="../../img/yaogan.png" class="picBody">
 								<i class="icon iconfont icon-guanbi picClose"></i>
 								<p class="picTip">我是一只可爱的标题</p>
 							</div>
-							<div class="picItem">
+							<div class="picItems">
 								<img src="../../img/yaogan.png" class="picBody">
 								<i class="icon iconfont icon-guanbi picClose"></i>
 								<p class="picTip">我是一只可爱的标题</p>
 							</div>
-							<div class="picItem">
+							<div class="picItems">
 								<img src="../../img/yaogan.png" class="picBody">
 								<i class="icon iconfont icon-guanbi picClose"></i>
 								<p class="picTip">我是一只可爱的标题</p>
@@ -79,14 +79,15 @@
 					<div class="picBox">
 						<p class="picDate">2017-09-30</p>
 						<div class="picContent">
-							<div class="picItem">
+							<div class="picItems">
 								<img src="../../img/yaogan.png" class="picBody">
 								<i class="icon iconfont icon-guanbi picClose"></i>
 								<p class="picTip">我是一只可爱的标题</p>
 							</div>
 						</div>
-					</div>
+					</div>-->
 				</div>
+				<div style="width:100%;height:200px;"></div>
 				<!--上传界面-->
 				<div class="uploadBox" v-show="uploadPic">
 					<el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="80px">
@@ -143,9 +144,11 @@
 						</el-form-item>
 					</el-form>
 				</div>
+				<!--查看界面-->
+				<div class="checkPic" v-show="checkPic"></div>
 			</div>
 		</div>
-		<div class="mask" v-show="uploadPic"></div>
+		<div class="mask" v-show="mask"></div>
 	</div>
 </body>
 </html>
@@ -161,6 +164,8 @@ var app = new Vue({
   data: {
 	once:true,
 	uploadPic:false,
+	checkPic:false,
+	mask:false,
 	dataBox:'',
 	ruleForm:{
 		title:'',
@@ -184,16 +189,42 @@ var app = new Vue({
 		  $.get("../../localDataTest/remotePicData.json",function(res){
 			  app.dataBox = res;   //接收一系列图片  标题 日期 备注 url
 			  //页面渲染
+			  
 			  res.forEach(function(item){
-				  console.log(item);
 				  var date = item[0].date;
-				  
+				  var picItem ="";
+				  for(let i =0; i<item.length; i++){
+					  var url = item[i].url;
+					  picItem += `<div class="picItems">
+									<img src="`+url+`" class="picBody">
+									<i class="icon iconfont icon-guanbi picClose"></i>
+									<p class="picTip">`+item[i].tip+`</p>
+								  </div>`
+				  }
+				  var picBox = `<div class="picBox"><p class="picDate">`+ date +`</p><div class="picContent">`+ picItem + `</div></div>`;
+				  $(".contentBox").prepend(picBox);
+			  });
+			  $(".picBody").click(function(){
+				  //app.mask = true;
+				  //app.checkPic = true;
+				  console.log($(this).next().next()[0].innerText);
+			  });
+			  $(".picClose").click(function(){
+				  layer.msg('确定删除该图片吗？', {
+					  time: 0 //不自动关闭
+					  ,btn: ['确定', '取消']
+					  ,yes: function(index){
+						  //异步删除 待开发
+						  layer.close(index);
+					  }
+					});
 			  });
 		  });
 		
 	  },
 	  uploadshow:function(){
 		  app.uploadPic = true;
+		  app.mask = true;
 		  $("#filePicker div:eq(1)").attr("style","bottom: auto;right: auto;width: 168px;height: 44px;position: relative;top: -64px;left:290px;")
 	  },
 	  submitForm:function(formName){
@@ -202,6 +233,7 @@ var app = new Vue({
 				alert('submit!'); 
 				//此处添加提交修改代码
 				app.uploadpic = false;
+				app.mask = false;
 			  } else {
 				console.log('error submit!!');
 				return false;
@@ -217,8 +249,15 @@ var app = new Vue({
 		  }
 		  uploader.reset();
 		  app.uploadPic = false;
-		  console.log(uploader.getFiles());
-      }
+		  app.mask = false;
+		  //console.log(uploader.getFiles());
+      },
+	  checkItemInfo:function(){
+		  console.log("asd");
+	  },
+	  closeItemInfo:function(){
+		  console.log("123");
+	  }
   }
 
 });

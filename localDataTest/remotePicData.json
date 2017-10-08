@@ -1,14 +1,14 @@
 [
 	[
-		{"date":"2017-10-05","tip":"我是十月五号的图片一","remarks":"我是一条备注","url":"assets/img/yaogan.png"},
-		{"date":"2017-10-05","tip":"我是十月五号的图片二","remarks":"我是一条备注","url":"assets/img/yaogan.png"},
-		{"date":"2017-10-05","tip":"我是十月五号的图片二","remarks":"我是一条备注","url":"assets/img/yaogan.png"}
+		{"date":"2017-10-05","tip":"我是十月五号的图片一","remarks":"我是一条备注","url":"../../img/yaogan.png"},
+		{"date":"2017-10-05","tip":"我是十月五号的图片二","remarks":"我是一条备注","url":"../../img/yaogan.png"},
+		{"date":"2017-10-05","tip":"我是十月五号的图片二","remarks":"我是一条备注","url":"../../img/yaogan.png"}
 	],
 	[
-	    {"date":"2017-10-07","tip":"我是十月七号的图片一","remarks":"我是一条备注","url":"assets/img/yaogan.png"}
+	    {"date":"2017-10-07","tip":"我是十月七号的图片一","remarks":"我是一条备注","url":"../../img/yaogan.png"}
 	],
 	[
-		{"date":"2017-10-08","tip":"我是十月八号的图片一","remarks":"我是一条备注","url":"assets/img/yaogan.png"},
-		{"date":"2017-10-08","tip":"我是十月八号的图片二","remarks":"我是一条备注","url":"assets/img/yaogan.png"}
+		{"date":"2017-10-08","tip":"我是十月八号的图片一","remarks":"我是一条备注","url":"../../img/yaogan.png"},
+		{"date":"2017-10-08","tip":"我是十月八号的图片二","remarks":"我是一条备注","url":"../../img/yaogan.png"}
 	]
 ]

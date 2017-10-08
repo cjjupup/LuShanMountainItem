@@ -1100,7 +1100,7 @@ iframe.full_Iframe{overflow-x: hidden;}
 	font-size: 18px;
 	color:#fff;
 }
-.contentBox .picBox .picContent .picItem{
+.contentBox .picBox .picContent .picItems{
 	display:inline-block;
 	width:19%;
 	margin-right:5px;
@@ -1108,19 +1108,19 @@ iframe.full_Iframe{overflow-x: hidden;}
 	position: relative;
 	cursor:pointer;
 }
-.contentBox .picBox .picContent .picItem .picBody{
+.contentBox .picBox .picContent .picItems .picBody{
 	width:100%;
 	height:auto;
 }
-.contentBox .picBox .picContent .picItem .picClose{
+.contentBox .picBox .picContent .picItems .picClose{
 	position: absolute;
 	top:4px;right:4px;
 	color:#fff;
 }
-.contentBox .picBox .picContent .picItem .picClose:hover{
+.contentBox .picBox .picContent .picItems .picClose:hover{
 	opacity: 0.7;
 }
-.contentBox .picBox .picContent .picItem .picTip{
+.contentBox .picBox .picContent .picItems .picTip{
 	position: absolute;
 	bottom: 0;
 	width:100%;
@@ -1129,7 +1129,10 @@ iframe.full_Iframe{overflow-x: hidden;}
 	font-size: 16px;
 	text-align:center;
 }
-
+.contentBox .picBox .picContent .picItems img{
+	width:100%;
+	height:auto;
+}
 
 
 
