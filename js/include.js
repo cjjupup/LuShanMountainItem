@@ -131,7 +131,33 @@ var leftrisk={
 }
 
 
+var leftsystem={
+	template:`<div class="dash-sidebar J_dash_sidebar" style="width:206px"><a class="drag-btn" title="拖动调整宽度"></a><div class="J-scroll-project project-nav project-list project-list-common"><div class="list-hd angular-ui-tree"><ul class="own-project-list angular-ui-tree-nodes" id="tree-root">
 
+<li class="project-item J-project-item angular-ui-tree-node active first"><div class="cat-op-parent level-0"><a class="nowrap project-name"><i class="icon iconfont icon-zhankai"></i> <span>系统设置</span></a></div><ul class="dash-list angular-ui-tree-nodes own-dash-list">
+
+<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class="leftactive == 'fwqjc'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="#"><i class="icon iconfont icon-zhuzhuangtu"></i><span>服务器监测</span></a></div></li>
+
+<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'zzjgfx'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="#"><i class="icon iconfont icon-dianhuazixun-dianhua"></i><span>组织机构分析</span></a></div></li>
+
+<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class="leftactive == 'szpz'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="#"><i class="icon iconfont icon-zhuzhuangtu"></i><span>设置配置</span></a></div></li>
+
+<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'yhqxpz'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="#"><i class="icon iconfont icon-dianhuazixun-dianhua"></i><span>用户权限配置</span></a></div></li>
+
+<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'yhgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="#"><i class="icon iconfont icon-dianhuazixun-dianhua"></i><span>用户管理</span></a></div></li>
+
+<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class="leftactive == 'yjxxgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="#"><i class="icon iconfont icon-zhuzhuangtu"></i><span>预警消息管理</span></a></div></li>
+
+<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'yhrzgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="#"><i class="icon iconfont icon-dianhuazixun-dianhua"></i><span>用户日志管理</span></a></div></li>
+
+<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'sjbfgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="#"><i class="icon iconfont icon-dianhuazixun-dianhua"></i><span>数据备份管理</span></a></div></li>
+
+</ul></li>
+
+
+</ul></div></div></div>`,
+	props:['leftactive']
+}
 
 
 
