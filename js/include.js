@@ -1,6 +1,64 @@
 var myheader={
-	template:`<header class="header-wraper clearfix"><h1 class="logo-personal clearfix"><a class="logo-link" href="/home.html">LOGO</a></h1><nav class="nav-wrap"><ul class="nav-function clearfix"><li class="nav-item home" :class="navactive == 'home'?'active':''"><div class="nav-item-title"><i class="icon iconfont icon-yingxiaozhongxinicon"></i><br>监控概况</div></li><li class="nav-item baseinfo" :class="navactive == 'baseinfo'?'active':''"><div class="nav-item-title"><i class="icon iconfont icon-kongjiandili"></i><br>基础信息</div></li><li class="nav-item work" :class="navactive == 'work'?'active':''"><div class="nav-item-title"><i class="icon iconfont icon-shehuituanti"></i><br>工作管理</div></li><li class="nav-item video" :class="navactive == 'video'?'active':''"><div class="nav-item-title"><i class="icon iconfont icon-jiankong"></i><br>视频监控</div></li><li class="nav-item aplants" :class="navactive == 'aplants'?'active':''"><div class="nav-item-title"><i class="icon iconfont icon-linye"></i><br>动植物监测</div></li><li class="nav-item ecology" :class="navactive == 'ecology'?'active':''"><div class="nav-item-title"><i class="icon iconfont icon-equipment-monitoring"></i><br>生态监测</div></li><li class="nav-item study" :class="navactive == 'study'?'active':''"><div class="nav-item-title"><i class="icon iconfont icon-jiaoyu"></i><br>科研宣教</div></li><li class="nav-item risk" :class="navactive == 'risk'?'active':''"><div class="nav-item-title"><i class="icon iconfont icon-jingjijianshe1"></i><br>风险分析</div></li></ul></nav><div class="hd-set"><ul class="clearfix"><li class="hd-set-item pl8 pr8"><a title="通知公告"><i class="icon iconfont icon-bangongtongzhi-"></i>  <i class="unwatched active"></i></a></li><li class="hd-set-item pl8 pr8"><a title="用户中心"><i class="icon iconfont icon-user"></i>  admin</a></li><li class="hd-set-item pl8 pr8"><a title="系统设置"><i class="icon iconfont icon-system-copy"></i> </a></li><li class="hd-set-item pl8 pr8"><a title="退出登录"><i class="icon iconfont icon-quit"></i> </a></li></ul></div></header>`,
-	props:['navactive']
+	template:`<header class="header-wraper clearfix"><h1 class="logo-personal clearfix"><a class="logo-link" href="/home.html">LOGO</a></h1><nav class="nav-wrap"><ul class="nav-function clearfix"><li class="nav-item home" :class="navactive == 'home'?'active':''" title="home" @click="countTip($event)"><div class="nav-item-title"><i class="icon iconfont icon-yingxiaozhongxinicon"></i><br>监控概况</div></li><li class="nav-item baseinfo" :class="navactive == 'baseinfo'?'active':''"  title="baseinfo" @click="countTip($event)"><div class="nav-item-title"><i class="icon iconfont icon-kongjiandili"></i><br>基础信息</div></li><li class="nav-item work" :class="navactive == 'work'?'active':''"  title="work" @click="countTip($event)"><div class="nav-item-title"><i class="icon iconfont icon-shehuituanti"></i><br>工作管理</div></li><li class="nav-item video" :class="navactive == 'video'?'active':''"  title="video" @click="countTip($event)"><div class="nav-item-title"><i class="icon iconfont icon-jiankong"></i><br>视频监控</div></li><li class="nav-item aplants" :class="navactive == 'aplants'?'active':''"  title="aplants" @click="countTip($event)"><div class="nav-item-title"><i class="icon iconfont icon-linye"></i><br>动植物监测</div></li><li class="nav-item ecology" :class="navactive == 'ecology'?'active':''"  title="ecology" @click="countTip($event)"><div class="nav-item-title"><i class="icon iconfont icon-equipment-monitoring"></i><br>生态监测</div></li><li class="nav-item study" :class="navactive == 'study'?'active':''"  title="study" @click="countTip($event)"><div class="nav-item-title"><i class="icon iconfont icon-jiaoyu"></i><br>科研宣教</div></li><li class="nav-item risk" :class="navactive == 'risk'?'active':''"  title="risk" @click="countTip($event)"><div class="nav-item-title"><i class="icon iconfont icon-jingjijianshe1"></i><br>风险分析</div></li></ul></nav><div class="hd-set"><ul class="clearfix"><li class="hd-set-item pl8 pr8"><a title="通知公告"><i class="icon iconfont icon-bangongtongzhi-"></i>  <i class="unwatched active"></i></a></li><li class="hd-set-item pl8 pr8"><a title="用户中心"><i class="icon iconfont icon-user"></i>  admin</a></li><li class="hd-set-item pl8 pr8"><a title="系统设置"><i class="icon iconfont icon-system-copy"></i> </a></li><li class="hd-set-item pl8 pr8" @click="getOut()"><a title="退出登录"><i class="icon iconfont icon-quit"></i> </a></li></ul></div></header>`,
+	props:['navactive'],
+	data:function(){
+		return {
+			count:[0,0,0,0,0,0,0,0]
+		}
+	},
+	methods:{
+		countTip:function(event){
+			var tip = event.currentTarget.title;
+			console.log(tip);
+			switch(tip){
+				case "home":
+					this.count[0] += 1;
+					break;
+				case "baseinfo":
+					this.count[1] += 1;
+					break;
+				case "work":
+					this.count[2] += 1;
+					break;
+				case "video":
+					this.count[3] += 1;
+					break;
+				case "aplants":
+					this.count[4] += 1;
+					break;
+				case "ecology":
+					this.count[5] += 1;
+					break;
+				case "study":
+					this.count[6] += 1;
+					break;
+				case "risk":
+					this.count[7] += 1;
+					break;
+			}
+		},
+		getOut:function(){
+			var endTime = new Date(); 
+			sessionStorage.endTime= endTime.getFullYear()+'-'+(endTime.getMonth()+1)+'-'+endTime.getDate()+' '+endTime.getHours()+':'+endTime.getMinutes()+':' +endTime.getSeconds();
+			var step = "";
+			if(this.count[0]>0){step += "监控概况、";}
+			if(this.count[1]>0){step += "基础信息、";}
+			if(this.count[2]>0){step += "工作管理、";}
+			if(this.count[3]>0){step += "视频监控、";}
+			if(this.count[4]>0){step += "动植物监测、";}
+			if(this.count[5]>0){step += "生态监测、";}
+			if(this.count[6]>0){step += "科研宣教、";}
+			if(this.count[7]>0){step += "风险分析、";}
+			sessionStorage.count = step;
+			/*$.ajax({
+				url:"",
+				type:"post",
+				data:{},
+				success:function(){}
+			});*/
+			//window.location.href = "login.html";
+		}
+	}
 }
 var myfooter={
 	template:`<div style="color:green;">footer</div>`

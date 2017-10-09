@@ -62,7 +62,7 @@
 							<th class="db-startTime">进入时间</th>
 							<th class="db-endTime">退出时间</th>
 							<th class="db-computerIp">计算机IP地址</th>
-							<th class="db-workStep">操作模块</th>
+							<th class="db-count">操作模块</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -80,7 +80,7 @@
 								<span :title="user.computerIp" class="fs12">{{user.computerIp}}</span>
 							</td>
 							<td>
-								<span :title="user.workStep" class="fs12">{{user.workStep}}</span>
+								<span :title="user.count" class="fs12">{{user.count}}</span>
 							</td>
 						</tr>
 						<!--<tr>
@@ -132,15 +132,16 @@ var app = new Vue({
 	  getonce:function(){ 
 		$.ajax({
 			type: "get",
-			dataType: "json",
-			url:"",
+			//dataType: "json",
+			url:"../../localDataTest/userLogsData.json",
 			//data: {},
-			beforeSend: function( xhr ) { 
+			/*beforeSend: function( xhr ) { 
 				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
-			}, 
+			},*/ 
 			success: function (data) {
 				if (data != "") {
-					//
+					app.tableData = data;
+					
 				}
 			}
 		});
