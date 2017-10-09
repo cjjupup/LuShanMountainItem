@@ -1,0 +1,266 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>系统设置--服务器监测</title>
+		<!--css样式引入-->
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/all.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/dark.css"/>
+		<!--引入js样式组件-->
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/include.js"></script>
+		<script src="../../js/config.js"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/vue-echarts.js"></script>
+		<script src="../../js/vue-resource.1.3.4.js"></script>
+		<script src="../../js/elementui.js"></script>
+		<script src="../../js/url.js"></script>
+	</head>
+	<body>
+		<div id="app" :class="once?'show':''">
+			<!--引入公共头部-->
+			<myheader navactive="work"></myheader>
+			<!--主体内容区域-->
+			<div class="main header-wraper-height">
+				<!--左侧导航栏-->
+				<leftsystem leftactive='fwqjc'></leftsystem>
+				<!--右侧主要部分-->
+				<div class="view-date" style="padding-left: 226px;">
+					<div>
+						<el-row>
+							<el-col :span="24">
+								<div class="grid-content" style="padding: 10px;height: 352px;">
+									<chart style="height: 352px;" :options="chart_1" ref="chart1" id="achart_1"></chart>
+								</div>
+							</el-col>
+						</el-row>
+					</div>
+					<br /><br /><br />
+					<div>
+						<el-row>
+							<el-col :span="24">
+								<div class="grid-content" style="padding: 10px;height: 352px;">
+									<chart style="height: 352px;" :options="chart_2" ref="chart2" id="achart_2"></chart>
+								</div>
+							</el-col>
+						</el-row>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			document.getElementById("achart_1").style.width = document.body.clientWidth - 320;
+			document.getElementById("achart_2").style.width = document.body.clientWidth - 320;
+			window.onresize = function () {
+			    document.getElementById("achart_1").style.width = document.body.clientWidth - 320;
+				document.getElementById("achart_2").style.width = document.body.clientWidth - 320;
+				app.size = document.body.clientWidth;
+			};
+			var datas = [];
+			var chartData1 = {
+				title: {
+			        text: 'CPU使用记录',
+			        textStyle: {  
+						fontWeight:'normal', 
+						color:'#fff',
+						fontSize:19
+					}
+			   },
+			   	backgroundColor:"#24263E",
+			    xAxis: 
+			    [
+				    {
+				    	show:false,
+				        type: 'time',
+				        splitLine: {
+				            show: true
+				        },
+				        data:[],
+				        axisLine:{  
+								lineStyle:{  
+									color:'white',  
+									width:1 
+								}  
+							}
+				    }
+			    ],
+			    yAxis:[ {
+			    	min:0,
+			    	max:100,
+			    	minInterval:20,
+			    	name:"%",
+			        axisLine:{  
+							lineStyle:{  
+								color:'white',  
+								width:1 
+							}  
+						}
+			    }],
+			    series: [{
+			        name: 'CPU使用率',
+			        type: 'line',
+			        showSymbol: false,
+			        hoverAnimation: false,
+			        lineStyle:{
+			        	normal:{
+			        		color:'yellow',
+			        		width:'3'
+			        	}
+			        },
+			        data: datas
+			    }],
+			};
+			var chartData2 = {
+				title: {
+			        text: '内存使用记录',
+			        textStyle: {  
+						fontWeight:'normal', 
+						color:'#fff',
+						fontSize:19
+					}
+			  	},
+			   	backgroundColor:"#24263E",
+			    xAxis:[{
+			    		show:false,
+				        type: 'time',
+				        splitLine: {
+				            show: true
+				        },
+				        axisLine:{  
+								lineStyle:{  
+									color:'white',  
+									width:1 
+								}  
+							}
+				}],
+			    yAxis:[ {
+			    	min:0,
+			    	max:8000,
+			    	name:"MB",
+			        axisLine:{  
+							lineStyle:{  
+								color:'white',  
+								width:1 
+							}  
+						}
+			    }],
+			    series: [
+				    {
+				        name: '内存使用',
+				        type: 'line',
+				        showSymbol: false,
+				        hoverAnimation: false,
+				        lineStyle:{
+				        	normal:{
+				        		color:'aqua',
+				        		width:'3'
+				        	}
+				        },
+				        data: datas
+				    }
+			    ],
+			};
+
+			var app = new Vue({
+				el:"#app",
+				components:{
+					chart:VueECharts,
+					myheader:myheader,
+					leftsystem:leftsystem
+				},
+				data:{
+					once:true,
+					size:'',
+					datas:[],
+					datelist:[],
+					datelists:[],
+					data_f:[],
+					data_s:[],
+					chart_1:{},
+					chart_2:{}
+				},
+				methods:{
+					getCPU:function(){
+						//初始化CPU使用率
+						chartData1.series[0].data = [];
+						this.chart_1 = chartData1;
+						//初始化内存使用情况
+						chartData2.series[0].data = [];
+						this.chart_2 = chartData2;
+						function randomData() {
+						    now = new Date(+now + oneDay);
+						    var value = Math.floor(Math.random()*50);
+						    return {
+						        name: now.toString(),
+						        value: [
+						            [
+						            now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+						            Math.round(value)
+						        ]
+						    }
+						}
+						var datas = [];
+						var nums = 1;
+						var now = 0;
+						var oneDay = 24 * 3600 * 1000;
+						/*第一次插入多少条数据*/
+						for (var i = 0; i < 20; i++) {
+						    datas.push(randomData());
+						}
+						setInterval(function () {
+						/*控制一次性追加的数据*/
+						    for (var i = 0; i < 1; i++) {
+						        datas.shift();
+						        datas.push(randomData());
+						    }
+						   chartData1.series[0].data = datas;
+						   this.chart_1 = chartData1;
+						}, 1000);
+					},
+					getstore:function(){
+						function randomData() {
+						    now = new Date(+now + oneDay);
+						    var value = Math.floor(Math.random()*1000+1900);
+						    return {
+						        name: now.toString(),
+						        value: [
+						            [
+						            now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+						            Math.round(value)
+						        ]
+						    }
+						}
+						var datas = [];
+						var nums = 1;
+						var now = 0;
+						var oneDay = 24 * 3600 * 1000;
+						/*第一次插入多少条数据*/
+						for (var i = 0; i < 20; i++) {
+						    datas.push(randomData());
+						}
+						setInterval(function () {
+						/*控制一次性追加的数据*/
+						    for (var i = 0; i < 1; i++) {
+						        datas.shift();
+						        datas.push(randomData());
+						    }
+						   chartData2.series[0].data = datas;
+						   this.chart_2 = chartData2;
+						}, 1000);
+					},
+				},
+				watch:{
+					size:function(){
+						this.$refs.chart1.resize();
+						this.$refs.chart2.resize();
+					}
+				}
+			});
+			app.getCPU();
+			app.getstore();
+		</script>
+	</body>
+</html>
