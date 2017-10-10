@@ -219,7 +219,6 @@ var app = new Vue({
         var fileObj = $file[0];
 		console.log(fileObj);
         var windowURL = window.URL || window.webkitURL;
-		console.log(windowURL);
         var dataURL;
         var $img = $("#info_img");
         if(fileObj && fileObj.files && fileObj.files[0]){
