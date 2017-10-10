@@ -38,7 +38,7 @@
 						<div class="info_baseinfo">
 							<p style="font-size: 18px;">{{user.name}}</p>
 							<p>用户名 : {{user.username}} ({{user.type}})</p>
-							<p><span @click="changeImg()">修改头像</span><span @click="changePassword()">修改密码</span></p>
+							<p><span>修改头像</span><span @click="changePassword()">修改密码</span></p>
 						</div>
 					</el-row>
 		            <el-row style="margin-top:10px;padding:20px 25px;background:#24263E">
@@ -76,8 +76,23 @@
 								</el-col>
 							</el-row>	            	    	
 	            	    </el-form>
-
 		            </el-row>
+			    </div>
+			    <div class="mask" v-show="mask"></div>
+			    <div class="changePassword" v-show="changePass">
+			    	<p style="text-align:center;">经检测，您的账号处于安全状态，请放心操作</p>
+					 <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+					   <el-form-item label="新密码密码" prop="pass">
+						 <el-input v-model="ruleForm2.pass" auto-complete="off"></el-input>
+					   </el-form-item>
+					   <el-form-item label="再次输入新密码" prop="checkPass">
+						 <el-input v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
+					   </el-form-item>
+					   <el-form-item>
+						 <el-button type="primary" @click="submitForm('ruleForm2')">更改</el-button>
+						 <el-button @click="resetForm('ruleForm2')">取消</el-button>
+					   </el-form-item>
+					 </el-form>
 			    </div>
 			</div>
 		</div>
@@ -86,6 +101,28 @@
 </body>
 </html>
 <script>
+//修改头像
+
+//修改密码验证
+  var validatePass = (rule, value, callback) => {
+	if (value === '') {
+	  callback(new Error('请输入密码'));
+	} else {
+	  if (this.ruleForm2.checkPass !== '') {
+		this.$refs.ruleForm2.validateField('checkPass');
+	  }
+	  callback();
+	}
+  };
+  var validatePass2 = (rule, value, callback) => {
+	if (value === '') {
+	  callback(new Error('请再次输入密码'));
+	} else if (value !== this.ruleForm2.pass) {
+	  callback(new Error('两次输入密码不一致!'));
+	} else {
+	  callback();
+	}
+  };
 var app = new Vue({
   el: '#app',
   components: {
@@ -98,6 +135,8 @@ var app = new Vue({
   data: {
 	once:true,
 	edit:false,
+	mask:false,
+	changePass:false,
 	user:{
 		name:"李雷",
 		username:"lilei",
@@ -133,36 +172,50 @@ var app = new Vue({
 		email: [
 		  { required: true, message: '请输入邮箱', trigger: 'blur' }
 	    ],
-	}
+	},
+	validatePass:window.validatePass,
+	validatePass2:window.validatePass2,
+	ruleForm2:{
+		pass:"",
+		checkPass:"",
+	},
+	rules2:{
+		pass: [
+            { validator: validatePass, trigger: 'blur' }
+	    ],
+	    checkPass: [
+		  { validator: validatePass2, trigger: 'blur' }
+	    ],
+	},
+	 
   },
   methods:{
 	  getonce:function(){ 
 	      
 	  },
-	  changeImg:function(){
-		  
-	  },
+	 
+	  //修改密码
 	  changePassword:function(){
-	      layer.open({
-			  type: 1,
-			  skin: 'layui-layer-rim', //加上边框
-			  area: ['420px', '240px'], //宽高
-			  content: `<p style="text-align:center;">经检测，您的账号处于安全状态，请放心操作</p>
-                         <el-form :model="ruleForm2" :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
-						   <el-form-item label="新密码密码" prop="pass">
-							 <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
-						   </el-form-item>
-						   <el-form-item label="再次输入新密码" prop="checkPass">
-							 <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
-						   </el-form-item>
-						   <el-form-item>
-							 <el-button type="primary" @click="submitForm('ruleForm2')">更改</el-button>
-							 <el-button @click="resetForm('ruleForm2')">取消</el-button>
-						   </el-form-item>
-						 </el-form>
-                         `
-			});
+	      app.mask = true;
+		  app.changePass = true;
       },
+	  submitForm:function(formName){
+		  this.$refs[formName].validate((valid) => {
+			  if (valid) {
+				//异步提交新密码
+			  } else {
+				console.log('error submit!!');
+				return false;
+			  }
+			});
+	  },
+	  resetForm:function(formName) {
+        this.$refs[formName].resetFields();
+		app.mask = false;
+		app.changePass = false;
+      },
+	  
+	  //编辑信息
 	  editInfo:function(){
 		  app.edit = true;
 		  app.ruleForm.station = app.user.station;
@@ -191,4 +244,5 @@ var app = new Vue({
 });
 app.getonce();
 
+	
 </script>

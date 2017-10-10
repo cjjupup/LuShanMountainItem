@@ -1219,3 +1219,21 @@ iframe.full_Iframe{overflow-x: hidden;}
 	margin-bottom:22px;
 	margin-left:33px;
 }
+
+.changePassword{
+	position: absolute;
+	top:250px;
+	left:20%;
+	width:60%;
+	padding:30px;
+	z-index: 9999999999999999999;
+	background:#fff;
+}
+
+
+
+
+
+
+
+
