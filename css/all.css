@@ -1134,8 +1134,30 @@ iframe.full_Iframe{overflow-x: hidden;}
 	height:auto;
 }
 
-
-
+/*消息管理中心样式*/
+.newssub{
+	width: 95%;
+	height: 80%;
+	margin: 0 auto;
+	margin-top: 120px;
+}
+.newssub .newssub_head{
+	color: white;
+	font: 700 18px/32px '微软雅黑';
+}
+.newssub .newstitle{
+	width: 70%;
+	height: 32px;
+	margin-left: 10px;
+	font-size: 18px;
+	border-radius: 5px
+}
+.newssub .submit{
+	width: 120px;
+	height: 32px;
+	line-height: 0;
+	margin-left: 10px;
+}
 
 
 
