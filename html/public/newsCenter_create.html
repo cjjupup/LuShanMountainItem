@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>生态资源监测及风险管控系统-消息中心发布消息</title>
+		<!--css样式引入-->
+		<link rel="stylesheet" type="text/css" href="../../css/index.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/fonts/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/all.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/dark.css"/>
+		<!--引入js样式组件-->
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/include.js"></script>
+		<script src="../../js/config.js"></script>
+		<script src="../../js/jquery.min.js"></script>
+		<script src="../../js/vue-echarts.js"></script>
+		<script src="../../js/vue-resource.1.3.4.js"></script>
+		<script src="../../js/elementui.js"></script>
+		<script src="../../js/url.js"></script>
+		<!--引入Ueditor富文本编辑器-->
+		<script src="../../js/ueditor/ueditor.config.js"></script>
+		<script src="../../js/ueditor/ueditor.all.js"></script>
+	</head>
+	<body>
+		<div id="app" :class="once?'show':''">
+			<!--引入公共头部-->
+			<myheader navactive="work"></myheader>
+			<!--引入左侧部分-->
+			<leftnewscenter leftactive="newscreate"></leftnewscenter>
+			<!--右侧主体-->
+			<div class="view-date" style="padding-left: 226px;">
+				<div class="newssub">
+					<form action="##" id="sub" method="post">
+						<div class="newssub_title">
+							<span class="newssub_head">文档标题</span>
+							<input type="text" id="newstitle" class="newstitle" name="newstitle" autocomplete="off"/>
+							<el-button type="primary" class="submit" id="submit">提交</el-button>
+						</div>
+						<script id="newscontainer" name='content' type="text/plain" style="width: 95%;height: 500px;margin-top: 25px;"></script>
+					</form>
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript">
+			/*配置ueditor*/
+			var ue = UE.getEditor('newscontainer',{
+					autoHeight:false,
+					toolbars: [
+					    ['fullscreen', 'source', 'undo', 'redo','fontfamily','fontsize','insertimage','justifyleft','justifyright','justifycenter','justifyjustify'],
+					    ['bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', '|', 'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', 'selectall', 'cleardoc']
+					]
+				});
+			var app = new Vue({
+				el:"#app",
+				components:{
+					myheader:myheader,
+					leftnewscenter:leftnewscenter
+				},
+				data:{
+					once:true
+				}
+			})
+		</script>
+	</body>
+</html>
