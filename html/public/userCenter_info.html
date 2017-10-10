@@ -38,7 +38,9 @@
 						<div class="info_baseinfo">
 							<p style="font-size: 18px;">{{user.name}}</p>
 							<p>用户名 : {{user.username}} ({{user.type}})</p>
-							<p><span>修改头像</span><span @click="changePassword()">修改密码</span></p>
+							<p><span>修改头像</span>
+							<span @click="changePassword()">修改密码</span></p>
+							<input type="file" id="mytest" v-on:change="showimg()">
 						</div>
 					</el-row>
 		            <el-row style="margin-top:10px;padding:20px 25px;background:#24263E">
@@ -102,7 +104,24 @@
 </html>
 <script>
 //修改头像
-
+/*	console.log($("#mytest"));
+$("#mytest").change(function() {
+        var $file = $(this);
+        var fileObj = $file[0];
+        var windowURL = window.URL || window.webkitURL;
+        var dataURL;
+        var $img = $("#info_img");
+        if(fileObj && fileObj.files && fileObj.files[0]){
+        dataURL = windowURL.createObjectURL(fileObj.files[0]);
+        $img.attr('src',dataURL);
+        }else{
+        dataURL = $file.val();
+        var imgObj = document.getElementById("info_img");
+        imgObj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+        imgObj.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = dataURL;
+         
+        }
+    });*/
 //修改密码验证
   var validatePass = (rule, value, callback) => {
 	if (value === '') {
@@ -193,7 +212,23 @@ var app = new Vue({
 	  getonce:function(){ 
 	      
 	  },
-	 
+	  showimg:function(){
+        var $file = $(this);
+        var fileObj = $file[0];
+        var windowURL = window.URL || window.webkitURL;
+        var dataURL;
+        var $img = $("#info_img");
+        if(fileObj && fileObj.files && fileObj.files[0]){
+        dataURL = windowURL.createObjectURL(fileObj.files[0]);
+        $img.attr('src',dataURL);
+        }/*else{
+        dataURL = $file.val();
+        var imgObj = document.getElementById("info_img");
+        imgObj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+        imgObj.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = dataURL;
+         
+        }*/
+	  },
 	  //修改密码
 	  changePassword:function(){
 	      app.mask = true;
