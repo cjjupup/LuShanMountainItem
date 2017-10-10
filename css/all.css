@@ -1135,14 +1135,56 @@ iframe.full_Iframe{overflow-x: hidden;}
 }
 
 
+/**用户中心**/
+.info_img{
+	width:120px;
+	height:120px;
+	display:inline-block;
+	float:left;
+}
+.info_img img{
+	width:100%;
+	height:100%;
+}
+.info_baseinfo{
+	display:inline-block;
+	height:90px;
+	float:left;
+	margin-left:20px;
+}
+.info_baseinfo p{
+	color:#B7B7BD;
+	line-height: 25px;
+	margin-top:10px;
+}
+.info_baseinfo p span{
+	cursor: pointer;
+	border-bottom: 1px solid #B7B7BD;
+	margin-right:5px;
+}
 
-
-
-
-
-
-
-
-
-
-
+.info_title{
+	line-height: 30px;
+	color:#B7B7BD;
+	font-size: 18px;
+	margin-bottom: 10px;
+}
+.info_title b{
+	display:inline-block;
+	float:right;
+	margin-right:20px;
+	font-size: 14px;
+	font-weight: normal;
+	color:#4774CF;
+	cursor:pointer;
+}
+.info_title b:hover{
+	color:red;
+}
+.info_item{
+	font-size: 14px;
+	color:#B7B7BD;
+	line-height: 36px;
+	margin-bottom:22px;
+	margin-left:33px;
+}
