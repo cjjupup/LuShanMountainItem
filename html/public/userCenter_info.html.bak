@@ -33,7 +33,7 @@
 				<div class="view-header-wrap wth-view-header" style="z-index: 1">
 					<el-row style="padding:40px 25px;background:#24263E">
 						<div class="info_img">
-						    <img id="info_img" src="#">
+						    <img id="info_img" src="../../img/tcq.png">
 						</div>
 						<div class="info_baseinfo">
 							<p style="font-size: 18px;">{{user.name}}</p>
@@ -104,8 +104,24 @@
 </html>
 <script>
 //修改头像
-
-  
+/*	console.log($("#mytest"));
+$("#mytest").change(function() {
+        var $file = $(this);
+        var fileObj = $file[0];
+        var windowURL = window.URL || window.webkitURL;
+        var dataURL;
+        var $img = $("#info_img");
+        if(fileObj && fileObj.files && fileObj.files[0]){
+        dataURL = windowURL.createObjectURL(fileObj.files[0]);
+        $img.attr('src',dataURL);
+        }else{
+        dataURL = $file.val();
+        var imgObj = document.getElementById("info_img");
+        imgObj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+        imgObj.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = dataURL;
+         
+        }
+    });*/
 //修改密码验证
   var validatePass = (rule, value, callback) => {
 	if (value === '') {
@@ -196,20 +212,26 @@ var app = new Vue({
 	  getonce:function(){ 
 	      
 	  },
-	  //修改头像
 	  showimg:function(){
-
-		  var fileObj = $("#mytest")[0];
-		  var windowURL = window.URL || window.webkitURL;
-		  var dataURL;
-		  var $img = $("#info_img");
-		  console.log(fileObj.files[0]);
-		  dataURL = windowURL.createObjectURL(fileObj.files[0]);
-		  console.log(dataURL);
-		  $img.attr('src',dataURL);
-		  /*$.post(url,data,function(){
-			  //修改路径上传服务器
-		  });*/
+		  
+        var $file = $(this);
+		
+        var fileObj = $file[0];
+		console.log(fileObj);
+        var windowURL = window.URL || window.webkitURL;
+        var dataURL;
+        var $img = $("#info_img");
+        if(fileObj && fileObj.files && fileObj.files[0]){
+        dataURL = windowURL.createObjectURL(fileObj.files[0]);
+		console.log(dataURL);
+        $img.attr('src',dataURL);
+        }/*else{
+        dataURL = $file.val();
+        var imgObj = document.getElementById("info_img");
+        imgObj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
+        imgObj.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = dataURL;
+         
+        }*/
 	  },
 	  //修改密码
 	  changePassword:function(){
