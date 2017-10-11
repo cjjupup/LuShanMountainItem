@@ -24,11 +24,11 @@
 </head>
 <body>
 	<div id="app" :class = "once?'show':''">
-		<myheader navactive="work"></myheader>
+		<myheader navactive="risk"></myheader>
 		<!-- 内容区域 -->
 		<div class="main header-wraper-height">
 			<!-- 左侧 -->
-			<leftwork leftactive="hzfx"></leftwork>
+			<leftrisk leftactive="jstr"></leftrisk>
 			<!-- 右侧 -->
 			<div class="view-date" style="padding-left: 226px;">
 				<div class="view-header-wrap wth-view-header" style="z-index: 1">
@@ -213,7 +213,7 @@ var app = new Vue({
     chart:VueECharts,
 	myheader:myheader,
 	myfooter:myfooter,
-	leftwork:leftwork
+	leftrisk:leftrisk
   },
   data: {
 	once:true,
