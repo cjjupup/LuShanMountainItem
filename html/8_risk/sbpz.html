@@ -65,7 +65,7 @@
 						    <th class="db-type">设备类型</th>
 						    <th class="db-name">设备名称</th>
 						    <th class="db-num">设备编号</th>
-							<th class="db-time">购买时间</th>
+							<th class="db-date">购买时间</th>
 							<th class="db-manufacturer">设备厂商</th>
 							<th class="db-address">Mac地址</th>
 							<th class="db-edit">编辑</th>
@@ -76,7 +76,7 @@
 						    <td><span :title="user.type" class="fs12">{{user.type}}</td>
 						    <td><span :title="user.name" class="fs12">{{user.name}}</td>
 						    <td><span :title="user.num" class="fs12">{{user.num}}</span></td>
-							<td><span :title="user.time" class="fs12">{{user.time}}</span></td>
+							<td><span :title="user.date" class="fs12">{{user.date}}</span></td>
 							<td><span :title="user.manufacturer" class="fs12">{{user.manufacturer}}</span></td>
 							<td><span :title="user.address" class="fs12">{{user.address}}</span></td>
 							<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
@@ -140,8 +140,8 @@
 								</el-col>
 								<el-col :span="9">
 									<el-form-item label="购买时间" required>
-									    <el-form-item prop="time">
-										    <el-date-picker type="time" placeholder="选择日期" v-model="ruleForm.date" style="width: 100%;"></el-date-picker>
+									    <el-form-item prop="date">
+										    <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date" style="width: 100%;"></el-date-picker>
 									    </el-form-item>
 									</el-form-item>
 								</el-col>
@@ -222,7 +222,7 @@ var app = new Vue({
 		type:'',
 		name:'',
 		num:'',
-		time:'',
+		date:'',
 		manufacturer:'',
 		address:'',
 	},
@@ -238,7 +238,7 @@ var app = new Vue({
 		    { required: true, message: '请输入设备编号'},
 		    { type:'number', message: '编号必须为数字值'}
 		],
-		time: [
+		date: [
 			{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }
 		],
 		manufacturer:[
@@ -337,7 +337,7 @@ var app = new Vue({
 				layer.confirm('已选定经纬坐标：'+e.point.lng + " / " + e.point.lat, {
 				  btn: ['确认定位','重新定位'] //按钮
 				}, function(){
-					layer.msg('定位成功',{time:700},{icon: 1} );
+					layer.msg('定位成功',{date:700},{icon: 1} );
 				  app.ruleForm.gps = e.point.lng + "," + e.point.lat;
 				  $(".selectGPS").css("display","none");
 				  //layer.msg('的确很重要', {icon: 1});
