@@ -64,6 +64,15 @@ var myfooter={
 	template:`<div style="color:green;">footer</div>`
 }
 
+var lefthome={
+	template:`<div class="dash-sidebar J_dash_sidebar" style="width:206px"><a class="drag-btn" title="拖动调整宽度"></a><div class="J-scroll-project project-nav project-list project-list-common"><div class="list-hd angular-ui-tree"><ul class="own-project-list angular-ui-tree-nodes" id="tree-root">
+<li class="project-item J-project-item angular-ui-tree-node active first"><div class="cat-op-parent level-0"><a class="nowrap project-name"><i class="icon iconfont icon-zhankai"></i> <span>监控概括</span></a></div></li>
+</ul></div></div></div>`,
+	props:['leftactive']
+}
+
+
+
 
 var leftbaseinfo={
 	template:`<div class="dash-sidebar J_dash_sidebar" style="width:206px"><a class="drag-btn" title="拖动调整宽度"></a><div class="J-scroll-project project-nav project-list project-list-common"><div class="list-hd angular-ui-tree"><ul class="own-project-list angular-ui-tree-nodes" id="tree-root">

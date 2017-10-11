@@ -2,6 +2,7 @@ $(function(){
     $(".home").on("click",function(){
 		//window.location.href = urlServer.baseUrl + urlServer.baseHome;
 		//window.open(urlServer.baseUrl + urlServer.baseHome);
+		window.location.href = "../1_home/index.html";
 	}); 
 	$(".baseinfo").on("click",function(){
 		//window.location.href = urlServer.baseUrl + urlServer.baseBaseinfo;

@@ -1,0 +1,94 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+	 <script type="text/javascript" src="../../js/layer.js"></script>
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="home"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<lefthome leftactive="#"></lefthome>
+			<!-- 右侧 -->
+			<div class="view-date" style="padding-left: 226px;">
+				<div class="contentbody">
+					<div>
+						<div class="itemBox"></div>
+						<div class="itemBox">
+							<p class="itemTitle" style="background:#3B4F83;"><i class="icon iconfont icon-jiaoyu"></i>当月巡护里程排行</p>
+							<p class="rankP oddP"><i class="rank num_1"></i>张三 ( 南昌站 ) <i class="dashline"></i><span>33km</span></p>
+							<p class="rankP evenP"><i class="rank num_2"></i>李四 ( 南昌站 ) <i class="dashline"></i><span>28km</span></p>
+							<p class="rankP oddP"><i class="rank num_3"></i>王五 ( 南昌站 ) <i class="dashline"></i><span>26km</span></p>
+							<p class="rankP evenP"><i class="rank num_4"></i>小六 ( 南昌站 ) <i class="dashline"></i><span>22km</span></p>
+							<p class="rankP oddP"><i class="rank num_5"></i>七仔 ( 南昌站 ) <i class="dashline"></i><span>19km</span></p>
+						</div>
+						<div class="itemBox">
+							<p class="itemTitle" style="background:#3B4F83;"><i class="icon iconfont icon-jiaoyu"></i>当月野生动物出现次数排行</p>
+							<p class="rankP oddP"><i class="rank num_1"></i>豺 <i class="dashline"></i><span>8</span></p>
+							<p class="rankP evenP"><i class="rank num_2"></i>狼 <i class="dashline"></i><span>7</span></p>
+							<p class="rankP oddP"><i class="rank num_3"></i>虎  <i class="dashline"></i><span>6</span></p>
+							<p class="rankP evenP"><i class="rank num_4"></i>豹  <i class="dashline"></i><span>5</span></p>
+							<p class="rankP oddP"><i class="rank num_5"></i>狮  <i class="dashline"></i><span>4</span></p>
+						</div>
+					</div>
+					<div>
+						<div class="itemtip">
+							<p class="itemTitle"><i class="icon iconfont icon-jiaoyu"></i>当月统计信息</p>
+						</div>
+						<div class="itemcontent"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>
+<script>
+
+var app = new Vue({
+  el: '#app',
+  components: {
+    // <my-component> 将只在父模板可用
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	lefthome:lefthome
+  },
+  data: {
+	once:true,
+	dataBox:[],
+	
+  },
+  methods:{
+	  getonce:function(){ 
+	      $.get("https://way.jd.com/jisuapi/weather1?appkey=bc3d17ae81c3e60f16944a21261b3068",function(res){
+			  console.log(res);
+		  })
+	  },
+	  
+  }
+});
+app.getonce();
+
+	
+</script>
