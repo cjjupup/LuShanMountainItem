@@ -1274,7 +1274,7 @@ iframe.full_Iframe{overflow-x: hidden;}
     background:-webkit-gradient(linear, left bottom, right top, from(#2d717f),to(#203a63));
 }
 .itemBox{
-	
+	position: relative;
 	display:inline-block;
 	float:left;
 	width:25%;
@@ -1282,6 +1282,65 @@ iframe.full_Iframe{overflow-x: hidden;}
 	margin-top:40px;
 	height:294px;
 	background-color:rgba(0,0,0,0.1);
+}
+.itemBox .weather_1{
+	width:100%;
+	padding:10px 0 20px;
+	position: relative;
+}
+.itemBox .weather_1 .s1{
+	position: absolute;
+	top:30px;
+	left:30px;
+	font-size: 48px;
+	color:#fff;
+}
+.itemBox .weather_1 .s2{
+	position: absolute;
+	top:38px;
+	left:220px;
+	font-size: 36px;
+	color:#fff;
+}
+.itemBox .weather_1 .s3{
+	position: absolute;
+	top:100px;
+	left:30px;
+	font-size: 14px;
+	color:#fff;
+}
+.itemBox .weather_1 .s4{
+	position: absolute;
+	top:130px;
+	left:40px;
+	font-size: 18px;
+	color:#fff;
+}
+.itemBox .weather_2{
+	width:100%;
+	height:80px;
+	position: absolute;
+	bottom:0;
+	background:rgba(255,255,255,0.6);
+}
+.itemBox .weather_2 .i1{
+	position: absolute;
+	top:20px;
+	left:30px;
+	font-size: 24px;
+	color:#4f80e2;
+}
+.itemBox .weather_2 .p1{
+	text-align: center;
+	color:#4f80e2;
+	font-size: 16px;
+}
+.itemBox .weather_2 .s1{
+	font-size: 26px;
+}
+.itemBox .weather_2 .p2{
+	text-align: center;
+	font-size: 16px;
 }
 .itemBox .rankP{
 	line-height: 50px;

@@ -32,7 +32,26 @@
 			<div class="view-date" style="padding-left: 226px;">
 				<div class="contentbody">
 					<div>
-						<div class="itemBox"></div>
+						<div class="itemBox">
+							<div class="weather_1">
+								<span class="s1">{{weather.temperature}} ℃</span>
+								<span class="s2">{{weather.weather}}</span>
+								<span class="s3">{{weather.city}} {{weather.reporttime}}</span>
+								<span class="s4">{{nowtime}}</span>
+							</div>
+							<div class="weather_2">
+								<div style="width:45%;position:relative;display:inline-block;padding:10px 0;">
+									<i class="icon iconfont icon-geren i1"></i>
+									<p class="p1"><span class="s1">{{weather.windpower}}</span> 级</p>
+									<p class="p2">风向： {{weather.winddirection}}</p>
+								</div>
+								<div style="width:45%;position:relative;display:inline-block;;padding:10px 0;">
+									<i class="icon iconfont icon-geren i1"></i>
+									<p class="p1"><span class="s1">{{weather.humidity}}</span></p>
+									<p class="p2">空气湿度</p>
+								</div>
+							</div>
+						</div>
 						<div class="itemBox">
 							<p class="itemTitle" style="background:#3B4F83;"><i class="icon iconfont icon-jiaoyu"></i>当月巡护里程排行</p>
 							<p class="rankP oddP"><i class="rank num_1"></i>张三 ( 南昌站 ) <i class="dashline"></i><span>33km</span></p>
@@ -141,7 +160,6 @@
 var app = new Vue({
   el: '#app',
   components: {
-    // <my-component> 将只在父模板可用
     chart:VueECharts,
 	myheader:myheader,
 	myfooter:myfooter,
@@ -150,13 +168,24 @@ var app = new Vue({
   data: {
 	once:true,
 	dataBox:[],
-	
+	weather:[],
+	nowtime:"",
   },
   methods:{
 	  getonce:function(){ 
-	      $.get("https://way.jd.com/jisuapi/weather1?appkey=bc3d17ae81c3e60f16944a21261b3068",function(res){
-			  console.log(res);
+	      $.get("http://restapi.amap.com/v3/weather/weatherInfo?key=be5763462800ed53811798fc6b2621fa&city=九江市&extensions=base&output=JSON",function(res){
+			  res.lives[0].reporttime = res.lives[0].reporttime.slice(0,10);
+			  app.weather = res.lives[0];
 		  })
+		  setInterval(function(){
+			  var h = new Date().getHours();
+			  var m = new Date().getMinutes();
+			  var s = new Date().getSeconds();
+			  if(m<10){m = "0" + m};
+			  if(s<10){s = "0" + s};
+			  app.nowtime = h + " : " + m + " : " + s;
+			  console.log(app.nowtime);
+		  },1000);
 	  },
 	  
   }
