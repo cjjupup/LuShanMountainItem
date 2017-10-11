@@ -40,7 +40,7 @@
 							<p>用户名 : {{user.username}} ({{user.type}})</p>
 							<p><span>修改头像</span>
 							<span @click="changePassword()">修改密码</span></p>
-							<input type="file" id="mytest">
+							<input type="file" id="mytest" v-on:change="showimg()">
 						</div>
 					</el-row>
 		            <el-row style="margin-top:10px;padding:20px 25px;background:#24263E">
@@ -104,28 +104,8 @@
 </html>
 <script>
 //修改头像
-	
-   $("#mytest").change(function() {
-	   console.log("asdasd");
-        var $file = $(this);
-        var fileObj = $file[0];
-	   console.log(fileObj);
-        var windowURL = window.URL || window.webkitURL;
-	   console.log(windowURL);
-        var dataURL;
-        var $img = $("#info_img");
-	   console.log(fileObj && fileObj.files && fileObj.files[0]);
-        if(fileObj && fileObj.files && fileObj.files[0]){
-        dataURL = windowURL.createObjectURL(fileObj.files[0]);
-        $img.attr('src',dataURL);
-        }/*else{
-        dataURL = $file.val();
-        var imgObj = document.getElementById("ImgPr");
-        imgObj.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale)";
-        imgObj.filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = dataURL;
-         
-        }*/
-    });
+
+  
 //修改密码验证
   var validatePass = (rule, value, callback) => {
 	if (value === '') {
@@ -216,7 +196,20 @@ var app = new Vue({
 	  getonce:function(){ 
 	      
 	  },
-	  
+	  //修改头像
+	  showimg:function(){
+		  var fileObj = $("#mytest")[0];
+		  var windowURL = window.URL || window.webkitURL;
+		  var dataURL;
+		  var $img = $("#info_img");
+		  console.log(fileObj.files[0]);
+		  dataURL = windowURL.createObjectURL(fileObj.files[0]);
+		  console.log(dataURL);
+		  $img.attr('src',dataURL);
+		  /*$.post(url,data,function(){
+			  //修改路径上传服务器
+		  });*/
+	  },
 	  //修改密码
 	  changePassword:function(){
 	      app.mask = true;
