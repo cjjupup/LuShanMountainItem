@@ -1288,6 +1288,10 @@ iframe.full_Iframe{overflow-x: hidden;}
 	font-size: 16px;
 	color:#B7B7BD;
 	position: relative;
+	cursor: pointer;
+}
+.itemBox .rankP:hover{
+	color:#fff;
 }
 .itemBox .rankP span{
 	float:right;
@@ -1351,14 +1355,49 @@ iframe.full_Iframe{overflow-x: hidden;}
 	background-color:rgba(0,0,0,0.1);
 }
 .itemcontent{
+	position: relative;
 	float:left;
 	width:83%;
 	margin-left:2%;
-	height:300px;
 	margin-top:2px;
 	background-color:rgba(0,0,0,0.1);
+	padding:30px 0 40px 0;
+}
+.itemcontent .item{
+	width:20%;
+	float:left;
+	padding:10px 2%;
+	position: relative;
+	cursor:pointer;
+	margin-bottom: 10px;
 }
 
+.itemcontent .item .iteminfo{
+	display:inline-block;
+	width:90px;
+	height:90px;
+	float:left;
+	color:#fff;
+	border-radius: 100%;
+	background:#2c2e53;
+}
+.itemcontent .item .iteminfo .iconbody{
+	color:#fff;
+	font-size: 36px;
+	display:block;
+	margin-left:28px;
+	margin-top:19px;
+}
+.itemcontent .item .iteminfo .infodata{
+	position: absolute;
+	left:80px;
+	top:10px;
+	padding:21px 0 21px 60px;
+}
+.itemcontent .item .iteminfo:hover{
+	background:#4f80e2;
+	color:#4f80e2;
+}
 
 
 
