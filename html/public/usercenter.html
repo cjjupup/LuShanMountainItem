@@ -26,22 +26,24 @@
 </head>
 <body>
 	<div id="app" :class = "once?'show':''">
-		<myheader navactive="risk"></myheader>
+		<myheader navactive=""></myheader>
 		<!-- 内容区域 -->
 		<div class="main header-wraper-height">
 			<!-- 左侧 -->
-			<leftrisk leftactive="jstrsjgl"></leftrisk>
+			<leftsystem leftactive="yhgl"></leftsystem>
 			<!-- 右侧 --><!--数据管理界面-->
 			<div class="view-date" style="padding-left: 226px;" id="dataManage" v-show="!changePage">
 				<div class="view-header-wrap wth-view-header">
 					<div class="view-header">
 						<h2 class="nowrap with-tail-btn" title="总演示数据">
-							用户角色权限配置
+							用户管理
 						</h2>
 					</div>
-					<div style="left:600px;position: absolute;z-index: 999999; line-height: 64px;">
+					<div style="left:500px;position: absolute;z-index: 999999; line-height: 64px;">
+					    <el-button type="primary" id="additem_plant">导入</el-button>
+					    <el-button type="primary" id="additem_plant">导出</el-button>
 						<el-button type="primary" id="additem_plant" @click="addItemPage()">新增记录</el-button>
-						<el-select v-model="searchType" clearable placeholder="保护站" style="width:100px;">
+						<el-select v-model="searchType" clearable placeholder="名称" style="width:100px;">
 							<el-option
 							  v-for="item in option_search"
 							  :key="item.value"
@@ -58,38 +60,27 @@
 						</el-input>
 					</div>
 				</div>
-				<p style="color:#fff;font-size:16px;margin-bottom:5px">青山湖站</p>
+				
 				<table class="table-normal database-table table-left">
 					<thead>
 						<tr>
-						    <th class="db-role">角色</th>
-						    <th class="db-id">姓名</th>
+						    <th class="db-username">用户名</th>
+						    <th class="db-password">用户密码</th>
+						    <th class="db-station">保护站</th>
+							<th class="db-sex">性别</th>
+							<th class="db-phone">手机号码</th>
+							<th class="db-state">状态</th>
 							<th class="db-edit">编辑</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="user in tableData">
-						    <td><span :title="user.role" class="fs12">{{user.role}}</td>
-						    <td><span :title="user.id" class="fs12">{{user.id}}</td>
-							<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
-						</tr>
-					</tbody>
-				</table>
-				<br/>
-				<p style="color:#fff;font-size:16px;margin-bottom:5px">艾西湖站</p>
-				<br/>
-				<table class="table-normal database-table table-left">
-					<thead>
-						<tr>
-						    <th class="db-role">角色</th>
-						    <th class="db-id">姓名</th>
-							<th class="db-edit">编辑</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="user in tableData">
-						    <td><span :title="user.role" class="fs12">{{user.role}}</td>
-						    <td><span :title="user.id" class="fs12">{{user.id}}</td>
+						    <td><span :title="user.username" class="fs12">{{user.username}}</td>
+						    <td><span :title="user.password" class="fs12">{{user.password}}</td>
+						    <td><span :title="user.station" class="fs12">{{user.station}}</span></td>
+							<td><span :title="user.sex" class="fs12">{{user.sex}}</span></td>
+							<td><span :title="user.phone" class="fs12">{{user.phone}}</span></td>
+							<td><span :title="user.state" class="fs12">{{user.state}}</span></td>
 							<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
 						</tr>
 					</tbody>
@@ -112,7 +103,7 @@
 				<div class="view-header-wrap wth-view-header">
 					<div class="view-header">
 						<h2 class="nowrap with-tail-btn" title="总演示数据">
-							用户角色权限配置
+							用户管理
 						</h2>
 					</div>
 				</div>
@@ -127,49 +118,65 @@
 						<div class="item_content">
 	                        <el-row :gutter="20" class="pt8">
 								<el-col :span="9">
-									<el-form-item label="保护站" prop="station" required>
-									    <el-select v-model="ruleForm.station" placeholder="庐山自然保护区">
-											<el-option label="庐山自然保护区" value="1"></el-option>
-											<el-option label="保护站2" value="2"></el-option>
-											<el-option label="保护站3" value="3"></el-option>
-											<el-option label="保护站4" value="4"></el-option>
-									    </el-select>
+								    <el-form-item label="用户名" prop="username" required>
+									    <el-input v-model.trim="ruleForm.username"></el-input>
 									</el-form-item>
 								</el-col>
 								<el-col :span="9">
-									<el-form-item label="人员姓名" prop="id" required>
-									    <el-select v-model="ruleForm.id" placeholder="人员1">
-											<el-option label="人员1" value="人员1"></el-option>
-											<el-option label="人员2" value="人员2"></el-option>
-											<el-option label="人员3" value="人员3"></el-option>
-											<el-option label="人员4" value="人员4"></el-option>
-									    </el-select>
+								    <el-form-item label="用户密码" prop="password" required>
+									    <el-input v-model.trim="ruleForm.password"></el-input>
 									</el-form-item>
 								</el-col>
 							</el-row>
 							<el-row :gutter="20" class="pt8">
 								<el-col :span="9">
-								  	<el-form-item label="人员角色" prop="role" required>
-									    <el-select v-model="ruleForm.role" placeholder="超级管理员">
-									        <el-option label="超级管理员" value="角色0"></el-option>
-											<el-option label="保护区管理员" value="角色1"></el-option>
-											<el-option label="保护站管理员" value="角色2"></el-option>
-											<el-option label="资料录入员" value="角色3"></el-option>
-											<el-option label="巡护员" value="角色4"></el-option>
-									    </el-select>
+								    <el-form-item label="保护站" prop="station" required>
+										<el-select v-model="ruleForm.station" placeholder="保护站1">
+										    <el-option label="保护站1" value="1"></el-option>
+										    <el-option label="保护站2" value="2"></el-option>
+										    <el-option label="保护站3" value="3"></el-option>
+										</el-select>
+									</el-form-item>
+								</el-col>
+								<el-col :span="9">
+                                    <el-form-item label="性别" prop="sex" required>
+										<el-select v-model="ruleForm.sex" placeholder="女">
+										    <el-option label="女" value="女"></el-option>
+										    <el-option label="男" value="男"></el-option>
+										</el-select>
 									</el-form-item>
 								</el-col>
 							</el-row>
 							<el-row :gutter="20" class="pt8">
-		                        <el-form-item label="权限分配" prop="action" required>
-		                            <el-checkbox-group v-model="ruleForm.action">
-                                        <el-checkbox label="角色功能1" name="action"></el-checkbox>
-                                        <el-checkbox label="角色功能2" name="action"></el-checkbox>
-                                        <el-checkbox label="角色功能3" name="action"></el-checkbox>
-                                        <el-checkbox label="角色功能4" name="action"></el-checkbox>
-                                        <el-checkbox label="角色功能5" name="action"></el-checkbox>
-		                            </el-checkbox-group>
-								</el-form-item>
+								<el-col :span="9">
+								  	<el-form-item label="手机号码" prop="phone" required>
+									    <el-input v-model.trim="ruleForm.phone"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :span="9">
+									<el-form-item label="邮箱" prop="email" required>
+									    <el-input v-model.trim="ruleForm.email"></el-input>
+									</el-form-item>
+								</el-col>
+							</el-row>
+							<el-row :gutter="20" class="pt8">
+                                <el-col :span="9">
+                                    <el-form-item label="状态" prop="state" required>
+										<el-select v-model="ruleForm.state" placeholder="正常">
+										    <el-option label="正常" value="正常"></el-option>
+										    <el-option label="休假" value="休假"></el-option>
+										    <el-option label="离职" value="离职"></el-option>
+										</el-select>
+									</el-form-item>
+								</el-col>
+								<el-col :span="9">
+                                    <el-form-item label="启用状态" prop="state_1" required>
+										<el-select v-model="ruleForm.state_1" placeholder="启用">
+										    <el-option label="启用" value="启用"></el-option>
+										    <el-option label="停用" value="停用"></el-option>
+										</el-select>
+									</el-form-item>
+								</el-col>
 							</el-row>
 						</div>
 					</div>
@@ -187,21 +194,24 @@
 					</div>
 				</el-form>
 				</div>
-			    <br/><br/><br/><br/><br/>
+				<!--GPS地图-->
+				<div class="selectGPS">
+				  <div id="GPSmap"></div>
+			    </div>
+				</br></br></br></br></br></br></br>
 			</div>
 		</div>
 	</div>
 </body>
 </html>
 <script>
-//const cityOptions = ['角色功能1', '角色功能2', '角色功能3', '角色功能4','角色功能5'];
 var app = new Vue({
   el: '#app',
   components: {
     chart:VueECharts,
 	myheader:myheader,
-	myfooter:myfooter
-	//leftrisk:leftrisk
+	myfooter:myfooter,
+	leftsystem:leftsystem
   },
   data: {
 	once:true,
@@ -209,8 +219,7 @@ var app = new Vue({
 	creatItem:true,
 	tableData:[],
 	totaldata:0,
-   isIndeterminate: true,
-	obj:{station:"全站",pageIndex:1,pageSize:10,behavior:"觅食",id:"张三"},
+	obj:{station:"全站",pageIndex:1,pageSize:10,behavior:"觅食",id:"张三"},  //五个关键数据：站点、人名、生境、页码、每页数量 后续搜索功能也要用  初始进入默认加载全部数据
 	dynamicValidateForm: {
         domains: [{
             value: ''
@@ -219,44 +228,71 @@ var app = new Vue({
     },
     option_search: [
 		{
-	        value: 'station',
-	        label: '保护站'
+	        value: 'name',
+	        label: '名称'
+	    }, {
+	        value: 'type',
+	        label: '类型'
 	    }
 	],
 	searchType: '',
 	searchContent:'', 
 	dataBox:{},
 	ruleForm: {
-		station:'',
-		id:'',
-		role:'',
-		action:[]
+		username:'',
+        password:'',
+        station:'',
+        sex:'',
+        phone:'',
+        email:'',
+        state:'',
+        state_1:''
 	},
 	rules: {
+		username:[
+            { required: true, message: '请输入用户名'},
+		    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+		],
+		password:[
+            { required: true, message: '请输入用户密码'},
+		    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+		],
 		station:[
             { required: true, message: '请选择保护站', trigger: 'change' }
 		],
-		id:[
-           { required: true, message: '请选择人员姓名', trigger: 'change' } 
+		sex:[
+            { required: true, message: '请选择性别', trigger: 'change' }
 		],
-		role:[
-            { required: true, message: '请选择人员角色', trigger: 'change' } 
+		phone:[
+            { required: true, message: '请输入电话号码'}
 		],
-		action: [
-            { type: 'array', required: true, message: '请至少选择一个权限', trigger: 'change' }
-        ]
+		email:[
+            { required: true, message: '请输入邮箱'},
+		    { pattern:/^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/, message: '邮箱必须为邮箱形式'}
+	    ],
+	    state:[
+            { required: true, message: '请选择状态', trigger: 'change' }
+	    ],
+	    state_1:[
+            { required: true, message: '请选择启用状态', trigger: 'change' }
+	    ],
+		remarks: [
+	        { required: true, message: '请填写备注', trigger: 'blur' }
+	    ]
 	}
   },
   methods:{
 	  getonce:function(){ 
 		/////获取通知公告数据
+		
 		$.ajax({
 			type: "get",
-			//dataType: "json",
-			url: "http://rapapi.org/mockjsdata/24551/role",
+			dataType: "json",
+			url: "http://rapapi.org/mockjsdata/24551/username",
+			//data: app.obj,    不做筛选 默认加载全部数据
 			beforeSend: function( xhr ) { 
 				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
-			},
+			}, 
 			success: function (data) {
 				if (data != "") {
 					app.tableData = data.list;
@@ -264,16 +300,8 @@ var app = new Vue({
 				}
 			}
 		});
+		
 	  },
-	  handleCheckAllChange(event) {
-        this.checkedCities = event.target.checked ? cityOptions : [];
-        this.isIndeterminate = false;
-      },
-      handleCheckedCitiesChange(value) {
-        let checkedCount = value.length;
-        this.checkAll = checkedCount === this.cities.length;
-        this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
-      },
 	  pageCurrentChange:function(val){
 		  //更新页码
 		  app.obj.pageIndex = val;
@@ -305,7 +333,7 @@ var app = new Vue({
 		  $.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletPatrol,{ byValue: JSON.stringify(app.obj) }, function(data) {
 			  if (data != "") {
 					app.tableData = data.list;
-				    app.totaldata = app.tableData.length;
+				    app.totaldata = app.tableData.length
 					app.once = true;
 					console.log(app.totaldata);
 			  }else{    //数据为空的提示
@@ -318,6 +346,8 @@ var app = new Vue({
 		  app.changePage = true;
 		  app.creatItem = true;
 	  },
+	  // Import:function(){},
+	  // Export:function(){},
 	  //打开gps选址
 	  showGPSmap:function(){
 		  $(".selectGPS").css("display","block");
@@ -389,10 +419,15 @@ var app = new Vue({
 		  //遍历？待优化
 		  app.dataBox = user;
 		  app.creatItem = false;
-		  app.ruleForm.station = app.dataBox.station;
-		  app.ruleForm.id = app.dataBox.id;
-		  app.ruleForm.role = app.dataBox.role;
-		  app.ruleForm.action=app.dataBox.action;
+
+		  app.ruleForm.username = app.dataBox.username;
+		  app.ruleForm.password = app.dataBox.password;
+		  app.ruleForm.station = app.dataBox.station;  
+		  app.ruleForm.sex = app.dataBox.sex;
+		  app.ruleForm.phone = app.dataBox.phone;
+		  app.ruleForm.email = app.dataBox.email;
+		  app.ruleForm.state = app.dataBox.state;
+		  app.ruleForm.state_1 = app.dataBox.state_1;
 		  app.changePage = true;
 	  },
 	  //删除记录
