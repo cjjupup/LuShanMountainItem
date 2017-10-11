@@ -1,0 +1,373 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cGT9892RVDdKkeIKM2f1d8pX"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/library/Heatmap/2.0/src/Heatmap_min.js"></script>
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="work"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<leftwork leftactive="hzfx"></leftwork>
+			<!-- 右侧 -->
+			<div class="view-date" style="padding-left: 226px;">
+				<div class="view-header-wrap wth-view-header" style="z-index: 1">
+					<div class="view-header">
+					   <el-form :inline="true" :model="formInline" class="demo-form-inline">
+						  <el-form-item label="年份">
+						    <el-select v-model="formInline.region" placeholder="2017">
+						      <el-option label="2017" value="0"></el-option>
+						      <el-option label="2016" value="1"></el-option>
+						      <el-option label="2015" value="2"></el-option>
+						      <el-option label="2014" value="3"></el-option>
+						      <el-option label="2013" value="4"></el-option>
+						    </el-select>
+						  </el-form-item><el-form-item>
+						    <el-button type="primary" @click="onSubmit">查询</el-button>
+						  </el-form-item>
+						</el-form>
+					</div>
+			    </div>
+			    <div>
+			    	<el-row>
+						<el-col :span="16">
+							<div class="grid-content">
+								<chart :options="polar_1" ref="pie_1" id="achart_1"></chart>
+							</div>
+						</el-col>
+						<el-col :span="8">
+							<div class="grid-content">
+								<chart :options="polar_2" ref="pie_2" id="achart_2"></chart>
+							</div>
+						</el-col>
+					</el-row>
+			    </div>
+			    <div>
+			    	<el-row>
+						<el-col :span="16">
+							
+						</el-col>
+						<el-col :span="8">
+						</el-col>
+					</el-row>
+			    </div>
+				</br></br></br></br></br></br></br></br>
+			</div>
+		</div>
+	</div>
+<script>
+document.getElementById("achart_1").style.width = 2*(document.body.clientWidth - 264)/3;
+document.getElementById("achart_2").style.width = (document.body.clientWidth - 264)/3;
+window.onresize = function () {
+    document.getElementById("achart_1").style.width = 2*(document.body.clientWidth - 264)/3;
+	document.getElementById("achart_2").style.width = (document.body.clientWidth - 264)/3;
+	app.size = document.body.clientWidth;
+};
+var chartData_1 = {
+	title:{
+		text:"保护区内各项目投入总金额",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		}
+	},
+	tooltip:{
+		trigger:"axis",
+		axisPointer:{
+			type:"bar",
+			crossStyle:{
+				color:"#999"
+			}
+		}
+	},
+	toolbox:{
+		show:"true",
+		iconStyle:{
+			normal:{
+				color:"rgba(0, 0, 0, 0.2)",
+				borderColor:"#fff"
+			}
+		},
+		feature:{
+			dataView:{"readonly":false},
+			restore:{},
+			saveAsImage:{}
+		},
+		itemSize:10,
+		right:"10%"
+	},
+	backgroundColor:"#24263E",
+	xAxis:[
+		{
+			name:"项目名称",
+			type:"category",
+			// axisTick: {
+       //          alignWithLabel: true
+       //      },
+            axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1  
+				}  
+			}
+		}
+	],
+	yAxis:[
+		{
+			name:"金额",
+			type:"value",
+			min:"0",
+			axisLine:{  
+				lineStyle:{  
+					color:'#BABAC0',  
+					width:1 
+				}  
+			}
+		}
+	],
+	series:[
+		{
+			name:"项目金额",
+			type:"bar",
+			width:5
+		}
+	],
+	color: ["#00FFFF","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+var chartData_2 = {
+	title:{
+		text:"保护区内项目投入类型",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		},
+		x:"8%"
+	},
+	tooltip:{
+		trigger:"item",
+		formatter:"{a} <br/>{b}: {c} ({d}%)"
+	},
+	legend:{
+		orient:"vertical",
+		x:"68%",
+		data:[{name:'项目类型一',textStyle:{color:"#fff"}},{name:'项目类型二',textStyle:{color:"#fff"}},{name:'项目类型三',textStyle:{color:"#fff"}}]
+	},
+	backgroundColor:"#24263E",
+	series:[
+		{
+			name:"保护区内项目投入类型",
+			type:"pie",
+			radius:["50%","70%"],
+			avoidLabelOverlap: false,
+            label: {
+                normal: {
+                    show: false,
+                    position: "center"
+                },
+                emphasis: {
+                    show: true,
+                    textStyle: {
+                        fontSize: "30",
+                        fontWeight: "bold"
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    show: false
+                }
+            },
+			data:[
+				{value:0,name:"项目类型一"},
+				{value:0,name:"项目类型二"},
+				{value:0,name:"项目类型三"}
+			]
+		}
+	],
+	color: ["#00FFFF","#f35352","#3fb27e","#f88d48","#ca8622","#bda29a","#6e7074","#546570","#c4ccd3"]
+};
+
+var app = new Vue({
+  el: '#app',
+  components: {
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftwork:leftwork
+  },
+  data: {
+	once:true,
+	size:'',
+	//表格一项目盒子
+	dataBox:[],
+	//表格二项目盒子
+	dataBox2:[],
+	//总保护区-折线
+	datacontent2:[],
+	item_1:[],
+	cost_1:[],
+	item_2:[[],[],[]],
+	polar_1:{},
+	formInline: {
+        region: ''
+    },
+    work_num:0,
+	//总保护区-饼图
+	typelist_2:[[],[],[],[],[]],
+	polar_2:{},
+	num_1:[],
+	num_2:[],
+	num_3:[]
+  },
+  methods:{
+	    getonce:function(){ 
+		    ///获取通知公告数据
+		    $.ajax({
+			    type: "get",
+			    dataType: "json",
+			    url: "../../localDataTest/constructionInvestment.json",
+
+			    success:function(data){
+
+			    	app.dataBox = data;
+
+			    	app.dataBox2=data;
+			    	
+				    if (data !== "") {
+					    
+					    var datacontent = data[0].slice(1);
+
+					    var datacontent2=data[0].slice(1);
+
+					    console.log(datacontent2);
+
+		                 for(let i = 0; i<datacontent.length; i++){
+
+		                 	app.item_1.push(datacontent[i].item);
+
+		                 	app.cost_1.push(datacontent[i].money);
+
+		                 }
+
+		                 for(let i=0;i<datacontent2.length;i++){
+		                 	
+		                 	if (datacontent2[i].type=="a") {
+		                 		app.item_2[0].push(datacontent2[i]);
+		                 	};
+		                 	if (datacontent2[i].type=="b") {
+		                 		app.item_2[1].push(datacontent2[i]);
+		                 	};
+		                 	if (datacontent2[i].type=="c") {
+		                 		app.item_2[2].push(datacontent2[i]);
+		                 	};
+		                 	
+		                 }
+		        
+		                 chartData_1.xAxis[0].data = app.item_1;
+
+		                 chartData_1.series[0].data = app.cost_1;
+
+		                 app.polar_1 = chartData_1;
+
+		                 app.num_1=app.item_2[0].length;
+
+		                 chartData_2.series[0].data[0].value=app.num_1;
+
+		                 app.num_2=app.item_2[1].length;
+
+		                 chartData_2.series[0].data[1].value=app.num_2;
+
+		                 app.num_3=app.item_2[2].length;
+
+		                 chartData_2.series[0].data[2].value=app.num_3;
+
+		                 app.polar_2=chartData_2;
+			        }
+
+			    }
+
+		    });
+
+	    },
+
+	    onSubmit() {
+
+	    	app.item_1 = [];
+
+	    	app.cost_1 = [];
+
+		    var datacontent = app.dataBox[app.formInline.region].slice(1);
+
+             for(let i = 0; i<datacontent.length; i++){
+
+             	app.item_1.push(datacontent[i].item);
+
+             	app.cost_1.push(datacontent[i].money);
+
+             }
+             
+             chartData_1.xAxis[0].data = app.item_1;
+
+             chartData_1.series[0].data = app.cost_1;
+
+             app.polar_1 = chartData_1;
+
+             //console.log(app.item_1);
+
+             //console.log(app.cost_1);
+
+             // app.num_1=[];
+
+             // app.num_2=[];
+
+             // app.num_3=[];
+
+             // var datacontent2=app.dataBox[app.formInline.region].slice(1);
+
+             // for(let i=0; i<datacontent2.length; i++){
+
+             // 	app.item_2.push(datacontent2[i].type);
+
+             // }
+
+             // chartData_2.series[0].data.value=app.num_1;
+
+             // chartData_2.series[0].data.value=app.num_2;
+
+             // chartData_2.series[0].data.value=app.num_3;
+		},
+	    jumpPage:function(){
+		    window.location.href = "patrolFrequencylist.html";
+	    }
+    },
+ watch:{
+	size:function(){
+		this.$refs.pie_1.resize();
+		this.$refs.pie_2.resize();
+	}
+ } 
+});
+app.getonce();
+</script>
+</body>
+</html>
