@@ -1229,7 +1229,13 @@ iframe.full_Iframe{overflow-x: hidden;}
 	z-index: 9999999999999999999;
 	background:#fff;
 }
-
+#mytest{
+	cursor: pointer;
+	font-size: 0;
+	opacity: 0;
+	width:50px;
+	height:20px;
+}
 
 
 
