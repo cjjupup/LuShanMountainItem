@@ -89,9 +89,9 @@ var app = new Vue({
 						app.total_num += data[i][2] - 0;
 						(function(x){
 							var point = new BMap.Point(data[i][5],data[i][6]);
-							//var myIcon = new BMap.Icon("http://lbsyun.baidu.com/jsdemo/img/fox.gif", new BMap.Size(300,157));  //替换自定义小图标
-							//var marker = new BMap.Marker(point,{icon:myIcon});
-							var marker = new BMap.Marker(point);
+							var myIcon = new BMap.Icon("../../img/动物.png", new BMap.Size(30,30));  //替换自定义小图标
+							var marker = new BMap.Marker(point,{icon:myIcon});
+							//var marker = new BMap.Marker(point);
 							var sContent = `<div style="padding:10px 5px;width:260px;height:100px;">
 								   <img src=`+data[i][3]+` style="float:left;width:90px;height:90px;margin-right:10px;">
                                    <div style="float:left;width:150px;height:90px;display:inline-block;">
@@ -100,7 +100,7 @@ var app = new Vue({
 								   <p style="display:block;line-height:30px;">植物总数：<span>`+data[i][2]+`</span></p></div>
 							  </div>`;
 							map.addOverlay(marker);
-							marker.setAnimation(BMAP_ANIMATION_BOUNCE);
+							//marker.setAnimation(BMAP_ANIMATION_BOUNCE);
 							marker.addEventListener("click",function(e){
 								var p = e.target;
 								var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
