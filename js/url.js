@@ -32,12 +32,12 @@ $(function(){
 		window.location.href = "../8_risk/riskanalysis_people.html";
 	}); 
 	$("#notice").on("click",function(){
-		window.location.href = "../public/newsCenter_manage.html";
+		window.location.href = "../notice/newsCenter_manage.html";
 	}); 
 	$("#userCenter").on("click",function(){
-		window.location.href = "../public/userCenter_info.html.html";
+		window.location.href = "../usercenter/userCenter_info.html";
 	}); 
 	$("#systemSet").on("click",function(){
-		window.location.href = "../public/systemCheck.html";
+		window.location.href = "../system/systemCheck.html";
 	});
 }); 
