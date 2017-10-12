@@ -426,7 +426,7 @@ var app = new Vue({
 		  //正式使用更改URL
 		  $.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletPatrol,{ byValue: JSON.stringify(app.obj) }, function(data) {
 			  if (data != "") {
-					app.tableData = data;
+					app.tableData = data.list;
 				    app.totaldata = app.tableData.length
 					app.once = true;
 					console.log(app.totaldata);
