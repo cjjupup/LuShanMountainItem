@@ -88,20 +88,19 @@
 							<td><span :title="user.station" class="fs12">{{user.station}}</span></td>
 							<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
 						</tr>
+						<tr>
+							<td>共<span>{{totaldata}}</span>条数据</td>
+							<td v-show="totaldata > 10">
+								<el-pagination
+								  @current-change="pageCurrentChange"
+								  layout="prev, pager, next, jumper"
+								  :page-size="10"
+								  :total=totaldata>
+								</el-pagination>
+							</td>
+						</tr>
 					</tbody>
 				</table>
-				<br/><br/><br/><br/><br/>
-				<div>
-					<div v-show="totaldata > 10">
-						<el-pagination
-						  @current-change="pageCurrentChange"
-						  layout="total,prev, pager, next, jumper"
-						  :page-size="10"
-						  :total=totaldata>
-						</el-pagination>
-				    </div>
-				</div>
-					
 			</div>
 			<!--新增记录界面-->
 			<div class="view-date" style="padding-left: 226px;" id="addItemPage" v-show="changePage">
