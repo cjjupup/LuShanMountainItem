@@ -43,8 +43,8 @@
 				<div class="controlBtn" style="position: absolute;top:250px;left:80%;padding:5px 10px;background:#fff;opacity: 0.9;">
 					<ul>
 						<li @click="checkStation()"><el-checkbox v-model="station">保护站</el-checkbox></li>
-						<li @click="checkPlant()"><el-checkbox v-model="plant">植物</el-checkbox></li>
-						<li @click="checkAnimal()"><el-checkbox v-model="animal">动物</el-checkbox></li>
+						<li @click="checkPlant()"><el-checkbox v-model="plant">界碑</el-checkbox></li>
+						<li @click="checkAnimal()"><el-checkbox v-model="animal">界桩</el-checkbox></li>
 						<li><i style="display:inline-block;width:20px;height:10px;background: red;"></i><span>核心区</span></li>
 						<li><i style="display:inline-block;width:20px;height:10px;background: green;"></i><span>缓冲区</span></li>
 						<li><i style="display:inline-block;width:20px;height:10px;background: yellow;"></i><span>实验区</span></li>
@@ -197,7 +197,7 @@ var app = new Vue({
 			app.marker_station_box.push(marker_1);
 		}
 		for(var i=0;i<plant_info.length;i++){
-			var myIcon = new BMap.Icon("../../img/植物.png", new BMap.Size(100,100));  //替换自定义小图标
+			var myIcon = new BMap.Icon("../../img/界碑.png", new BMap.Size(100,100));  //替换自定义小图标
 			var marker_2 = new BMap.Marker(new BMap.Point(plant_info[i][2],plant_info[i][3]),{icon:myIcon});  // 创建标注
 			var content = plant_info[i][0] + " " + plant_info[i][1];
 			map.addOverlay(marker_2);               // 将标注添加到地图中
@@ -206,7 +206,7 @@ var app = new Vue({
 			app.marker_plant_box.push(marker_2);
 		}
 		for(var i=0;i<animal_info.length;i++){
-			var myIcon = new BMap.Icon("../../img/动物.png", new BMap.Size(100,100));  //替换自定义小图标
+			var myIcon = new BMap.Icon("../../img/界桩.png", new BMap.Size(100,100));  //替换自定义小图标
 			var marker_3 = new BMap.Marker(new BMap.Point(animal_info[i][1],animal_info[i][2]),{icon:myIcon});  // 创建标注
 			var content = animal_info[i][0];
 			map.addOverlay(marker_3);               // 将标注添加到地图中
