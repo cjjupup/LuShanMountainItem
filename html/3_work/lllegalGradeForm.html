@@ -31,12 +31,7 @@
 			<leftwork leftactive="wffx"></leftwork>
 			<!-- 右侧 -->
 			<div class="view-date" style="padding-left: 226px;">
-				<div class="view-header-wrap wth-view-header" style="z-index: 1">
-					<div class="view-header">
-						<button class="list_form_btn" @click="jumpPage">列表</button>
-						<button class="list_form_btn active" >图表</button>
-					</div>
-			    </div>
+				
 			    <div>
 			    	<el-row>
 						<el-col :span="16">
@@ -581,9 +576,6 @@ var app = new Vue({
 			  chartData_4.series[0].data[2].value = app.typelist_4[2].length;
 			  chartData_4.series[0].data[3].value = app.typelist_4[3].length;
 		  }
-	  },
-	  jumpPage:function(){
-		  window.location.href = "../../html/patrolFrequencylist.html";
 	  }
   },
  watch:{

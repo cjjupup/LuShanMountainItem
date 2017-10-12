@@ -6,7 +6,7 @@ $(function(){
 	}); 
 	$(".baseinfo").on("click",function(){
 		//window.location.href = urlServer.baseUrl + urlServer.baseBaseinfo;
-		window.location.href = "../2_baseinfo/map_demo.html";
+		window.location.href = "../2_baseinfo/baseinfo.html";
 	}); 
 	$(".work").on("click",function(){
 		//window.location.href = urlServer.baseUrl + urlServer.baseWork;

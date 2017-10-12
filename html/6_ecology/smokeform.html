@@ -26,14 +26,11 @@
 		<!-- 内容区域 -->
 		<div class="main header-wraper-height">
 			<!-- 左侧 -->
-			<leftecology leftactive="yangan_sbyx"></leftecology>
+			<leftecology leftactive="yangan_sbfx"></leftecology>
 			<!-- 右侧 -->
 			<div class="view-date" style="padding-left: 226px;">
 				<div class="view-header-wrap wth-view-header" style="z-index: 1">
-					<div class="view-header">
-						<button class="list_form_btn" @click="jumpPage">巡护时间列表</button>
-						<button class="list_form_btn active">巡护时间图表</button>
-					</div>
+					
 			    </div>
 				<div class="analysisContent">
 					<el-row :gutter="20">
@@ -142,9 +139,6 @@ var app = new Vue({
 			alert('分析数据请求失败'); //失败处理       
 		  });
 	      
-	  },
-	  jumpPage:function(){
-		  window.location.href = "smokelist.html";
 	  }
   },
  watch:{

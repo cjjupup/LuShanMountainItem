@@ -31,10 +31,7 @@
 			<!-- 右侧 -->
 			<div class="view-date" style="padding-left: 226px;">
 				<div class="view-header-wrap wth-view-header" style="z-index: 1">
-					<div class="view-header">
-						<button class="list_form_btn active">巡护时间列表</button>
-						<button class="list_form_btn" @click="jumpPage">巡护时间图表</button>
-					</div>
+					
 		            <div style="left:600px;position: absolute;z-index: 999999; line-height: 64px;">
 						<el-select v-model="searchType" clearable placeholder="请选择" style="width:100px;">
 							<el-option
@@ -186,9 +183,6 @@ var app = new Vue({
 					console.log(app.totaldata);
 				}
 		  });*/
-	  },
-	  jumpPage:function(){
-		  window.location.href = "smokeform.html";
 	  }
 	  
   } 

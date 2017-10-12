@@ -61,7 +61,7 @@
 						</div>
 						<div class="hint-layer"></div>
 						<div class="submit-layer">
-							<input class="hide-submit" type="submit" @click="login()">
+							<!--<input class="hide-submit" type="submit" @click="login()">-->
 							<a class="free-use-btn btn-blue btn-submit" @click="login()"><span>登录</span></a>
 						</div>
 					</form>
@@ -108,7 +108,7 @@ var app = new Vue({
 			sessionStorage.username=this.username;
 			var startTime = new Date(); 
 			sessionStorage.startTime= startTime.getFullYear()+'-'+(startTime.getMonth()+1)+'-'+startTime.getDate()+' '+startTime.getHours()+':'+startTime.getMinutes()+':' +startTime.getSeconds();
-			window.location.href = "systemSetting.html";
+			window.location.href = "../1_home/index.html";
 		}
 	      /*$.post(url,{"username":this.username,"password":this.password},function(res){
 			  //账号密码验证成果
@@ -142,16 +142,6 @@ var app = new Vue({
   }
 });
 app.getonce();
-//页面跳出 记录时间
-/*window.onbeforeunload = function(event){
-	var n = window.event.screenX - window.screenLeft;
-	var b = n > document.documentElement.scrollWidth - 20;
-	if (!(b && window.event.clientY < 0 || window.event.altKey)) {
-		//window.event.returnValue = "真的要刷新页面么？";
-		//这里放置我想执行缓存的代码
-	var endTime = new Date();
-	sessionStorage.endTime = endTime.getFullYear()+'-'+(endTime.getMonth()+1)+'-'+endTime.getDate()+' '+endTime.getHours()+':'+endTime.getMinutes()+':' +endTime.getSeconds();}
-}*/
 
 </script>
 
