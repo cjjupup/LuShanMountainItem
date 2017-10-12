@@ -87,7 +87,7 @@ var leftwork={
 
 
 <li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'xhfx'?'active':''" @mouseover="openlist_1" @mouseout="closelist_1"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="#"><i class="icon iconfont icon-xiaoxi"></i><span>巡护分析</span></a></div>
-<div v-show="open_1" style="position:absolute;top:-10px;left:190px;width:140px;height:100%;"><ul class="slidework"><li><a href="patrolTimelist.html">巡护时间分析</a></li><li><a href="patrolMileagelist.html">巡护里程分析</a></li><li><a href="patrolFrequencylist.html">巡护频次分析</a></li></ul></div>
+<div v-show="open_1" style="position:absolute;top:-10px;left:190px;width:140px;height:100%;"><ul class="slidework"><li><a href="patrolTimeform.html">巡护时间分析</a></li><li><a href="patrolMileageform.html">巡护里程分析</a></li><li><a href="patrolFrequencylist.html">巡护频次分析</a></li></ul></div>
 </li>  
 
 <li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'hzfx'?'active':''" @mouseover="openlist_2" @mouseout="closelist_2"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="#"><i class="icon iconfont icon-dizhi"></i><span>火灾分析</span></a></div>
@@ -105,7 +105,10 @@ var leftwork={
     <li class="project-item J-project-item angular-ui-tree-node active first"><div class="cat-op-parent level-0"><a class="nowrap project-name"><i class="icon iconfont icon-zhankai"></i><span>数据管理</span></a></div><ul class="dash-list angular-ui-tree-nodes own-dash-list">   
 <li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class="leftactive == 'hzsjgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="hzsjgl.html"><i class="icon iconfont icon-zhuzhuangtu"></i><span>火灾数据管理</span></a></div></li>       
 <li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'wfsjgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="wfsjgl.html"><i class="icon iconfont icon-dianhuazixun-dianhua"></i><span>违法数据管理</span></a></div></li>      
-<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'wrjsjgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="planesjgl.html"><i class="icon iconfont icon-xiaoxi"></i><span>无人机数据管理</span></a></div></li></ul></li>
+<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'wrjsjgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="planesjgl.html"><i class="icon iconfont icon-xiaoxi"></i><span>无人机数据管理</span></a></div></li>
+
+<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'xhsjgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="patrolTrack.html"><i class="icon iconfont icon-xiaoxi"></i><span>巡护数据管理</span></a></div></li>
+</ul></li>
 
 </ul></div></div></div>`,
 	props:['leftactive'],
