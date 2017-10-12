@@ -18,6 +18,7 @@
 		<script src="../../js/vue-resource.1.3.4.js"></script>
 		<script src="../../js/elementui.js"></script>
 		<script src="../../js/url.js"></script>
+		<script src="../../js/layer.js"></script>
 		<!--引入Ueditor富文本编辑器-->
 		<script src="../../js/ueditor/ueditor.config.js"></script>
 		<script src="../../js/ueditor/ueditor.all.js"></script>
@@ -33,16 +34,46 @@
 				<div class="newssub">
 					<form action="##" id="sub" method="post">
 						<div class="newssub_title">
-							<span class="newssub_head">文档标题</span>
+							<span class="newssub_head">消息标题</span>
 							<input type="text" id="newstitle" class="newstitle" name="newstitle" autocomplete="off"/>
-							<el-button type="primary" class="submit" id="submit">提交</el-button>
+							<el-button type="primary" class="submit" id="submit" @click="submit()">提交</el-button>
+							<el-button @click="confirmTrans()" type="primary" class="submit" id="cancel">取消</el-button>
 						</div>
-						<script id="newscontainer" name='content' type="text/plain" style="width: 95%;height: 500px;margin-top: 25px;"></script>
+						<script id="newscontainer" name='content' type="text/plain" style="width:95%;height: 500px;margin-top: 25px;"></script>
 					</form>
 				</div>
 			</div>
 		</div>
 		<script type="text/javascript">
+			function getNews(title,content){
+				var news = {
+					title:title,
+					content:content
+				}
+				return news;
+			}
+			function createNews(news)
+			{
+				$.ajax({
+					type:"post",
+					url:"http://datainfo.duapp.com/shopdata/userinfo.php",
+					async:true,
+					data:{status:'register',userID:news.title,password:news.content},
+					success:function(data)
+					{
+						alert(data+'（0为重复，1为不重复）')
+						if(data==1)
+						{
+							alert('注册成功！')
+						}
+						if(data==0)
+						{
+							alert('用户名重名')
+							window.location.href = 'newsCenter_manage.html'
+						}
+					}
+				});
+			}
 			/*配置ueditor*/
 			var ue = UE.getEditor('newscontainer',{
 					autoHeight:false,
@@ -59,6 +90,40 @@
 				},
 				data:{
 					once:true
+				},
+				methods:{
+					submit:function(){
+						var title = $('#newstitle').val();
+						var content = ue.getContentTxt();
+						if(title!='')
+						{
+							if(content!='')
+							{
+								var news = getNews(title,content);
+								createNews(news);
+							}
+							else
+							{
+								alert('消息内容不可以为空')
+							}
+						}
+						else
+						{
+							alert('请为消息添加一个标题')
+						}
+					},
+					confirmTrans: function(){
+				      layer.msg('您真的要取消编辑吗？', {
+				        time: 5000, //5s后自动关闭
+				        btn: ['是', '否'],
+				        yes:function(){
+				        	$('#newstitle').val('');
+				        	ue.setContent('',false);
+				        	layer.msg('输入的内容已经清空！');
+				        	window.location.href = 'newsCenter_manage.html'
+				        }
+				      });
+				  	}
 				}
 			})
 		</script>

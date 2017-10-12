@@ -1146,11 +1146,12 @@ iframe.full_Iframe{overflow-x: hidden;}
 	font: 700 18px/32px '微软雅黑';
 }
 .newssub .newstitle{
-	width: 70%;
+	width: 50%;
 	height: 32px;
 	margin-left: 10px;
 	font-size: 18px;
-	border-radius: 5px
+	border-radius: 10px;
+	text-indent: 1em;
 }
 .newssub .submit{
 	width: 120px;

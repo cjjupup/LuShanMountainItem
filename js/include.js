@@ -258,14 +258,6 @@ var leftnewscenter={
 									</a>
 								</div>
 								</li>
-								<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'newscreate'?'active':''">
-								<div class="cat-op-parent level-1">
-									<a class="nowrap dash-name" href="newsCenter_create.html">
-										<i class="icon iconfont icon-dianhuazixun-dianhua"></i>
-										<span>发布消息</span>
-									</a>
-								</div>
-								</li>
 							</ul>
 						</li>
 					</ul>

@@ -34,29 +34,7 @@
 						<h2 class="nowrap with-tail-btn" title="总演示数据">
 							通知公告
 						</h2>
-						<!-- <span class="btn-layer"> -->
-							<!-- <a class="dash-add-item-btn ng-scope J-new-chart"> -->
-								<!-- <i class="icon iconfont icon-ditu blue fs16"></i> -->
-								<!-- <span class="btn-layer-opt"> -->
-									<!-- 地图查看 -->
-									<!-- <span class="btn-layer-hover-line"></span> -->
-								<!-- </span> -->
-							<!-- </a> -->
-							<!-- <a class="J-dot-uploadData ng-scope"> -->
-								<!-- <i class="icon iconfont icon-sandiantu blue fs16"></i> -->
-								<!-- <span class="btn-layer-opt"> -->
-									<!-- 散点图查看 -->
-									<!-- <span class="btn-layer-hover-line"></span> -->
-								<!-- </span> -->
-							<!-- </a> -->
-							<!-- <a class="J-dot-uploadData ng-scope"> -->
-								<!-- <i class="icon iconfont icon-zhuzhuangtu blue fs16"></i> -->
-								<!-- <span class="btn-layer-opt"> -->
-									<!-- 柱状图查看 -->
-									<!-- <span class="btn-layer-hover-line"></span> -->
-								<!-- </span> -->
-							<!-- </a> -->
-						<!-- </span> -->
+						<el-button style="margin-left: 5%;margin-top: 12px;" type="primary" class="submit" id="cancel" @click='submit()'>发布消息</el-button>
 					</div>
 				</div>
 				<el-dialog
@@ -134,6 +112,9 @@ var app = new Vue({
 				}
 			}
 		});
+	  },
+	  submit:function(){
+	  	window.location.href='newsCenter_create.html'
 	  },
 	  calltel:function(telnumber){
 		window.location.href = "tel:"+telnumber;
