@@ -279,9 +279,9 @@ var leftusercenter={
 	template:`<div class="dash-sidebar J_dash_sidebar" style="width:206px"><a class="drag-btn" title="拖动调整宽度"></a><div class="J-scroll-project project-nav project-list project-list-common"><div class="list-hd angular-ui-tree"><ul class="own-project-list angular-ui-tree-nodes" id="tree-root">
 <li class="project-item J-project-item angular-ui-tree-node active first"><div class="cat-op-parent level-0"><a class="nowrap project-name"><i class="icon iconfont icon-zhankai"></i> <span>用户中心</span></a></div><ul class="dash-list angular-ui-tree-nodes own-dash-list">
 
-<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class="leftactive == 'grzl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="animalMonitor.html"><i class="icon iconfont icon-zhuzhuangtu"></i><span>个人资料</span></a></div></li>
+<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class="leftactive == 'grzl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="userCenter_info.html"><i class="icon iconfont icon-zhuzhuangtu"></i><span>个人资料</span></a></div></li>
 
-<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'czmm'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="animalAnalysis.html"><i class="icon iconfont icon-dianhuazixun-dianhua"></i><span>重置密码</span></a></div></li>
+<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'czmm'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="userCenter_passWord.html"><i class="icon iconfont icon-dianhuazixun-dianhua"></i><span>重置密码</span></a></div></li>
  </ul></li>
 
 </ul></div></div></div>`,
