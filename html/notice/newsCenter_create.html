@@ -64,12 +64,22 @@
 						alert(data+'（0为重复，1为不重复）')
 						if(data==1)
 						{
-							alert('注册成功！')
+							layer.msg('注册成功',{
+								time:1000
+							});
 						}
 						if(data==0)
 						{
-							alert('用户名重名')
-							window.location.href = 'newsCenter_manage.html'
+							layer.load(2);
+							setTimeout(function(){
+								layer.closeAll('loading')
+								layer.msg('提交成功',{
+									time:1000
+								});
+							},3000)
+							setTimeout(function(){
+								window.location.href = 'newsCenter_manage.html'
+							},4000)
 						}
 					}
 				});
@@ -104,12 +114,16 @@
 							}
 							else
 							{
-								alert('消息内容不可以为空')
+								layer.msg('消息内容不可以为空',{
+									time:1000
+								});
 							}
 						}
 						else
 						{
-							alert('请为消息添加一个标题')
+							layer.msg('请为消息添加一个标题',{
+								time:1000
+							});
 						}
 					},
 					confirmTrans: function(){
