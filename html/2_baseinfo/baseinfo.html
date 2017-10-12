@@ -44,6 +44,7 @@
 					<ul>
 						<li @click="checkStation()"><el-checkbox v-model="station">保护站</el-checkbox></li>
 						<li @click="checkPlant()"><el-checkbox v-model="plant">植物</el-checkbox></li>
+						<li @click="checkAnimal()"><el-checkbox v-model="animal">动物</el-checkbox></li>
 						<li><i style="display:inline-block;width:20px;height:10px;background: red;"></i><span>核心区</span></li>
 						<li><i style="display:inline-block;width:20px;height:10px;background: green;"></i><span>缓冲区</span></li>
 						<li><i style="display:inline-block;width:20px;height:10px;background: yellow;"></i><span>实验区</span></li>
@@ -80,8 +81,10 @@ var app = new Vue({
 	syq_2_points:[],
 	station:true,
     plant:true,
+	animal:true,
 	marker_station_box:[],
 	marker_plant_box:[],
+	marker_animal_box:[],
   },
   methods:{
 	  getonce:function(){ 
@@ -169,6 +172,13 @@ var app = new Vue({
 							["百山祖冷杉","松科类",116.04096494713613,29.565046882882729],
 							["华盖木","木兰科",115.93769368004985,29.519853356161548]
 						];
+		  
+		var animal_info = [
+							["豺",116.02697324555642,29.586026349539591],
+							["狼",115.99140572575087,29.605559165258384],
+							["虎",116.00125716431627,29.582840024378111],
+							["豹",115.99573269900912,29.591981448373264]
+						];
 		var opts = {
 					width : 60,     // 信息窗口宽度
 					height: 40,     // 信息窗口高度
@@ -176,8 +186,10 @@ var app = new Vue({
 					enableMessage:true//设置允许信息窗发送短息
 				   };
 		
+		
 		for(var i=0;i<station_info.length;i++){
-			var marker_1 = new BMap.Marker(new BMap.Point(station_info[i][0],station_info[i][1]));  // 创建标注
+			var myIcon = new BMap.Icon("../../img/保护站.png", new BMap.Size(60,60));  //替换自定义小图标
+			var marker_1 = new BMap.Marker(new BMap.Point(station_info[i][0],station_info[i][1]),{icon:myIcon});  // 创建标注
 			var content = station_info[i][2];
 			map.addOverlay(marker_1);               // 将标注添加到地图中
 			//marker_1.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
@@ -185,12 +197,22 @@ var app = new Vue({
 			app.marker_station_box.push(marker_1);
 		}
 		for(var i=0;i<plant_info.length;i++){
-			var marker_2 = new BMap.Marker(new BMap.Point(plant_info[i][2],plant_info[i][3]));  // 创建标注
+			var myIcon = new BMap.Icon("../../img/植物.png", new BMap.Size(100,100));  //替换自定义小图标
+			var marker_2 = new BMap.Marker(new BMap.Point(plant_info[i][2],plant_info[i][3]),{icon:myIcon});  // 创建标注
 			var content = plant_info[i][0] + " " + plant_info[i][1];
 			map.addOverlay(marker_2);               // 将标注添加到地图中
 			//marker_2.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
 			addClickHandler(content,marker_2);
 			app.marker_plant_box.push(marker_2);
+		}
+		for(var i=0;i<animal_info.length;i++){
+			var myIcon = new BMap.Icon("../../img/动物.png", new BMap.Size(100,100));  //替换自定义小图标
+			var marker_3 = new BMap.Marker(new BMap.Point(animal_info[i][1],animal_info[i][2]),{icon:myIcon});  // 创建标注
+			var content = animal_info[i][0];
+			map.addOverlay(marker_3);               // 将标注添加到地图中
+			//marker_3.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+			addClickHandler(content,marker_3);
+			app.marker_animal_box.push(marker_3);
 		}
 		function addClickHandler(content,marker_1){
 			marker_1.addEventListener("click",function(){
@@ -200,6 +222,12 @@ var app = new Vue({
 		}
 		function addClickHandler(content,marker_2){
 			marker_2.addEventListener("click",function(){
+				var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象 
+			    this.openInfoWindow(infoWindow); //开启信息窗口
+			});
+		}
+		function addClickHandler(content,marker_3){
+			marker_3.addEventListener("click",function(){
 				var infoWindow = new BMap.InfoWindow(content,opts);  // 创建信息窗口对象 
 			    this.openInfoWindow(infoWindow); //开启信息窗口
 			});
@@ -219,6 +247,14 @@ var app = new Vue({
 			  app.marker_plant_box.forEach(function(item){item.show();})
 		  }else{
 			  app.marker_plant_box.forEach(function(item){item.hide();})
+		  }
+	  },
+	  checkAnimal:function(){
+		  app.animal = !app.animal;
+		  if(app.plant){
+			  app.marker_animal_box.forEach(function(item){item.show();})
+		  }else{
+			  app.marker_animal_box.forEach(function(item){item.hide();})
 		  }
 	  }
   }
