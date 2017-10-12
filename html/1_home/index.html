@@ -32,7 +32,7 @@
 			<div class="view-date" style="padding-left: 226px;">
 				<div class="contentbody">
 					<div>
-						<div class="itemBox" style="background:url(../../img/多云.png) 0 0 no-repeat;background-size: 100% 73%;">
+						<div class="itemBox" id="weatherBg" style="background:url(../../img/多云.png) 0 0 no-repeat;background-size: 100% 73%;">
 							<div class="weather_1">
 								<span class="s1">{{weather.temperature}}<i style="font-style: normal;font-size: 18px;">℃</i></span>
 								<span class="s2">{{weather.weather}}</span>
@@ -176,11 +176,31 @@ var app = new Vue({
 	  getonce:function(){ 
 	      $.get("http://restapi.amap.com/v3/weather/weatherInfo?key=be5763462800ed53811798fc6b2621fa&city=九江市&extensions=base&output=JSON",function(res){
 			  res.lives[0].reporttime = res.lives[0].reporttime.slice(5,7) + "月" + res.lives[0].reporttime.slice(8,10) + "日";
-			  
+			  console.log(res.lives[0].weather);
 			  app.weather = res.lives[0];
+			  
+			  if(res.lives[0].weather.indexOf("云") > -1){
+				  $("#weatherBg").css({"background":"url(../../img/多云.png) 0 0 no-repeat","background-size":"100% 73%"})
+			  }
+			  if(res.lives[0].weather.indexOf("阴") > -1){
+				  $("#weatherBg").css({"background":"url(../../img/多云.png) 0 0 no-repeat","background-size":"100% 73%"})
+			  }
+			  if(res.lives[0].weather.indexOf("雷") > -1){
+				  $("#weatherBg").css({"background":"url(../../img/雷天.png) 0 0 no-repeat","background-size":"100% 73%"})
+			  }
+			  if(res.lives[0].weather.indexOf("雨") > -1){
+				  $("#weatherBg").css({"background":"url(../../img/下雨.png) 0 0 no-repeat","background-size":"100% 73%"})
+			  }
+			  if(res.lives[0].weather.indexOf("晴") > -1){
+				  $("#weatherBg").css({"background":"url(../../img/晴.png) 0 0 no-repeat","background-size":"100% 73%"})
+			  }
+			  
+			  if(res.lives[0].weather.indexOf("雪") > -1){
+				  $("#weatherBg").css({"background":"url(../../img/雪.png) 0 0 no-repeat","background-size":"100% 73%"})
+			  }
+			  
 		  })
 		  setInterval(function(){
-			  
 			  var h = new Date().getHours();
 			  var m = new Date().getMinutes();
 			  var s = new Date().getSeconds();
