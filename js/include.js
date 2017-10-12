@@ -252,7 +252,7 @@ var leftnewscenter={
 							<ul class="dash-list angular-ui-tree-nodes own-dash-list">
 								<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class="leftactive == 'newsmanage'?'active':''">
 								<div class="cat-op-parent level-1">
-									<a class="nowrap dash-name" href="##">
+									<a class="nowrap dash-name" href="newsCenter_manage.html">
 										<i class="icon iconfont icon-zhuzhuangtu"></i>
 										<span>消息管理</span>
 									</a>
@@ -260,7 +260,7 @@ var leftnewscenter={
 								</li>
 								<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'newscreate'?'active':''">
 								<div class="cat-op-parent level-1">
-									<a class="nowrap dash-name" href="##">
+									<a class="nowrap dash-name" href="newsCenter_create.html">
 										<i class="icon iconfont icon-dianhuazixun-dianhua"></i>
 										<span>发布消息</span>
 									</a>
