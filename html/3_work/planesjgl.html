@@ -24,7 +24,6 @@
 	<script src="../../js/mock.js"></script>
 	<script src="../../js/url.js"></script>
 
-	<script type="text/javascript" src="../../js/webuploader.js"></script>
 	
 </head>
 <body>
@@ -194,12 +193,23 @@
 	                                </el-col>
 							    </el-row>
 								<div id="uploader" class="wu-example">
-								    <div class="btns" style="margin-left:130px">
-								        <div id="picker" class="uploader-btn" style="display:inline-block;">选择文件</div>
-								        <div id="ctlBtn" class="uploader-btn" style="display:inline-block;position: absolute;margin-left:10px;">开始上传</div>
-								    </div>
-							        <!--用来存放文件信息-->
-							        <div id="thelist" class="uploader-list" style="margin-left:130px margin-top:15px;"></div>
+								    <el-row :gutter="20">
+										<el-col :span="3" class="tr">相关资料</el-col>
+										<el-col :span="14">
+											<el-upload
+												class="upload-demo"
+												ref="upload"
+												action="https://jsonplaceholder.typicode.com/posts/"
+												:on-preview="handlePreview"
+												:on-remove="handleRemove"
+												:file-list="relevantDate"
+												:auto-upload="false">
+												<el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+												<el-button style="margin-left:10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
+												<div slot="tip" class="el-upload__tip" style="display:inline-block;margin-left:10px;line-height:28px;">文件限制提醒</div>
+											</el-upload>
+										</el-col>
+									</el-row>
 							    </div>
 						    </div>
 						</div>
@@ -227,7 +237,6 @@
 	</div>
 </body>
 </html>
-<script type="text/javascript" src="../../js/upload.js"></script>
 <script>
 var app = new Vue({
   el: '#app',
@@ -467,24 +476,22 @@ var app = new Vue({
 		  app.ruleForm.remarks = app.dataBox.remarks;
 		  app.ruleForm.way=app.dataBox.way;
 		  app.ruleForm.gps=app.dataBox.gps;
-		  // app.ruleForm.chineseName = app.dataBox.chineseName;
-		  // app.ruleForm.latinName = app.dataBox.latinName;
-		  // app.ruleForm.englishName = app.dataBox.englishName;
-		  // app.ruleForm.altitude = app.dataBox.altitude;
-		  // app.ruleForm.aspect = app.dataBox.aspect;
-		  // app.ruleForm.slope = app.dataBox.slope;
-		  // app.ruleForm.height = app.dataBox.height;
-		  // app.ruleForm.DBH = app.dataBox.DBH;
-		  // app.ruleForm.age = app.dataBox.age;
-		  // app.ruleForm.HUB = app.dataBox.HUB;
-		  // app.ruleForm.place = app.dataBox.place;
-		  // app.ruleForm.habitat = app.dataBox.habitat;
 		  app.changePage = true;
 	  },
 	  //删除记录
 	  deleteItem:function(event){
 		  
-	  }
+	  },
+	  //上传文件
+	  submitUpload() {
+        this.$refs.upload.submit();
+      },
+      handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      }
   } 
 });
 
