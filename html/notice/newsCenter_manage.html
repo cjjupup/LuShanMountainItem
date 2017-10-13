@@ -57,9 +57,9 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="user in tableData">
+						<tr v-for="(user,index) in tableData" key={{index}}>
 							<td class="icon iconfont icon-xiaoxi green conditions"></td>
-							<td @click="shownews(user)" v-show="user.title">
+							<td @click="shownews(user,index)" v-show="user.title">
 								<div class="database-table-name pr">
 									<div>
 										<a class="ds-name">{{user.title}}</a>
@@ -122,11 +122,11 @@ var app = new Vue({
 	  submit:function(){
 	  	window.location.href='newsCenter_create.html'
 	  },
-	  shownews:function(data){
+	  shownews:function(data,index){
 		console.log(data);
 		this.newsinfo = data;
 		this.dialogVisible = true;
-		$('.conditions').removeClass('icon-xiaoxi').addClass('icon-xuanze-')
+		$('.conditions').eq(index).removeClass('icon-xiaoxi').addClass('icon-xuanze-')
 	  },
 	  pageCurrentChange:function(val){
 		console.log(`当前页: ${val}`);
