@@ -309,8 +309,7 @@ table {
 .table-center{
 	text-align: center;
 }
-.database-table th.db-name {
-    width: 35%;
+
 /**表格样式**/
 
 .database-table th.db-7{
