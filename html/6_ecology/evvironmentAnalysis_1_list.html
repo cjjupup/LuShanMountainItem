@@ -36,7 +36,7 @@
 						<div class="view-header">
 							<button class="list_form_btn active">列表</button>
 							<button class="list_form_btn" @click="jumpPage">图表</button>
-						    <div style="display:inline-block;margin-left:100px;">
+						    <div style="display:inline-block;margin-left:50%;">
 						    	<el-button type="primary" id="additem_plant">导入</el-button>
 					            <el-button type="primary" id="additem_plant">导出</el-button>
 						    </div>
@@ -54,19 +54,19 @@
 					</div>
 			    </div>
 			    
-			    <table class="table-normal database-table table-center">
+			    <table class="table-normal database-table table-center" style="width:100%;">
 					<thead>
 						<tr>
-							<th class="db-date">采样日期</th>
-							<th class="db-temperature">温度</th>
-							<th class="db-humidity">湿度</th>
-							<th class="db-co2">CO2</th>
-							<th class="db-ozone">臭氧</th>
-							<th class="db-illumination">光照</th>
-							<th class="db-noise">噪音</th>
-							<th class="db-pressure">气压</th>
-							<th class="db-windpower">风力</th>
-							<th class="db-winddirection">风向</th>
+							<th class="db-11">采样日期</th>
+							<th class="db-9">温度</th>
+							<th class="db-9">湿度</th>
+							<th class="db-9">CO2</th>
+							<th class="db-9">臭氧</th>
+							<th class="db-9">光照</th>
+							<th class="db-9">噪音</th>
+							<th class="db-9">气压</th>
+							<th class="db-9">风力</th>
+							<th class="db-9">风向</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -102,19 +102,22 @@
 								<span :title="user.winddirection" class="fs12">{{user.winddirection}}</span>
 							</td>
 						</tr>
-						<tr>
-							<td>共<span>{{pagetotal}}</span>条数据</td>
-							<td v-show="pagetotal > 10"  colspan="9">
-								<el-pagination
-								  @current-change="pageCurrentChange"
-								  layout="prev, pager, next, jumper"
-								  :page-size="10"
-								  :total=pagetotal>
-								</el-pagination>
-							</td>
-						</tr>
 					</tbody>
 				</table>
+				</br>
+				<div class="pageChange">
+					<div v-show="totaldata > 0">
+						<div style="display:inline-block;float:right;margin-right:5%;color:#B7B7BD;">
+							<el-pagination
+							  @current-change="pageCurrentChange"
+							  layout="prev, pager, next, jumper"
+							  :page-size="10"
+							  :total=totaldata>
+							</el-pagination>
+						</div>
+						<span style="float:right;margin-right:10px;">共<b>{{totaldata}}</b>条数据</span>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -137,7 +140,8 @@ var app = new Vue({
 	tableData: [],
 	pagetotal:0,
 	timeselect_0:'',
-	timeselect_1:''
+	timeselect_1:'',
+	totaldata:10,
 	//obj:{method:6,startTime:"2017-09-01",endTime:"2017-09-30",depart:"全站",type:2,pageIndex:1,pageSize:10,level:"3",department:"局机关",userid:"116"},
 	//pValue:{byValue:''},
   },

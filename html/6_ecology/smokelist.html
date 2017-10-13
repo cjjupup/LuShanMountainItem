@@ -32,7 +32,7 @@
 			<div class="view-date" style="padding-left: 226px;">
 				<div class="view-header-wrap wth-view-header" style="z-index: 1">
 					
-		            <div style="left:600px;position: absolute;z-index: 999999; line-height: 64px;">
+		            <div style="right:5%;position: absolute;z-index: 999999; line-height: 64px;">
 						<el-select v-model="searchType" clearable placeholder="请选择" style="width:100px;">
 							<el-option
 							  v-for="item in option_search"
@@ -51,14 +51,14 @@
 					</div>
 			    </div>
 			    
-			    <table class="table-normal database-table table-center">
+			    <table class="table-normal database-table table-left" style="width:100%;">
 					<thead>
 						<tr>
-							<th class="db-names">探测器</th>
-							<th class="db-station">所属站点</th>
-							<th class="db-person">负责人</th>
-							<th class="db-state">状态</th>
-							<th class="db-position">位置</th>
+							<th class="db-9">探测器</th>
+							<th class="db-9">所属站点</th>
+							<th class="db-9">负责人</th>
+							<th class="db-9">状态</th>
+							<th class="db-11">位置</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -79,19 +79,22 @@
 								<span :title="user.lng +' , '+ user.lat" class="fs12">{{user.lng +' , '+ user.lat}}</span>
 							</td>
 						</tr>
-						<tr>
-							<td>共<span>{{total}}</span>条数据</td>
-							<td v-show="total > 10" colspan="4">
-								<el-pagination
-								  @current-change="pageCurrentChange"
-								  layout="prev, pager, next, jumper"
-								  :page-size="10"
-								  :total=total>
-								</el-pagination>
-							</td>
-						</tr>
 					</tbody>
 				</table>
+				</br>
+				<div class="pageChange">
+					<div v-show="total > 0">
+						<div style="display:inline-block;float:right;margin-right:5%;color:#B7B7BD;">
+							<el-pagination
+							  @current-change="pageCurrentChange"
+							  layout="prev, pager, next, jumper"
+							  :page-size="10"
+							  :total=total>
+							</el-pagination>
+						</div>
+						<span style="float:right;margin-right:10px;">共<b>{{total}}</b>条数据</span>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

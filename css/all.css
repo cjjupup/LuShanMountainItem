@@ -32,7 +32,7 @@ a{text-decoration:none;}
 }
 .wrapper_2{
 	float:right;
-	margin-right:100px;
+	margin-right:5%;
 }
 button , input {font-family:inherit;}
 .header-wraper {
@@ -311,13 +311,37 @@ table {
 }
 .database-table th.db-name {
     width: 35%;
+/**表格样式**/
+
+.database-table th.db-7{
+	width:7%;
 }
+.database-table th.db-9{
+	width:9%;
+}
+.database-table th.db-11{
+	width:11%;
+}
+
 .database-table th.db-condition{
 	width: 55px;
 }
 .database-table th.db-date {
     width: 180px;
 }
+
+.pageChange{
+	line-height: 32px;
+	font-size: 16px;
+	color:#B7B7BD;
+}
+
+
+
+
+
+
+
 .table-normal thead th {
     background-color: #1C1F30;
     color: rgba(255,255,255,.7);
