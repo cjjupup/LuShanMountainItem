@@ -29,7 +29,7 @@
 			<!-- 左侧 -->
 			<leftstudy leftactive="xj_sjgl"></leftstudy>
 			<!-- 右侧 --><!--数据管理页面-->
-			<div class="contentbody">
+			<div class="contentbody" v-show="!changePage">
 			<div class="view-date" style="padding-left: 226px;" v-show="!changePage">
 				<div class="view-header-wrap wth-view-header">
 					<div class="view-header">
@@ -101,6 +101,7 @@
 			</div>
 		    </div>
 			<!--增加记录页面-->
+			<div class="contentbody" v-show="changePage">
 			<div class="view-date" style="padding-left: 226px;" v-show="changePage">
 				<div class="view-header-wrap wth-view-header">
 					<div class="view-header">
@@ -207,7 +208,7 @@
 					</el-form>
 				</div>
 			</div>
-
+            </div>
 		</div>
 	</div>
 	<br/><br/><br/><br/>
