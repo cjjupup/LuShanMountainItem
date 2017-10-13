@@ -99,7 +99,7 @@
 							   </el-form-item>
 							</el-col>
 							<el-col :span="12">
-							   <el-form-item label="拍摄时间" required>
+							   <el-form-item label="上传时间" required>
 							   <el-form-item prop="datetime">
 								  <el-date-picker
 									  v-model="ruleForm.datetime"
@@ -146,7 +146,49 @@
 					</el-form>
 				</div>
 				<!--查看界面-->
-				<div class="checkPic" v-show="checkPic"></div>
+				<div class="checkPic" v-show="checkPic">
+					<el-row>
+						<el-col :span="18">
+							<img id="showRemotePic" src="../../img/yaogan.png">
+						</el-col>
+						<el-col :span="6" style="background:#fff;">
+						    <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="0">
+								<el-row style="padding-left:20px;margin-top:30px;">
+									<p>标题信息</p>
+									<div style="width:193px;">
+										<el-form-item prop="title_update" required>
+										  <el-input v-model.trim="ruleForm.title_update"></el-input>
+										</el-form-item>
+									</div>
+								</el-row>
+								<el-row style="padding-left:20px;">
+									<p>拍摄时间</p>
+									<el-form-item prop="datetime_update">
+									  <el-date-picker
+										  v-model="ruleForm.datetime_update"
+										  type="datetime"
+										  placeholder="选择日期时间"  style="z-index:100001;">
+									  </el-date-picker>
+									</el-form-item>
+								</el-row>
+								<el-row style="padding-left:20px;">
+									<p>备注</p>
+									<div style="width:193px;">
+										<el-form-item prop="remarks_update" required>
+											<el-input type="textarea" v-model="ruleForm.remarks_update" :rows="5"></el-input>
+										</el-form-item>
+									</div>
+								</el-row>
+								<el-row>
+									<el-form-item style="text-align:center;margin-left:-10px;">
+										<el-button @click="submitForm2('ruleForm')">修改</el-button>
+										<el-button @click="resetForm2('ruleForm')">取消</el-button>
+									</el-form-item>
+								</el-row>
+							</el-form>
+						</el-col>
+					</el-row>
+				</div>
 			</div>
 		    </div>
 		</div>
@@ -173,6 +215,9 @@ var app = new Vue({
 		title:'',
 		datetime:'',
 		remarks:'',
+		title_update:'',
+	    datetime_update:'',
+		remarks_update:'',
 	},
 	rules:{
 	  title: [
@@ -182,6 +227,15 @@ var app = new Vue({
 		{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }
 	  ],
 	  remarks: [
+		{ required: true, message: '请填写备注', trigger: 'blur' }
+	  ],
+	  title_update: [
+		{ required: true, message: '请输入标题', trigger: 'blur' },
+	  ],
+	  datetime_update: [
+		{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+	  ],
+	  remarks_update: [
 		{ required: true, message: '请填写备注', trigger: 'blur' }
 	  ],
 	}
@@ -198,7 +252,7 @@ var app = new Vue({
 				  for(let i =0; i<item.length; i++){
 					  var url = item[i].url;
 					  picItem += `<div class="picItems">
-									<img src="`+url+`" class="picBody">
+									<img src="`+url+`" class="picBody" title="`+item[i].remarks+`">
 									<i class="icon iconfont icon-guanbi picClose"></i>
 									<p class="picTip">`+item[i].tip+`</p>
 								  </div>`
@@ -207,9 +261,11 @@ var app = new Vue({
 				  $(".contentBox").prepend(picBox);
 			  });
 			  $(".picBody").click(function(){
-				  //app.mask = true;
-				  //app.checkPic = true;
-				  console.log($(this));
+				  app.mask = true;
+				  app.checkPic = true;
+				  console.log($(this).next().next().text());
+				  app.ruleForm.title_update = $(this).next().next().text();
+				  app.ruleForm.remarks_update = $(this).attr("title");
 			  });
 			  $(".picClose").click(function(){
 				  layer.msg('确定删除该图片吗？', {
@@ -252,14 +308,28 @@ var app = new Vue({
 		  uploader.reset();
 		  app.uploadPic = false;
 		  app.mask = false;
+		  //修改取消
+		  app.checkPic = false;
 		  //console.log(uploader.getFiles());
       },
-	  checkItemInfo:function(){
-		  console.log("asd");
+	  //修改信息
+	  submitForm2:function(formName){
+		  this.$refs[formName].validate((valid) => {
+			  if (valid) {
+				alert('submit!'); 
+				//此处添加提交修改代码
+				app.checkPic = false;
+				app.mask = false;
+			  } else {
+				console.log('error submit!!');
+				return false;
+			  }
+           });
 	  },
-	  closeItemInfo:function(){
-		  console.log("123");
-	  }
+	  resetForm2:function(formName) {
+		  app.checkPic = false;
+		  app.mask = false;
+      },
   }
 
 });
