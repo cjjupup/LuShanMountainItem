@@ -176,11 +176,11 @@ var app = new Vue({
 	  getonce:function(){ 
 	      $.get("http://restapi.amap.com/v3/weather/weatherInfo?key=be5763462800ed53811798fc6b2621fa&city=九江市&extensions=base&output=JSON",function(res){
 			  res.lives[0].reporttime = res.lives[0].reporttime.slice(5,7) + "月" + res.lives[0].reporttime.slice(8,10) + "日";
-			  console.log(res.lives[0].weather);
+			  console.log(res.lives[0]);
 			  app.weather = res.lives[0];
 			  
 			  if(res.lives[0].weather.indexOf("云") > -1){
-				  $("#weatherBg").css({"background":"url(../../img/晴.png) 0 0 no-repeat","background-size":"100% 73%"})
+				  $("#weatherBg").css({"background":"url(../../img/多云.png) 0 0 no-repeat","background-size":"100% 73%"})
 			  }
 			  if(res.lives[0].weather.indexOf("阴") > -1){
 				  $("#weatherBg").css({"background":"url(../../img/多云.png) 0 0 no-repeat","background-size":"100% 73%"})
