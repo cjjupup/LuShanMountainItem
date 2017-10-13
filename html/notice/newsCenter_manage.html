@@ -41,7 +41,9 @@
 				  :title="newsinfo.title"
 				  :visible.sync="dialogVisible"
 				  size="small">
-				  <span><iframe class="full_Iframe" id="full_Iframe" width="100%" frameborder="0" :src="newsinfo.url"></iframe></span>
+				  <span>
+				  	<div class="dialog_newscontent" v-html="newsinfo.content"> </div>
+				  </span>
 				  <span slot="footer" class="dialog-footer">
 					<el-button type="primary" @click="dialogVisible = false">关 闭</el-button>
 				  </span>
@@ -49,12 +51,14 @@
 				<table class="table-normal w100 database-table table-left">
 					<thead>
 						<tr>
+							<th class="db-condition"><i class="icon iconfont icon-manhole-cover blue"></i> 状态</th>
 							<th class="db-title"><i class="icon iconfont icon-icon7 blue"></i> 标题</th>
 							<th class="db-date"><i class="icon iconfont icon-fabushijian01 blue"></i> 发布时间</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="user in tableData">
+							<td class="icon iconfont icon-xiaoxi green conditions"></td>
 							<td @click="shownews(user)" v-show="user.title">
 								<div class="database-table-name pr">
 									<div>
@@ -63,7 +67,7 @@
 								</div>
 							</td>
 							<td v-show="user.title" class="fs12">
-								<span>{{user.date}}</span>
+								<span>{{user.time}}</span>
 							</td>
 						</tr>
 					</tbody>
@@ -101,13 +105,15 @@ var app = new Vue({
 		/////获取通知公告数据
 		$.ajax({
 			type: "post",
-			dataType: "json",
-			url: 'http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletNotice,
-			data: app.obj,
+			dataType: "jsonp",
+			url: 'http://api.jisuapi.com/news/get?channel=头条&num=10&appkey=399d9e58a45937e4',
+			data: {start:0},
 			success: function (data) {
+				var datalist = data.result.list
+				console.log(datalist)
 				if (data != "") {
-					app.tableData = data;
-					app.pagenum = data[10].total;
+					app.tableData = datalist;
+					/*app.pagenum = datalist[10].total;*/
 					app.once = !app.once;
 				}
 			}
@@ -116,13 +122,11 @@ var app = new Vue({
 	  submit:function(){
 	  	window.location.href='newsCenter_create.html'
 	  },
-	  calltel:function(telnumber){
-		window.location.href = "tel:"+telnumber;
-	  },
 	  shownews:function(data){
 		console.log(data);
 		this.newsinfo = data;
 		this.dialogVisible = true;
+		$('.conditions').removeClass('icon-xiaoxi').addClass('icon-xuanze-')
 	  },
 	  pageCurrentChange:function(val){
 		console.log(`当前页: ${val}`);

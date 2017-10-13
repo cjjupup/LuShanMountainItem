@@ -10,6 +10,7 @@ ol, ul {
 }
 a{text-decoration:none;}
 .blue{color:#5182E4;}
+.green{color: greenyellow;text-align: center;}
 .fs16{font-size:16px;}
 .fs14{font-size:14px;}
 .fs12{font-size:12px;}
@@ -310,6 +311,9 @@ table {
 }
 .database-table th.db-name {
     width: 35%;
+}
+.database-table th.db-condition{
+	width: 55px;
 }
 .database-table th.db-date {
     width: 180px;
@@ -1458,6 +1462,15 @@ iframe.full_Iframe{overflow-x: hidden;}
 	color:#4f80e2;
 }
 
+/*消息管理,根据真实数据后再做修改*/
+.el-dialog__title{
+	    font-size: 24px;
+}
+.dialog_newscontent{
+	font-size: 16px;
+	line-height: 20px;
+    text-indent: 2em;
+}
 
 
 
