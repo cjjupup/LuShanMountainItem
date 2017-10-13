@@ -40,7 +40,7 @@
 							监测记录
 						</h2>
 					</div>
-					<div style="left:600px;position: absolute;z-index: 999999; line-height: 64px;">
+					<div style="right:5%;position: absolute;z-index: 999999; line-height: 64px;">
 						<el-button type="primary" id="additem_plant" @click="addItemPage()">新增记录</el-button>
 						<el-select v-model="searchType" clearable placeholder="请选择" style="width:100px;">
 							<el-option
@@ -65,17 +65,17 @@
 				<table class="table-normal database-table table-left">
 					<thead>
 						<tr>
-						    <th class="db-type">鸟类名</br>中文名、拉丁名、英文名</th>
-							<th class="db-station">保护站名</th>
-							<th class="db-id">监测人员</th>
-							<th class="db-date">时间</th>
-							<th class="db-weather">天气</th>
-							<th class="db-gps">GPS</th>
-							<th class="db-num">数量</th>
-							<th class="db-behavior">行为</th>
-							<th class="db-record">是否新纪录</th>
+						    <th class="db-11">鸟类名</br>中文名、拉丁名、英文名</th>
+							<th class="db-9">保护站名</th>
+							<th class="db-9">监测人员</th>
+							<th class="db-11">时间</th>
+							<th class="db-9">天气</th>
+							<th class="db-11">GPS</th>
+							<th class="db-9">数量</th>
+							<th class="db-9">行为</th>
+							<th class="db-9">是否新纪录</th>
 							<!-- <th class="db-remarks">备注</th> -->
-							<th class="db-edit">编辑</th>
+							<th class="db-11">编辑</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -93,9 +93,9 @@
 						</tr>
 					</tbody>
 				</table>
-				<br/><br/><br/><br/><br/>
+				<br/>
 				<div>
-					<div v-show="totaldata > 10">
+					<div v-show="totaldata > 10" style="float:right;margin-right:5%;">
 						<el-pagination
 						  @current-change="pageCurrentChange"
 						  layout="total,prev, pager, next, jumper"

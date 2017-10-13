@@ -28,14 +28,14 @@
 		<!-- 内容区域 -->
 		<div class="main header-wraper-height">
 			<!-- 左侧 -->
-			<leftwork leftactive="xhgj"></leftwork>
+			<leftwork leftactive="xhsjgl"></leftwork>
 			
 			<!-- 右侧 -->
 			<div class="view-date" style="padding-left: 226px;">
 				<div class="view-header-wrap wth-view-header" style="z-index: 1">
 					<div class="view-header">
 						<h2 class="nowrap with-tail-btn" title="总演示数据">
-							巡护轨迹
+							巡护数据管理
 						</h2>
 						<span class="wrapper_2">
 							<el-date-picker
@@ -96,19 +96,22 @@
 								<span @click="checkRoute($event)" :title="user.pid + ',' + user.name + ',' + user.userid + ',' + user.entity_name + ',' + user.service_id + ',' + user.timeStart + ',' + user.timeEnd + ',' + user.speed + ',' + user.mileage + ',' + user.totalTime" class="checkRoute">查看</span>
 							</td>
 						</tr>
-						<tr>
-							<td>共<span>{{totalData[0].total}}</span>条数据</td>
-							<td v-show="totalData[0].total > 10">
-								<el-pagination
-								  @current-change="pageCurrentChange"
-								  layout="prev, pager, next, jumper"
-								  :page-size="10"
-								  :total=totalData[0].total>
-								</el-pagination>
-							</td>
-						</tr>
 					</tbody>
 				</table>
+				</br>
+				<div class="pageChange">
+					<div v-show="totalData[0].total > 10">
+						<div style="display:inline-block;float:right;margin-right:5%;color:#B7B7BD;">
+							<el-pagination
+							  @current-change="pageCurrentChange"
+							  layout="prev, pager, next, jumper"
+							  :page-size="10"
+							  :total=totalData[0].total>
+							</el-pagination>
+						</div>
+						<span style="float:right;margin-right:10px;">共<b>{{totalData[0].total}}</b>条数据</span>
+					</div>
+				</div>
 				<div id="map" style="display:none;z-index:2;position: absolute;top:90px;left:226px;width:88%;height:80%"></div>
 				<div class="close_map" style="display:none" @click="closemap()"></div>
 				<div id="mapInfo" style="display:none;z-index:3;position: absolute;top:120px;left:326px"></div>

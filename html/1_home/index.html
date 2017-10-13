@@ -32,7 +32,7 @@
 			<div class="view-date" style="padding-left: 226px;">
 				<div class="contentbody">
 					<div>
-						<div class="itemBox" id="weatherBg" style="background:url(../../img/多云.png) 0 0 no-repeat;background-size: 100% 73%;">
+						<div class="itemBox" id="weatherBg">
 							<div class="weather_1">
 								<span class="s1">{{weather.temperature}}<i style="font-style: normal;font-size: 18px;">℃</i></span>
 								<span class="s2">{{weather.weather}}</span>
@@ -180,7 +180,7 @@ var app = new Vue({
 			  app.weather = res.lives[0];
 			  
 			  if(res.lives[0].weather.indexOf("云") > -1){
-				  $("#weatherBg").css({"background":"url(../../img/多云.png) 0 0 no-repeat","background-size":"100% 73%"})
+				  $("#weatherBg").css({"background":"url(../../img/晴.png) 0 0 no-repeat","background-size":"100% 73%"})
 			  }
 			  if(res.lives[0].weather.indexOf("阴") > -1){
 				  $("#weatherBg").css({"background":"url(../../img/多云.png) 0 0 no-repeat","background-size":"100% 73%"})

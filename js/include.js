@@ -103,11 +103,13 @@ var leftwork={
 </li></ul></li>
 
     <li class="project-item J-project-item angular-ui-tree-node active first"><div class="cat-op-parent level-0"><a class="nowrap project-name"><i class="icon iconfont icon-zhankai"></i><span>数据管理</span></a></div><ul class="dash-list angular-ui-tree-nodes own-dash-list">   
+
+
+<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'xhsjgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="patrolTrack.html"><i class="icon iconfont icon-xiaoxi"></i><span>巡护数据管理</span></a></div></li>
 <li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class="leftactive == 'hzsjgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="hzsjgl.html"><i class="icon iconfont icon-zhuzhuangtu"></i><span>火灾数据管理</span></a></div></li>       
 <li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'wfsjgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="wfsjgl.html"><i class="icon iconfont icon-dianhuazixun-dianhua"></i><span>违法数据管理</span></a></div></li>      
 <li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'wrjsjgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="planesjgl.html"><i class="icon iconfont icon-xiaoxi"></i><span>无人机数据管理</span></a></div></li>
 
-<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'xhsjgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="patrolTrack.html"><i class="icon iconfont icon-xiaoxi"></i><span>巡护数据管理</span></a></div></li>
 </ul></li>
 
 </ul></div></div></div>`,

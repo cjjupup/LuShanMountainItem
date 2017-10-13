@@ -42,7 +42,7 @@
 							无人机数据记录
 						</h2>
 					</div>
-					<div style="left:600px;position: absolute;z-index: 999999; line-height: 64px;">
+					<div style="right:5%;;position: absolute;z-index: 999999; line-height: 64px;">
 						<el-button type="primary" id="additem_plant" @click="addItemPage()">新增记录</el-button>
 						<el-select v-model="searchType" clearable placeholder="请选择" style="width:100px;">
 							<el-option
@@ -65,15 +65,15 @@
 				<table class="table-normal database-table table-left">
 					<thead>
 						<tr>
-						    <th class="db-startTime">发生时间</th>
-							<th class="db-endTime">处理时间</th>
-							<th class="db-lng">违法经度</th>
-							<th class="db-lat">违法纬度</th>
-							<th class="db-type">违法类型</th>
-							<th class="db-money">总损失金额(元)</th>
-							<th class="db-id">巡护员</th>
-							<th class="db-station">管理站</th>
-							<th class="db-edit">编辑</th>
+						    <th class="db-9">发生时间</th>
+							<th class="db-9">处理时间</th>
+							<th class="db-11">违法经度</th>
+							<th class="db-11">违法纬度</th>
+							<th class="db-7">违法类型</th>
+							<th class="db-7">总损失金额(元)</th>
+							<th class="db-7">巡护员</th>
+							<th class="db-7">管理站</th>
+							<th class="db-11">编辑</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -88,19 +88,22 @@
 							<td><span :title="user.station" class="fs12">{{user.station}}</span></td>
 							<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
 						</tr>
-						<tr>
-							<td>共<span>{{totaldata}}</span>条数据</td>
-							<td v-show="totaldata > 10">
-								<el-pagination
-								  @current-change="pageCurrentChange"
-								  layout="prev, pager, next, jumper"
-								  :page-size="10"
-								  :total=totaldata>
-								</el-pagination>
-							</td>
-						</tr>
 					</tbody>
 				</table>
+				</br>
+				<div class="pageChange">
+					<div v-show="totaldata > 10">
+						<div style="display:inline-block;float:right;margin-right:5%;color:#B7B7BD;">
+							<el-pagination
+							  @current-change="pageCurrentChange"
+							  layout="prev, pager, next, jumper"
+							  :page-size="10"
+							  :total=totaldata>
+							</el-pagination>
+						</div>
+						<span style="float:right;margin-right:10px;">共<b>{{totaldata}}</b>条数据</span>
+					</div>
+				</div>
 			</div>
 			<!--新增记录界面-->
 			<div class="view-date" style="padding-left: 226px;" id="addItemPage" v-show="changePage">

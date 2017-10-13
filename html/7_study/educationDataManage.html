@@ -33,10 +33,10 @@
 				<div class="view-header-wrap wth-view-header">
 					<div class="view-header">
 						<h2 class="nowrap with-tail-btn" title="总演示数据">
-							宣教详情
+							宣教数据管理
 						</h2>
 					</div>
-					<div style="left:600px;position: absolute;z-index: 999999; line-height: 64px;">
+					<div style="right:5%;position: absolute;z-index: 999999; line-height: 64px;">
 						<el-button type="primary" id="additem_science" @click="addItemPage()">新增记录</el-button>
 						<el-select v-model="searchType" clearable placeholder="请选择" style="width:100px;">
 							<el-option
@@ -58,17 +58,17 @@
 					</div>
 				</div>
 				
-				<table class="table-normal database-table table-left">
+				<table class="table-normal database-table table-left" style="width:100%;">
 					<thead>
 						<tr>
-							<th class="db-names">名称</th>
-							<th class="db-type">类型</th>
-							<th class="db-startTime">开始时间</th>
-							<th class="db-endTime">结束时间</th>
-							<th class="db-achievements">成果</th>
-							<th class="db-relevantDate">相关资料</th>
-							<th class="db-remarks">备注</th>
-							<th class="db-edit">编辑</th>
+							<th class="db-9">名称</th>
+							<th class="db-9">类型</th>
+							<th class="db-11">开始时间</th>
+							<th class="db-11">结束时间</th>
+							<th class="db-9">成果</th>
+							<th class="db-11">相关资料</th>
+							<th class="db-9">备注</th>
+							<th class="db-11">编辑</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -84,8 +84,9 @@
 						</tr>
 					</tbody>
 				</table>
+				</br>
 				<div>
-					<div v-show="totaldata > 10">
+					<div v-show="totaldata > 10" style="text-align:right;margin-right:5%;">
 						<el-pagination
 						  @current-change="pageCurrentChange"
 						  layout="total,prev, pager, next, jumper"
@@ -94,7 +95,7 @@
 						</el-pagination>
 				    </div>
 				</div>
-				<br/><br/><br/><br/><br/>
+				<br/><br/><br/>
 					
 			</div>
 			<!--增加记录页面-->

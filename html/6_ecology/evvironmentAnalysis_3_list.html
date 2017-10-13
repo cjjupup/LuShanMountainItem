@@ -36,7 +36,7 @@
 						<div class="view-header">
 							<button class="list_form_btn active">列表</button>
 							<button class="list_form_btn" @click="jumpPage">图表</button>
-							<div style="display:inline-block;margin-left:100px;">
+							<div style="display:inline-block;margin-left:50%;">
 						    	<el-button type="primary" id="additem_plant">导入</el-button>
 					            <el-button type="primary" id="additem_plant">导出</el-button>
 						    </div>
@@ -53,17 +53,17 @@
 					</div>
 			    </div>
 			    
-			    <table class="table-normal database-table table-center">
+			    <table class="table-normal database-table table-center" style="width:100%;">
 					<thead>
 						<tr>
-							<th class="db-date">采样日期</th>
-							<th class="db-fe">铁</th>
-							<th class="db-mg">镁</th>
-							<th class="db-zn">锌</th>
-							<th class="db-cd">镉</th>
-							<th class="db-hg">汞</th>
-							<th class="db-co">钴</th>
-							<th class="db-ni">镍</th>
+							<th class="db-11">采样日期</th>
+							<th class="db-9">铁</th>
+							<th class="db-9">镁</th>
+							<th class="db-9">锌</th>
+							<th class="db-9">镉</th>
+							<th class="db-9">汞</th>
+							<th class="db-9">钴</th>
+							<th class="db-9">镍</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -93,21 +93,21 @@
 								<span :title="user.ni" class="fs12">{{user.ni}}</span>
 							</td>
 						</tr>
-						<tr>
-							<td>共<span>{{pagetotal}}</span>条数据</td>
-							<td v-show="pagetotal > 10"  colspan="7">
-								<el-pagination
-								  @current-change="pageCurrentChange"
-								  layout="prev, pager, next, jumper"
-								  :page-size="10"
-								  :total=pagetotal>
-								</el-pagination>
-							</td>
-						</tr>
 					</tbody>
 				</table>
-				<div class="pagechange">
-					
+				</br>
+				<div class="pageChange">
+					<div v-show="pagetotal > 0">
+						<div style="display:inline-block;float:right;margin-right:5%;color:#B7B7BD;">
+							<el-pagination
+							  @current-change="pageCurrentChange"
+							  layout="prev, pager, next, jumper"
+							  :page-size="10"
+							  :total=pagetotal>
+							</el-pagination>
+						</div>
+						<span style="float:right;margin-right:10px;">共<b>{{pagetotal}}</b>条数据</span>
+					</div>
 				</div>
 			</div>
 		</div>
