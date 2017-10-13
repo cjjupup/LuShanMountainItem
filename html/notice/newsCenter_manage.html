@@ -28,6 +28,7 @@
 			<!-- 左侧 -->
 			<leftnewscenter leftactive="newsmanage"></leftnewscenter>
 			<!-- 右侧 -->
+			<div class="contentbody">
 			<div class="view-date" style="padding-left: 226px;">
 				<div class="view-header-wrap wth-view-header">
 					<div class="view-header">
@@ -48,7 +49,7 @@
 					<el-button type="primary" @click="dialogVisible = false">关 闭</el-button>
 				  </span>
 				</el-dialog>
-				<table class="table-normal w100 database-table table-left">
+				<table class="table-normal w100 database-table table-left" style="opacity: 0.8;">
 					<thead>
 						<tr>
 							<th class="db-condition"><i class="icon iconfont icon-manhole-cover blue"></i> 状态</th>
@@ -75,6 +76,7 @@
 				<div class="block" v-show="pagenum > 10">
 				  <el-pagination layout="prev, pager, next"	:total="pagenum" :page-size="10" @current-change="pageCurrentChange"></el-pagination>
 				</div>
+			</div>
 			</div>
 		</div>
 	</div>

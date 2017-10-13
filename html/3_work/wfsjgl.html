@@ -33,6 +33,7 @@
 			<!-- 左侧 -->
 			<leftwork leftactive="wfsjgl"></leftwork>
 			<!-- 右侧 --><!--数据管理界面-->
+			<div class="contentbody">
 			<div class="view-date" style="padding-left: 226px;" id="dataManage" v-show="!changePage">
 				<div class="view-header-wrap wth-view-header">
 					<div class="view-header">
@@ -60,7 +61,7 @@
 					</div>
 				</div>
 				
-				<table class="table-normal database-table table-left">
+				<table class="table-normal database-table table-left" style="opacity: 0.8;">
 					<thead>
 						<tr>
 						    <th class="db-11">发生时间</th>
@@ -103,6 +104,7 @@
 					</div>
 				</div>
 			</div>
+		    </div>
 			<!--新增记录界面-->
 			<div class="view-date" style="padding-left: 226px;" id="addItemPage" v-show="changePage">
 				<div class="view-header-wrap wth-view-header">

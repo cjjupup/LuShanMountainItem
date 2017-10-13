@@ -1295,11 +1295,11 @@ iframe.full_Iframe{overflow-x: hidden;}
 .contentbody{
 	width:100%;
 	height:100%;
-    filter:alpha(opacity=100 finishopacity=50 style=1 startx=0,starty=0,finishx=0,finishy=150) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#2d717f,endcolorstr=#203a63,gradientType=50);
-    -ms-filter:alpha(opacity=100 finishopacity=50 style=1 startx=0,starty=0,finishx=0,finishy=150) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#2d717f,endcolorstr=#203a63,gradientType=50);
+    filter:alpha(opacity=100 finishopacity=50 style=1 startx=0,starty=0,finishx=0,finishy=150) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#535973,endcolorstr=#2d717f,gradientType=50);
+    -ms-filter:alpha(opacity=100 finishopacity=50 style=1 startx=0,starty=0,finishx=0,finishy=150) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#535973,endcolorstr=#2d717f,gradientType=50);
     background:#24263E; /* 一些不支持背景渐变的浏览器 */  
-    background:-moz-linear-gradient(50deg, #2d717f,#203a63);  
-    background:-webkit-gradient(linear, left bottom, right top, from(#2d717f),to(#203a63));
+    background:-moz-linear-gradient(50deg,#535973,#2d717f);  
+    background:-webkit-gradient(linear, left bottom, right top, from(#535973),to(#2d717f));
 }
 .itemBox{
 	position: relative;

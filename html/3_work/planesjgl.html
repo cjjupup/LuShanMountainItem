@@ -35,7 +35,9 @@
 			<!-- 左侧 -->
 			<leftwork leftactive="wrjsjgl"></leftwork>
 			<!-- 右侧 --><!--数据管理界面-->
+			<div class="contentbody">
 			<div class="view-date" style="padding-left: 226px;" id="dataManage" v-show="!changePage">
+			
 				<div class="view-header-wrap wth-view-header">
 					<div class="view-header">
 						<h2 class="nowrap with-tail-btn" title="总演示数据">
@@ -62,7 +64,7 @@
 					</div>
 				</div>
 				
-				<table class="table-normal database-table table-left">
+				<table class="table-normal database-table table-left" style="opacity: 0.8;">
 					<thead>
 						<tr>
 						    <th class="db-9">发生时间</th>
@@ -104,6 +106,7 @@
 						<span style="float:right;margin-right:10px;">共<b>{{totaldata}}</b>条数据</span>
 					</div>
 				</div>
+			</div>
 			</div>
 			<!--新增记录界面-->
 			<div class="view-date" style="padding-left: 226px;" id="addItemPage" v-show="changePage">

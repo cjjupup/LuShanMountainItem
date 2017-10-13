@@ -32,6 +32,7 @@
 			<!-- 左侧 -->
 			<leftsystem leftactive="yhqxpz"></leftsystem>
 			<!-- 右侧 --><!--数据管理界面-->
+			<div class="contentbody">
 			<div class="view-date" style="padding-left: 226px;" id="dataManage" v-show="!changePage">
 				<div class="view-header-wrap wth-view-header">
 					<div class="view-header">
@@ -63,7 +64,7 @@
 						<el-col :span="7">
 							<p style="color:#fff;font-size:16px;margin-bottom:5px">青山湖站</p>
 							<br/>
-							<table class="table-normal database-table table-left" style="width:100%">
+							<table class="table-normal database-table table-left" style="width:100%;opacity: 0.8;">
 								<thead>
 									<tr>
 										<th class="db-role">角色</th>
@@ -84,7 +85,7 @@
 						<el-col :span="7">
 							<p style="color:#fff;font-size:16px;margin-bottom:5px">艾西湖站</p>
 							<br/>
-							<table class="table-normal database-table table-left" style="width:100%;">
+							<table class="table-normal database-table table-left" style="width:100%;opacity: 0.8;">
 								<thead>
 									<tr>
 										<th class="db-role">角色</th>
@@ -106,6 +107,7 @@
 				
 				
 				<br/><br/>
+			</div>
 			</div>
 			<!--新增记录界面-->
 			<div class="view-date" style="padding-left: 226px;" id="addItemPage" v-show="changePage">
