@@ -1522,6 +1522,45 @@ iframe.full_Iframe{overflow-x: hidden;}
     text-indent: 2em;
 }
 
+/*表格颜色分布*/
+.el-table tr:nth-child(odd) {
+    background: #313449;
+  }
 
+.el-table tr:nth-child(even) {
+    background: #2B2E44;
+  }
 
+.cell{
+	color:#BEBFC6
+}
 
+.el-table th{
+	background-color: #24273E;
+}
+
+.el-table__footer-wrapper thead div, .el-table__header-wrapper thead div{
+	background-color: #24273E;
+	color: white;
+}
+.el-table__fixed-header-wrapper thead div{
+	background-color: #24273E;
+	color: white;
+}
+.el-table--border td, .el-table--border th{
+	border-right: 1px solid #24273E;
+	border-bottom: 1px solid #24273E
+}
+.el-table{
+	border: 1px solid #24273E;
+	background-color: #24273E;
+}
+.el-table td, .el-table th.is-leaf{
+	border-bottom: 0;
+}
+.el-table::before{
+	background-color: #24273E;
+}
+.el-table--enable-row-hover .el-table__body tr:hover>td{
+	background-color: rgba(255,255,255,0.3);
+}

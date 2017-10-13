@@ -22,7 +22,8 @@
 	<script src="../../js/elementui.js"></script>
 	<script src="../../js/mock.js"></script>
 	<script src="../../js/url.js"></script>
-	
+	<!--引入xlsx插件-->
+	<script src="https://cdn.bootcss.com/xlsx/0.11.4/xlsx.full.min.js"></script>
 </head>
 <body>
 	<div id="app" :class = "once?'show':''">
@@ -32,7 +33,6 @@
 			<!-- 左侧 -->
 			<leftsystem leftactive="yhgl"></leftsystem>
 			<!-- 右侧 --><!--数据管理界面-->
-			<div class="contentbody" v-show="!changePage">
 			<div class="view-date" style="padding-left: 226px;" id="dataManage" v-show="!changePage">
 				<div class="view-header-wrap wth-view-header">
 					<div class="view-header">
@@ -41,8 +41,9 @@
 						</h2>
 					</div>
 					<div style="right:5%;position: absolute;z-index: 999999; line-height: 64px;">
+						<a id="downlink"></a>
 					    <el-button type="primary" id="additem_plant">导入</el-button>
-					    <el-button type="primary" id="additem_plant">导出</el-button>
+					    <el-button type="primary" id="additem_plant" @click="downloadFile(excelData)">导出</el-button>
 						<el-button type="primary" id="additem_plant" @click="addItemPage()">新增记录</el-button>
 						<el-select v-model="searchType" clearable placeholder="名称" style="width:100px;">
 							<el-option
@@ -61,8 +62,22 @@
 						</el-input>
 					</div>
 				</div>
-				
-				<table class="table-normal database-table table-left" style="width:100%;opacity: 0.8;">
+				<el-table :data="excelData" max-height="800"  border>
+					<el-table-column label="用户名" prop="username" show-overflow-tooltip></el-table-column>
+					<el-table-column label="用户密码" prop="password" show-overflow-tooltip></el-table-column>
+					<el-table-column label="保护站" prop="station" show-overflow-tooltip></el-table-column>
+					<el-table-column label="性别" prop="sex" show-overflow-tooltip></el-table-column>
+					<el-table-column label="手机号码" prop="phone" show-overflow-tooltip></el-table-column>
+					<el-table-column label="状态" prop="state" show-overflow-tooltip></el-table-column>
+					<el-table-column  label="编辑" width="150">
+						<template scope="scope">
+							<el-button @click="checkItem($event)" type="text" size="small">查看</el-button>
+							<el-button @click="modifyItem($event)" type="text" size="small">修改</el-button>
+							<el-button @click="deleteItem($event)" type="text" size="small">删除</el-button>
+						</template>
+					</el-table-column>
+				</el-table>
+				<!--<table class="table-normal database-table table-left" style="width:100%;">
 					<thead>
 						<tr>
 						    <th class="db-username">用户名</th>
@@ -82,10 +97,12 @@
 							<td><span :title="user.sex" class="fs12">{{user.sex}}</span></td>
 							<td><span :title="user.phone" class="fs12">{{user.phone}}</span></td>
 							<td><span :title="user.state" class="fs12">{{user.state}}</span></td>
-							<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
+							<td><span class="modify" @click="checkItem($event,user)">查看</span> / 
+								<span class="modify" @click="modifyItem($event,user)">修改</span> / 
+								<span class="modify" @click="deleteItem($event)">删除</span></td>
 						</tr>
 					</tbody>
-				</table>
+				</table>-->
 				</br>
 				<div>
 					<div v-show="totaldata > 10" style="text-align:right;margin-right:5%;">
@@ -100,9 +117,7 @@
 				<br/><br/><br/>
 					
 			</div>
-		    </div>
 			<!--新增记录界面-->
-			<div class="contentbody" v-show="changePage">
 			<div class="view-date" style="padding-left: 226px;" id="addItemPage" v-show="changePage">
 				<div class="view-header-wrap wth-view-header">
 					<div class="view-header">
@@ -204,7 +219,6 @@
 			    </div>
 				</br></br></br></br></br></br></br>
 			</div>
-			</div>
 		</div>
 	</div>
 </body>
@@ -220,6 +234,7 @@ var app = new Vue({
   },
   data: {
 	once:true,
+	outFile: '',
 	changePage:false,
 	creatItem:true,
 	tableData:[],
@@ -284,12 +299,70 @@ var app = new Vue({
 		remarks: [
 	        { required: true, message: '请填写备注', trigger: 'blur' }
 	    ]
-	}
+	},
+	excelData:[]
+  },
+  mounted(){
+  	this.outFile = document.getElementById('downlink')
   },
   methods:{
+  	downloadFile: function (rs) { // 点击导出按钮
+	  let data = [{}]
+	  for (let k in rs[0]) {
+	    data[0][k] = k
+	  }
+	  data = data.concat(rs)
+	  this.downloadExl(data, '用户管理统计表')
+	},
+	downloadExl: function (json, downName, type) {  // 导出到excel
+	  let keyMap = [] // 获取键
+	  for (let k in json[0]) {
+	    keyMap.push(k)
+	  }
+	  console.info('keyMap', keyMap, json)
+	  let tmpdata = [] // 用来保存转换好的json
+	  json.map((v, i) => keyMap.map((k, j) => Object.assign({}, {
+	    v: v[k],
+	    position: (j > 25 ? this.getCharCol(j) : String.fromCharCode(65 + j)) + (i + 1)
+	  }))).reduce((prev, next) => prev.concat(next)).forEach(function (v) {
+	    tmpdata[v.position] = {
+	      v: v.v
+	    }
+	  })
+	  let outputPos = Object.keys(tmpdata)  // 设置区域,比如表格从A1到D10
+	  let tmpWB = {
+	    SheetNames: ['mySheet'], // 保存的表标题
+	    Sheets: {
+	      'mySheet': Object.assign({},
+	        tmpdata, // 内容
+	        {
+	          '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 1] // 设置填充区域
+	        })
+	    }
+	  }
+	  let tmpDown = new Blob([this.s2ab(XLSX.write(tmpWB,
+	    {bookType: (type === undefined ? 'xlsx' : type), bookSST: false, type: 'binary'} // 这里的数据是用来定义导出的格式类型
+	  ))], {
+	    type: ''
+	  })  // 创建二进制对象写入转换好的字节流
+	  var href = URL.createObjectURL(tmpDown)  // 创建对象超链接
+	  this.outFile.download = downName + '.xlsx'  // 下载名称
+	  this.outFile.href = href  // 绑定a标签
+	  this.outFile.click()  // 模拟点击实现下载
+	  setTimeout(function () {  // 延时释放
+	    URL.revokeObjectURL(tmpDown) // 用URL.revokeObjectURL()来释放这个object URL
+	  }, 100)
+	},
+	s2ab: function (s) { // 字符串转字符流
+	  var buf = new ArrayBuffer(s.length)
+	  var view = new Uint8Array(buf)
+	  for (var i = 0; i !== s.length; ++i) {
+	    view[i] = s.charCodeAt(i) & 0xFF
+	  }
+	  return buf
+	},
 	  getonce:function(){ 
 		/////获取通知公告数据
-		
 		$.ajax({
 			type: "get",
 			dataType: "json",
@@ -299,9 +372,10 @@ var app = new Vue({
 				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
 			}, 
 			success: function (data) {
+				console.log(data)
 				if (data != "") {
-					app.tableData = data.list;
-					app.totaldata = app.tableData.length;
+					app.excelData = data.list
+					app.totaldata = app.excelData.length;
 				}
 			}
 		});
@@ -314,7 +388,7 @@ var app = new Vue({
 		  $.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletPatrol,{ byValue: JSON.stringify(app.obj) }, function(data) {
 			  if (data != "") {
 					app.tableData = data.list;
-				    app.totaldata = app.tableData.length
+				    app.totaldata = app.excelData.length;
 					app.once = true;
 					console.log(app.totaldata);
 				}
@@ -420,19 +494,20 @@ var app = new Vue({
 		  
 	  },
 	  //修改记录跳转
-	  modifyItem:function(event,user){
+	  modifyItem:function(event){
 		  //遍历？待优化
-		  app.dataBox = user;
+		  dataBox = app.excelData;
 		  app.creatItem = false;
-
-		  app.ruleForm.username = app.dataBox.username;
-		  app.ruleForm.password = app.dataBox.password;
-		  app.ruleForm.station = app.dataBox.station;  
-		  app.ruleForm.sex = app.dataBox.sex;
-		  app.ruleForm.phone = app.dataBox.phone;
-		  app.ruleForm.email = app.dataBox.email;
-		  app.ruleForm.state = app.dataBox.state;
-		  app.ruleForm.state_1 = app.dataBox.state_1;
+		  console.log(dataBox)
+		  
+		  app.ruleForm.username = dataBox[0].username;
+		  app.ruleForm.password = dataBox[0].password;
+		  app.ruleForm.station = dataBox[0].station;  
+		  app.ruleForm.sex = dataBox[0].sex;
+		  app.ruleForm.phone = dataBox[0].phone;
+		  app.ruleForm.email = dataBox[0].email;
+		  app.ruleForm.state = dataBox[0].state;
+		  app.ruleForm.state_1 = dataBox[0].state_1;
 		  app.changePage = true;
 	  },
 	  //删除记录
