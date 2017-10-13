@@ -39,7 +39,7 @@
 							用户角色权限配置
 						</h2>
 					</div>
-					<div style="left:600px;position: absolute;z-index: 999999; line-height: 64px;">
+					<div style="right:5%;position: absolute;z-index: 999999; line-height: 64px;">
 						<el-button type="primary" id="additem_plant" @click="addItemPage()">新增记录</el-button>
 						<el-select v-model="searchType" clearable placeholder="保护站" style="width:100px;">
 							<el-option
@@ -58,54 +58,54 @@
 						</el-input>
 					</div>
 				</div>
-				<p style="color:#fff;font-size:16px;margin-bottom:5px">青山湖站</p>
-				<table class="table-normal database-table table-left">
-					<thead>
-						<tr>
-						    <th class="db-role">角色</th>
-						    <th class="db-id">姓名</th>
-							<th class="db-edit">编辑</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="user in tableData">
-						    <td><span :title="user.role" class="fs12">{{user.role}}</td>
-						    <td><span :title="user.id" class="fs12">{{user.id}}</td>
-							<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
-						</tr>
-					</tbody>
-				</table>
-				<br/>
-				<p style="color:#fff;font-size:16px;margin-bottom:5px">艾西湖站</p>
-				<br/>
-				<table class="table-normal database-table table-left">
-					<thead>
-						<tr>
-						    <th class="db-role">角色</th>
-						    <th class="db-id">姓名</th>
-							<th class="db-edit">编辑</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="user in tableData">
-						    <td><span :title="user.role" class="fs12">{{user.role}}</td>
-						    <td><span :title="user.id" class="fs12">{{user.id}}</td>
-							<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
-						</tr>
-					</tbody>
-				</table>
-				<br/><br/><br/><br/><br/>
 				<div>
-					<div v-show="totaldata > 10">
-						<el-pagination
-						  @current-change="pageCurrentChange"
-						  layout="total,prev, pager, next, jumper"
-						  :page-size="10"
-						  :total=totaldata>
-						</el-pagination>
-				    </div>
+					<el-row :gutter="30">
+						<el-col :span="7">
+							<p style="color:#fff;font-size:16px;margin-bottom:5px">青山湖站</p>
+							<br/>
+							<table class="table-normal database-table table-left" style="width:100%">
+								<thead>
+									<tr>
+										<th class="db-role">角色</th>
+										<th class="db-id">姓名</th>
+										<th class="db-edit">编辑</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="user in tableData">
+										<td><span :title="user.role" class="fs12">{{user.role}}</td>
+										<td><span :title="user.id" class="fs12">{{user.id}}</td>
+										<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
+									</tr>
+								</tbody>
+							</table>
+							<br/>
+						</el-col>
+						<el-col :span="7">
+							<p style="color:#fff;font-size:16px;margin-bottom:5px">艾西湖站</p>
+							<br/>
+							<table class="table-normal database-table table-left" style="width:100%;">
+								<thead>
+									<tr>
+										<th class="db-role">角色</th>
+										<th class="db-id">姓名</th>
+										<th class="db-edit">编辑</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr v-for="user in tableData">
+										<td><span :title="user.role" class="fs12">{{user.role}}</td>
+										<td><span :title="user.id" class="fs12">{{user.id}}</td>
+										<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
+									</tr>
+								</tbody>
+							</table>
+						</el-col>
+					</el-row>
 				</div>
-					
+				
+				
+				<br/><br/>
 			</div>
 			<!--新增记录界面-->
 			<div class="view-date" style="padding-left: 226px;" id="addItemPage" v-show="changePage">

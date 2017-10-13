@@ -39,7 +39,7 @@
 							组织机构数据
 						</h2>
 					</div>
-					<div style="left:600px;position: absolute;z-index: 999999; line-height: 64px;">
+					<div style="right:5%;position: absolute;z-index: 999999; line-height: 64px;">
 						<el-button type="primary" id="additem_plant" @click="addItemPage()">新增记录</el-button>
 						<el-select v-model="searchType" clearable placeholder="名称" style="width:100px;">
 							<el-option
@@ -59,7 +59,7 @@
 					</div>
 				</div>
 				
-				<table class="table-normal database-table table-left">
+				<table class="table-normal database-table table-left" style="width:100%;">
 					<thead>
 						<tr>
 						    <th class="db-name">机构名称</th>
@@ -87,9 +87,9 @@
 						</tr>
 					</tbody>
 				</table>
-				<br/><br/><br/><br/><br/>
+				<br/>
 				<div>
-					<div v-show="totaldata > 10">
+					<div v-show="totaldata > 10" style="text-align: right;margin-right:5%;">
 						<el-pagination
 						  @current-change="pageCurrentChange"
 						  layout="total,prev, pager, next, jumper"

@@ -40,7 +40,7 @@
 							自然灾害数据管理
 						</h2>
 					</div>
-					<div style="left:600px;position: absolute;z-index: 999999; line-height: 64px;">
+					<div style="right:5%;position: absolute;z-index: 999999; line-height: 64px;">
 						<el-button type="primary" id="additem_plant" @click="addItemPage()">新增记录</el-button>
 						<el-select v-model="searchType" clearable placeholder="请选择" style="width:100px;">
 							<el-option
@@ -60,20 +60,20 @@
 					</div>
 				</div>
 				
-				<table class="table-normal database-table table-left">
+				<table class="table-normal database-table table-left" style="width:100%;">
 					<thead>
 						<tr>
-						    <th class="db-type">灾害类型</th>
-						    <th class="db-names">灾害名称</th>
-						    <th class="db-startTime">发生时间</th>
+						    <th class="db-9">灾害类型</th>
+						    <th class="db-11">灾害名称</th>
+						    <th class="db-11">发生时间</th>
 							<!-- <th class="db-endTime">处理时间</th> -->
-							<th class="db-lng">火灾经度</th>
-							<th class="db-lat">火灾纬度</th>
+							<th class="db-11">火灾经度</th>
+							<th class="db-11">火灾纬度</th>
 							<!-- <th class="db-type">违法类型</th> -->
-							<th class="db-total">总损失金额(元)</th>
-							<th class="db-id">巡护员</th>
-							<th class="db-station">管理站</th>
-							<th class="db-edit">编辑</th>
+							<th class="db-9">总损失金额(元)</th>
+							<th class="db-9">巡护员</th>
+							<th class="db-9">管理站</th>
+							<th class="db-11">编辑</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -92,9 +92,9 @@
 						</tr>
 					</tbody>
 				</table>
-				<br/><br/><br/><br/><br/>
+				</br>
 				<div>
-					<div v-show="totaldata > 10">
+					<div v-show="totaldata > 10" style="text-align:right;margin-right:5%;">
 						<el-pagination
 						  @current-change="pageCurrentChange"
 						  layout="total,prev, pager, next, jumper"
@@ -103,6 +103,7 @@
 						</el-pagination>
 				    </div>
 				</div>
+				<br/><br/><br/>
 					
 			</div>
 			<!--新增记录界面-->

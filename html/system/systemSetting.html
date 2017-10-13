@@ -36,7 +36,7 @@
 							用户日志管理
 						</h2>
 					</div>
-		            <div style="left:600px;position: absolute;z-index: 999999; line-height: 64px;">
+		            <div style="right:5%;position: absolute;z-index: 999999; line-height: 64px;">
 						<el-select v-model="searchType" clearable placeholder="请选择" style="width:100px;">
 							<el-option
 							  v-for="item in option_search"
@@ -55,7 +55,7 @@
 					</div>
 			    </div>
 			    
-			    <table class="table-normal database-table table-center">
+			    <table class="table-normal database-table table-center" style="width:100%;">
 					<thead>
 						<tr>
 							<th class="db-people">用户名</th>
@@ -83,19 +83,20 @@
 								<span :title="user.count" class="fs12">{{user.count}}</span>
 							</td>
 						</tr>
-						<!--<tr>
-							<td>共<span>{{totalData[0].total}}</span>条数据</td>
-							<td v-show="totalData[0].total > 10">
-								<el-pagination
-								  @current-change="pageCurrentChange"
-								  layout="prev, pager, next, jumper"
-								  :page-size="10"
-								  :total=totalData[0].total>
-								</el-pagination>
-							</td>
-						</tr>-->
 					</tbody>
 				</table>
+				</br>
+				<div>
+					<div v-show="totaldata > 10" style="text-align:right;margin-right:5%;">
+						<el-pagination
+						  @current-change="pageCurrentChange"
+						  layout="total,prev, pager, next, jumper"
+						  :page-size="10"
+						  :total=totaldata>
+						</el-pagination>
+				    </div>
+				</div>
+				<br/><br/><br/>
 			</div>
 		</div>
 	</div>
