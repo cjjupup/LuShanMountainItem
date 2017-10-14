@@ -1564,3 +1564,32 @@ iframe.full_Iframe{overflow-x: hidden;}
 .el-table--enable-row-hover .el-table__body tr:hover>td{
 	background-color: rgba(255,255,255,0.3);
 }
+
+/*导入按钮样式修改*/
+.file {
+    position: relative;
+    background-color: #20a0ff;
+    border-radius: 4px;
+    padding: 9px 17px;
+    overflow: hidden;
+    color: #fff;
+    text-decoration: none;
+    text-indent: 0;
+    margin-right: 10px;
+    font-size: 14px;
+}
+.file input {
+    position: absolute;
+    height: 35px;
+    width: 60px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+    cursor: hand;
+}
+.file:hover {
+	background: #4db3ff;
+	border-color: #4db3ff;
+	color: #fff
+}
