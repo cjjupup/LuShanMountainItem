@@ -61,7 +61,7 @@
 					</div>
 				</div>
 				
-				<table class="table-normal database-table table-left" style="opacity: 0.8;">
+				<table class="table-normal database-table table-left" style="opacity: 0.8;width:100%;">
 					<thead>
 						<tr>
 						    <th class="db-11">发生时间</th>
@@ -85,7 +85,7 @@
 							<td><span :title="user.total" class="fs12">{{user.total}}</span></td>  <!--待加入-->
 							<td><span :title="user.id" class="fs12">{{user.id}}</span></td>
 							<td><span :title="user.station" class="fs12">{{user.station}}</span></td>
-							<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
+							<td><span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
 						</tr>
 					</tbody>
 				</table>
@@ -241,7 +241,7 @@
 								<el-row :gutter="20" class="pt8">
 		                            <el-col :span="9">
 									  	<el-form-item label="管理站" prop="station" required>
-											<el-select v-model="ruleForm.station" placeholder="请选择管理站">
+											<el-select v-model="ruleForm.station" placeholder="请选择管理站" v-on:change="somechange()">
 											    <el-option label="管理站1" value="管理站1"></el-option>
 											    <el-option label="管理站2" value="管理站2"></el-option>
 											    <el-option label="管理站3" value="管理站3"></el-option>
@@ -252,10 +252,12 @@
 									<el-col :span="9">
 									  	<el-form-item label="巡护员" prop="id">
 											<el-select v-model="ruleForm.id" placeholder="请选择巡护员">
-											    <el-option label="巡护员1" value="巡护员1"></el-option>
-											    <el-option label="巡护员2" value="巡护员2"></el-option>
-											    <el-option label="巡护员3" value="巡护员3"></el-option>
-											    <el-option label="巡护员4" value="巡护员4"></el-option>
+											   <el-option
+												  v-for="item in peoplelist"
+												  :key="item.value"
+												  :label="item.label"
+												  :value="item.value">
+												</el-option>
 											</el-select>
 										  </el-form-item>
 									</el-col>
@@ -322,6 +324,7 @@ var app = new Vue({
 	searchContent:'', 
 	//addItem
 	dataBox:{},
+	peoplelist:[],
 	ruleForm: {
 	  animal: '',
 	  startTime:'',
@@ -427,6 +430,12 @@ var app = new Vue({
 		});
 		
 	  },
+	  //站人员二级联动
+	  somechange:function(){
+		  console.log(app.ruleForm.station);
+		  //机构人员二级联动
+		  //针对app.ruleForm.station的变化 app.ruleForm.peoplelist响应显出归属人员
+	  },
 	  pageCurrentChange:function(val){
 		  //更新页码
 		  app.obj.pageIndex = val;
@@ -504,10 +513,6 @@ var app = new Vue({
 	  modifyCancel:function(formName){
 		  this.$refs[formName].resetFields();
 		  app.changePage = false;
-	  },
-	  //查看记录跳转 
-	  checkItem:function(event,user){
-		  
 	  },
 	  //打开gps选址
 	  showGPSmap:function(){

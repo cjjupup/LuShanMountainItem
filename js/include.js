@@ -223,9 +223,9 @@ var leftsystem={
 
 <li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class="leftactive == 'szpz'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="sbpz.html"><i class="icon iconfont icon-zhuzhuangtu"></i><span>设置配置</span></a></div></li>
 
-<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'yhqxpz'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="useroles.html"><i class="icon iconfont icon-dianhuazixun-dianhua"></i><span>用户权限配置</span></a></div></li>
-
 <li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'yhgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="usercenter.html"><i class="icon iconfont icon-dianhuazixun-dianhua"></i><span>用户管理</span></a></div></li>
+
+<li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'yhqxpz'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="useroles.html"><i class="icon iconfont icon-dianhuazixun-dianhua"></i><span>用户权限</span></a></div></li>
 
 <li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class="leftactive == 'yjxxgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="#"><i class="icon iconfont icon-zhuzhuangtu"></i><span>预警消息管理</span></a></div></li>
 

@@ -63,28 +63,24 @@
 				<table class="table-normal database-table table-left" style="width:100%;opacity: 0.8;">
 					<thead>
 						<tr>
-						    <th class="db-name">机构名称</th>
+						    <th class="db-station">机构名称</th>
 						    <th class="db-level">层级关系</th>
 						    <th class="db-id_1">负责人</th>
-							<!-- <th class="db-endTime">处理时间</th> -->
 							<th class="db-way_1">负责人联系方式</th>
 							<th class="db-id_2">联络人</th>
-							<!-- <th class="db-type">违法类型</th> -->
 							<th class="db-way_2">联络人联系方式</th>
-							<!-- <th class="db-id">负责人</th>
-							<th class="db-station">管理站</th> -->
 							<th class="db-edit">编辑</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="user in tableData">
-						    <td><span :title="user.name" class="fs12">{{user.name}}</td>
+						    <td><span :title="user.station" class="fs12">{{user.name}}</td>
 						    <td><span :title="user.level" class="fs12">{{user.level}}</td>
 						    <td><span :title="user.id_1" class="fs12">{{user.id_1}}</span></td>
 							<td><span :title="user.way_1" class="fs12">{{user.way_1}}</span></td>
 							<td><span :title="user.id_2" class="fs12">{{user.id_2}}</span></td>
 							<td><span :title="user.way_2" class="fs12">{{user.way_2}}</span></td>
-							<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
+							<td><span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
 						</tr>
 					</tbody>
 				</table>
@@ -123,12 +119,12 @@
 						<div class="item_content">
 	                        <el-row :gutter="20" class="pt8">
 								<el-col :span="9">
-									<el-form-item label="机构名称" prop="name" required>
-										<el-select v-model="ruleForm.name" placeholder="庐山自然保护区">
-										    <el-option label="庐山自然保护区" value="1"></el-option>
-										    <el-option label="保护站1" value="2"></el-option>
-										    <el-option label="保护站2" value="3"></el-option>
-										    <el-option label="保护站3" value="4"></el-option>
+									<el-form-item label="机构名称" prop="station" required>
+										<el-select v-model="ruleForm.station" placeholder="请选择" v-on:change="somechange()">
+										    <el-option label="庐山自然保护区" value="0"></el-option>
+										    <el-option label="保护站1" value="1"></el-option>
+										    <el-option label="保护站2" value="2"></el-option>
+										    <el-option label="保护站3" value="3"></el-option>
 										</el-select>
 									</el-form-item>
 								</el-col>
@@ -144,10 +140,13 @@
 							<el-row :gutter="20" class="pt8">
 								<el-col :span="9">
 								  	<el-form-item label="负责人" prop="id_1" required>
-										<el-select v-model="ruleForm.id_1" placeholder="相对应保护站负责人1">
-										    <el-option label="相对应保护站负责人1" value="1"></el-option>
-										    <el-option label="相对应保护站负责人2" value="2"></el-option>
-										    <el-option label="相对应保护站负责人3" value="3"></el-option>
+										<el-select v-model="ruleForm.id_1" placeholder="请选择">
+											<el-option
+											  v-for="item in peoplelist"
+											  :key="item.value"
+											  :label="item.label"
+											  :value="item.value">
+											</el-option>
 										</el-select>
 									</el-form-item>
 								</el-col>
@@ -170,10 +169,13 @@
 								<el-row :gutter="20" class="pt8">
 		                            <el-col :span="9">
 									  	<el-form-item label="联络人" prop="id_2" required>
-											<el-select v-model="ruleForm.id_2" placeholder="相对应保护站人员1">
-											    <el-option label="相对应保护站人员1" value="人员1"></el-option>
-											    <el-option label="相对应保护站人员2" value="人员2"></el-option>
-											    <el-option label="相对应保护站人员3" value="人员3"></el-option>
+											<el-select v-model="ruleForm.id_2" placeholder="请选择">
+											    <el-option
+												  v-for="item in peoplelist"
+												  :key="item.value"
+												  :label="item.label"
+												  :value="item.value">
+												</el-option>
 											</el-select>
 										</el-form-item>
 									</el-col>
@@ -217,11 +219,6 @@
 					</div>
 				</el-form>
 				</div>
-				<!--GPS地图-->
-				<div class="selectGPS">
-				  <div id="GPSmap"></div>
-			    </div>
-				</br></br></br></br></br></br></br>
 			</div>
 			</div>
 		</div>
@@ -243,7 +240,6 @@ var app = new Vue({
 	creatItem:true,
 	tableData:[],
 	totaldata:0,
-	obj:{station:"全站",pageIndex:1,pageSize:10,behavior:"觅食",id:"张三"},  //五个关键数据：站点、人名、生境、页码、每页数量 后续搜索功能也要用  初始进入默认加载全部数据
     option_search: [
 		{
 	        value: 'name',
@@ -256,8 +252,9 @@ var app = new Vue({
 	searchType: '',
 	searchContent:'', 
 	dataBox:{},
+	peoplelist:[],
 	ruleForm: {
-	    name:'',
+	    station:'',
 	    level:'',
 	    type:'',
 	    id_1:'',
@@ -268,7 +265,7 @@ var app = new Vue({
 	    Zipcode:''
 	},
 	rules: {
-		name:[
+		station:[
 		    { required: true, message: '请选择机构名', trigger: 'change' }
 		],
 		level:[
@@ -322,6 +319,12 @@ var app = new Vue({
 		});
 		
 	  },
+	  //机构人员二级联动
+	  somechange:function(){
+		  console.log(app.ruleForm.station);
+		  //机构人员二级联动
+		  //针对app.ruleForm.station的变化 app.ruleForm.peoplelist响应显出归属人员
+	  },
 	  pageCurrentChange:function(val){
 		  //更新页码
 		  app.obj.pageIndex = val;
@@ -366,34 +369,6 @@ var app = new Vue({
 		  app.changePage = true;
 		  app.creatItem = true;
 	  },
-	  //打开gps选址
-	  // showGPSmap:function(){
-		 //  $(".selectGPS").css("display","block");
-		 //  var map = new BMap.Map("GPSmap");
-		 //  var point = new BMap.Point(115.996112, 29.547892);
-		 //  map.enableScrollWheelZoom(); 
-	  //     map.centerAndZoom(point, 15);
-		 //  var marker = new BMap.Marker(point);  // 创建标注
-	  //     map.addOverlay(marker);               // 将标注添加到地图中
-	  //     marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-		 //  map.addEventListener("mousemove",function(e){  //鼠标移动显示坐标
-			//   //console.log(e.point.lng + "," + e.point.lat);
-		 //  });
-		 //  map.addEventListener("click",function(e){   //鼠标点击定位坐标
-			// 	  //询问框
-			// 	layer.confirm('已选定经纬坐标：'+e.point.lng + " / " + e.point.lat, {
-			// 	  btn: ['确认定位','重新定位'] //按钮
-			// 	}, function(){
-			// 		layer.msg('定位成功',{time:700},{icon: 1} );
-			// 	  app.ruleForm.gps = e.point.lng + "," + e.point.lat;
-			// 	  $(".selectGPS").css("display","none");
-			// 	  //layer.msg('的确很重要', {icon: 1});
-			// 	}, function(){
-			// 	  app.ruleForm.gps ="";
-			// 	  layer.msg('请重新定位');
-			//   });
-		 //  });
-	  // },
 	  //新增提交
 	  addItem(formName) {
         this.$refs[formName].validate((valid) => {
@@ -428,16 +403,12 @@ var app = new Vue({
 		  this.$refs[formName].resetFields();
 		  app.changePage = false;
 	  },
-	  //查看记录跳转 
-	  checkItem:function(event,user){
-		  
-	  },
 	  //修改记录跳转
 	  modifyItem:function(event,user){
 		  //遍历？待优化
 		  app.dataBox = user;
 		  app.creatItem = false;
-		  app.ruleForm.name=app.dataBox.name;
+		  app.ruleForm.station=app.dataBox.name;
 		  app.ruleForm.level=app.dataBox.level;
 		  app.ruleForm.id_1=app.dataBox.id_1;
 		  app.ruleForm.way_1=app.dataBox.way_1;

@@ -89,7 +89,7 @@
 							<td><span :title="user.money" class="fs12">{{user.total}}</span></td>  <!--待加入-->
 							<td><span :title="user.id" class="fs12">{{user.id}}</span></td>
 							<td><span :title="user.station" class="fs12">{{user.station}}</span></td>
-							<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
+							<td><span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
 						</tr>
 					</tbody>
 				</table>
@@ -180,7 +180,7 @@
 								<el-row :gutter="20" class="pt8">
 		                            <el-col :span="9">
 									  	<el-form-item label="管理站" prop="station" required>
-											<el-select v-model="ruleForm.station" placeholder="请选择管理站">
+											<el-select v-model="ruleForm.station" placeholder="请选择管理站" v-on:change='somechange()'>
 											    <el-option label="管理站1" value="管理站1"></el-option>
 											    <el-option label="管理站2" value="管理站2"></el-option>
 											    <el-option label="管理站3" value="管理站3"></el-option>
@@ -191,10 +191,12 @@
 									<el-col :span="9">
 									  	<el-form-item label="负责人" prop="id">
 											<el-select v-model="ruleForm.id" placeholder="请选择巡护员">
-											    <el-option label="巡护员1" value="巡护员1"></el-option>
-											    <el-option label="巡护员2" value="巡护员2"></el-option>
-											    <el-option label="巡护员3" value="巡护员3"></el-option>
-											    <el-option label="巡护员4" value="巡护员4"></el-option>
+											    <el-option
+												  v-for="item in peoplelist"
+												  :key="item.value"
+												  :label="item.label"
+												  :value="item.value">
+												</el-option>
 											</el-select>
 										  </el-form-item>
 									</el-col>
@@ -261,6 +263,7 @@ var app = new Vue({
 	searchContent:'', 
 	//addItem
 	dataBox:{},
+	peoplelist:[],
 	ruleForm: {
 	  station: '',
 	  animal:'',
@@ -270,17 +273,7 @@ var app = new Vue({
 	  id:'',
 	  startTime:'',
 	  endTime:'',
-	  // date:'',
-	  // weather:'',
 	  gps:'',
-	  // plants:'',
-	  // chineseName:'',
-	  // latinName:'',
-	  // englishName:'',
-	  // way:'',
-	  // number:'',
-	  // times:'',
-	  
 	  behavior:'',
 	  record:'',
 	  remarks:'',
@@ -315,26 +308,6 @@ var app = new Vue({
 	  gps: [
 	    { required: true, message: '请输入gps经纬坐标', trigger: 'blur' }
 	  ],
-	  // animal:[
-   //      { required: true, message: '请输入损失信息'},
-	  //   { type:'number', message: '损失必须为数字值'}
-	  // ],
-	  // plants:[
-   //      { required: true, message: '请输入损失信息'},
-	  //   { type:'number', message: '损失必须为数字值'}
-	  // ],
-	  // equipment:[
-   //      { required: true, message: '请输入成本信息'},
-	  //   { type:'number', message: '成本必须为数字值'}
-	  // ],
-	  // personal:[
-   //      { required: true, message: '请输入成本信息'},
-	  //   { type:'number', message: '成本必须为数字值'}
-	  // ],
-	  // others:[
-	  //   { required: true, message: '请输入损失信息'},
-	  //   { type:'number', message: '损失必须为数字值'}
-	  // ],
 	  total:[
         { required: true, message: '请输入损失金额'},
 	    { type:'number', message: '损失必须为数字值'}
@@ -349,18 +322,9 @@ var app = new Vue({
 	  type:[
         { required: true, message: '请选择类型', trigger: 'change' }
 	  ],
-	  // way:[
-   //      { required: true, message: '请选择方式', trigger: 'change' }
-	  // ],
-	  // behavior:[
-   //      { required: true, message: '请选择行为', trigger: 'change' }
-	  // ],
 	  remarks: [
         { required: true, message: '请填写备注', trigger: 'blur' }
       ]
-      // record:[
-      //   { required: true, message: '请选择记录', trigger: 'change' }
-      // ]
 	}
   },
   methods:{
@@ -384,6 +348,13 @@ var app = new Vue({
 		});
 		
 	  },
+	  //站人员二级联动
+	  somechange:function(){
+		  console.log(app.ruleForm.station);
+		  //机构人员二级联动
+		  //针对app.ruleForm.station的变化 app.ruleForm.peoplelist响应显出归属人员
+	  },
+	  
 	  pageCurrentChange:function(val){
 		  //更新页码
 		  app.obj.pageIndex = val;

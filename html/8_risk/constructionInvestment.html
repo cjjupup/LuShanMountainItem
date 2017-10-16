@@ -115,7 +115,7 @@ var chartData_1 = {
 			restore:{},
 			saveAsImage:{}
 		},
-		itemSize:10,
+		itemSize:20,
 		right:"10%"
 	},
 	backgroundColor:"#24263E",
@@ -123,9 +123,6 @@ var chartData_1 = {
 		{
 			name:"项目名称",
 			type:"category",
-			// axisTick: {
-       //          alignWithLabel: true
-       //      },
             axisLine:{  
 				lineStyle:{  
 					color:'#BABAC0',  
@@ -139,6 +136,7 @@ var chartData_1 = {
 			name:"金额",
 			type:"value",
 			min:"0",
+			max:"800",
 			axisLine:{  
 				lineStyle:{  
 					color:'#BABAC0',  
@@ -220,26 +218,16 @@ var app = new Vue({
   data: {
 	once:true,
 	size:'',
-	//表格一项目盒子
 	dataBox:[],
-	//表格二项目盒子
-	dataBox2:[],
-	//总保护区-折线
-	datacontent2:[],
 	item_1:[],
 	cost_1:[],
 	item_2:[[],[],[]],
+	item_2_length:[[],[],[]],
 	polar_1:{},
 	formInline: {
         region: ''
     },
-    work_num:0,
-	//总保护区-饼图
-	typelist_2:[[],[],[],[],[]],
-	polar_2:{},
-	num_1:[],
-	num_2:[],
-	num_3:[]
+	polar_2:{}
   },
   methods:{
 	    getonce:function(){ 
@@ -248,61 +236,34 @@ var app = new Vue({
 			    type: "get",
 			    dataType: "json",
 			    url: "../../localDataTest/constructionInvestment.json",
-
 			    success:function(data){
-
-			    	app.dataBox = data;
-
-			    	app.dataBox2=data;
-			    	
 				    if (data !== "") {
-					    
+						app.dataBox = data;
+						console.log(app.dataBox);
 					    var datacontent = data[0].slice(1);
-
-					    var datacontent2=data[0].slice(1);
-
-					    console.log(datacontent2);
-
 		                 for(let i = 0; i<datacontent.length; i++){
-
 		                 	app.item_1.push(datacontent[i].item);
-
 		                 	app.cost_1.push(datacontent[i].money);
-
+							if (datacontent[i].type=="a") {
+		                 		app.item_2[0].push(datacontent[i]);
+		                 	};
+		                 	if (datacontent[i].type=="b") {
+		                 		app.item_2[1].push(datacontent[i]);
+		                 	};
+		                 	if (datacontent[i].type=="c") {
+		                 		app.item_2[2].push(datacontent[i]);
+		                 	};
 		                 }
-
-		                 for(let i=0;i<datacontent2.length;i++){
-		                 	
-		                 	if (datacontent2[i].type=="a") {
-		                 		app.item_2[0].push(datacontent2[i]);
-		                 	};
-		                 	if (datacontent2[i].type=="b") {
-		                 		app.item_2[1].push(datacontent2[i]);
-		                 	};
-		                 	if (datacontent2[i].type=="c") {
-		                 		app.item_2[2].push(datacontent2[i]);
-		                 	};
-		                 	
-		                 }
-		        
 		                 chartData_1.xAxis[0].data = app.item_1;
-
 		                 chartData_1.series[0].data = app.cost_1;
-
 		                 app.polar_1 = chartData_1;
-
-		                 app.num_1=app.item_2[0].length;
-
-		                 chartData_2.series[0].data[0].value=app.num_1;
-
-		                 app.num_2=app.item_2[1].length;
-
-		                 chartData_2.series[0].data[1].value=app.num_2;
-
-		                 app.num_3=app.item_2[2].length;
-
-		                 chartData_2.series[0].data[2].value=app.num_3;
-
+						
+		                 app.item_2_length[0]=app.item_2[0].length;
+						 app.item_2_length[1]=app.item_2[1].length;
+						 app.item_2_length[2]=app.item_2[2].length;
+		                 chartData_2.series[0].data[0].value=app.item_2_length[0];
+		                 chartData_2.series[0].data[1].value=app.item_2_length[1];
+		                 chartData_2.series[0].data[2].value=app.item_2_length[2];
 		                 app.polar_2=chartData_2;
 			        }
 
@@ -313,54 +274,35 @@ var app = new Vue({
 	    },
 
 	    onSubmit() {
-
 	    	app.item_1 = [];
-
 	    	app.cost_1 = [];
-
+			app.item_2 = [[],[],[]];
+			app.item_2_length = [[],[],[]];
 		    var datacontent = app.dataBox[app.formInline.region].slice(1);
-
              for(let i = 0; i<datacontent.length; i++){
-
              	app.item_1.push(datacontent[i].item);
-
              	app.cost_1.push(datacontent[i].money);
-
+				if (datacontent[i].type=="a") {
+					app.item_2[0].push(datacontent[i]);
+				};
+				if (datacontent[i].type=="b") {
+					app.item_2[1].push(datacontent[i]);
+				};
+				if (datacontent[i].type=="c") {
+					app.item_2[2].push(datacontent[i]);
+				};
              }
-             
              chartData_1.xAxis[0].data = app.item_1;
-
              chartData_1.series[0].data = app.cost_1;
-
              app.polar_1 = chartData_1;
-
-             //console.log(app.item_1);
-
-             //console.log(app.cost_1);
-
-             // app.num_1=[];
-
-             // app.num_2=[];
-
-             // app.num_3=[];
-
-             // var datacontent2=app.dataBox[app.formInline.region].slice(1);
-
-             // for(let i=0; i<datacontent2.length; i++){
-
-             // 	app.item_2.push(datacontent2[i].type);
-
-             // }
-
-             // chartData_2.series[0].data.value=app.num_1;
-
-             // chartData_2.series[0].data.value=app.num_2;
-
-             // chartData_2.series[0].data.value=app.num_3;
-		},
-	    jumpPage:function(){
-		    window.location.href = "patrolFrequencylist.html";
-	    }
+			 app.item_2_length[0]=app.item_2[0].length;
+			 app.item_2_length[1]=app.item_2[1].length;
+			 app.item_2_length[2]=app.item_2[2].length;
+			 chartData_2.series[0].data[0].value=app.item_2_length[0];
+			 chartData_2.series[0].data[1].value=app.item_2_length[1];
+			 chartData_2.series[0].data[2].value=app.item_2_length[2];
+			 app.polar_2=chartData_2;
+		}
     },
  watch:{
 	size:function(){
