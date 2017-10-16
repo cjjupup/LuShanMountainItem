@@ -1,0 +1,7 @@
+[
+	{"name":"张三","station":"站点一","username":"zhangsan","userpassword":"123","sex":"男","phone":"123456789","joinTime":"2017-09-11","leaveTime":"2017-10-11","email":"xxxx@xx.xxx","state":"离职","usestate":"停用","job":"超级管理员","power":["权限一","权限二","权限三"]},
+	{"name":"李四","station":"站点三","username":"lisi","userpassword":"123","sex":"男","phone":"123456789","joinTime":"2017-09-22","leaveTime":"无","email":"xxxx@xx.xxx","state":"正常","usestate":"启用","job":"超级管理员","power":["权限五","权限六","权限七"]},
+	{"name":"王五","station":"站点一","username":"wangwu","userpassword":"123","sex":"男","phone":"123456789","joinTime":"2017-09-15","leaveTime":"无","email":"xxxx@xx.xxx","state":"正常","usestate":"启用","job":"超级管理员","power":["权限八","权限九","权限三"]},
+	{"name":"苏日天","station":"站点二","username":"suritian","userpassword":"123","sex":"男","phone":"123456789","joinTime":"2017-07-15","leaveTime":"2017-10-11","email":"xxxx@xx.xxx","state":"离职","usestate":"停用","job":"超级管理员","power":["权限五","权限六","权限七"]},
+	{"name":"叶良辰","station":"站点三","username":"yeliangchen","userpassword":"123","sex":"女","phone":"123456789","joinTime":"2017-08-25","leaveTime":"无","email":"xxxx@xx.xxx","state":"正常","usestate":"启用","job":"超级管理员","power":["权限八","权限九","权限三"]}
+]

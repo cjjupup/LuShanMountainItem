@@ -67,16 +67,20 @@
 						</div>
 					</div>
 					<el-table :data="excelData" max-height="800"  border>
+					    <el-table-column label="姓名" prop="name" show-overflow-tooltip></el-table-column>
 						<el-table-column label="用户名" prop="username" show-overflow-tooltip></el-table-column>
-						<el-table-column label="用户密码" prop="password" show-overflow-tooltip></el-table-column>
+						<el-table-column label="用户密码" prop="userpassword" show-overflow-tooltip></el-table-column>
 						<el-table-column label="保护站" prop="station" show-overflow-tooltip></el-table-column>
-						<el-table-column label="性别" prop="sex" show-overflow-tooltip></el-table-column>
 						<el-table-column label="手机号码" prop="phone" show-overflow-tooltip></el-table-column>
+						<el-table-column label="职位" prop="job" show-overflow-tooltip></el-table-column>
+						<el-table-column label="性别" prop="sex" show-overflow-tooltip></el-table-column>
+						<el-table-column label="入职时间" prop="joinTime" show-overflow-tooltip></el-table-column>
+						<el-table-column label="离职时间" prop="leaveTime" show-overflow-tooltip></el-table-column>
 						<el-table-column label="状态" prop="state" show-overflow-tooltip></el-table-column>
+						<el-table-column label="启用状态" prop="usestate" show-overflow-tooltip></el-table-column>
 						<el-table-column  label="编辑" width="150">
 							<template scope="scope">
-								<el-button @click="checkItem($event)" type="text" size="small">查看</el-button>
-								<el-button @click="modifyItem($event,excelData)" type="text" size="small">修改</el-button>
+								<el-button id='change' @click="modifyItem($event,excelData)" type="text" size="small">修改</el-button>
 								<el-button @click="deleteItem($event)" type="text" size="small">删除</el-button>
 							</template>
 						</el-table-column>
@@ -143,17 +147,10 @@
 						<div class="item_content">
 	                        <el-row :gutter="20" class="pt8">
 								<el-col :span="9">
-								    <el-form-item label="用户名" prop="username" required>
-									    <el-input v-model.trim="ruleForm.username"></el-input>
+								    <el-form-item label="姓名" prop="name" required>
+									    <el-input v-model.trim="ruleForm.name"></el-input>
 									</el-form-item>
 								</el-col>
-								<el-col :span="9">
-								    <el-form-item label="用户密码" prop="password" required>
-									    <el-input v-model.trim="ruleForm.password"></el-input>
-									</el-form-item>
-								</el-col>
-							</el-row>
-							<el-row :gutter="20" class="pt8">
 								<el-col :span="9">
 								    <el-form-item label="保护站" prop="station" required>
 										<el-select v-model="ruleForm.station" placeholder="保护站1">
@@ -163,7 +160,21 @@
 										</el-select>
 									</el-form-item>
 								</el-col>
+							</el-row>
+							<el-row :gutter="20" class="pt8">
 								<el-col :span="9">
+								    <el-form-item label="用户名" prop="username" required>
+									    <el-input v-model.trim="ruleForm.username"></el-input>
+									</el-form-item>
+								</el-col>
+								<el-col :span="9">
+								    <el-form-item label="用户密码" prop="userpassword" required>
+									    <el-input v-model.trim="ruleForm.userpassword"></el-input>
+									</el-form-item>
+								</el-col>
+							</el-row>
+							<el-row :gutter="20" class="pt8">
+							    <el-col :span="9">
                                     <el-form-item label="性别" prop="sex" required>
 										<el-select v-model="ruleForm.sex" placeholder="女">
 										    <el-option label="女" value="女"></el-option>
@@ -171,20 +182,32 @@
 										</el-select>
 									</el-form-item>
 								</el-col>
-							</el-row>
-							<el-row :gutter="20" class="pt8">
 								<el-col :span="9">
 								  	<el-form-item label="手机号码" prop="phone" required>
 									    <el-input v-model.trim="ruleForm.phone"></el-input>
 									</el-form-item>
 								</el-col>
-								<el-col :span="9">
+							</el-row>
+							<el-row :gutter="20" class="pt8">
+							  <el-col :span="9">
+							  	<el-form-item label="入职时间" required>
+								  <el-form-item prop="joinTime">
+									<el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.joinTime"></el-date-picker>
+								  </el-form-item>
+							  </el-col>
+							  <el-col :span="9">
+							  	<el-form-item label="离职时间" required>
+								  <el-form-item prop="leaveTime">
+									<el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.leaveTime"></el-date-picker>
+								  </el-form-item>
+							  </el-col>
+							</el-row>
+							<el-row :gutter="20" class="pt8">
+                                <el-col :span="9">
 									<el-form-item label="邮箱" prop="email" required>
 									    <el-input v-model.trim="ruleForm.email"></el-input>
 									</el-form-item>
 								</el-col>
-							</el-row>
-							<el-row :gutter="20" class="pt8">
                                 <el-col :span="9">
                                     <el-form-item label="状态" prop="state" required>
 										<el-select v-model="ruleForm.state" placeholder="正常">
@@ -194,9 +217,11 @@
 										</el-select>
 									</el-form-item>
 								</el-col>
+							</el-row>
+							<el-row :gutter="20" class="pt8">
 								<el-col :span="9">
-                                    <el-form-item label="启用状态" prop="state_1" required>
-										<el-select v-model="ruleForm.state_1" placeholder="启用">
+                                    <el-form-item label="启用状态" prop="usestate" required>
+										<el-select v-model="ruleForm.usestate" placeholder="启用">
 										    <el-option label="启用" value="启用"></el-option>
 										    <el-option label="停用" value="停用"></el-option>
 										</el-select>
@@ -204,7 +229,46 @@
 								</el-col>
 							</el-row>
 						</div>
+						<div class="item_title">
+							<el-row>
+								<el-col><span style="margin-left:10px;">角色权限配置</span></el-col>
+							</el-row>
+						</div>
+						<div class="item_content">
+							<el-row :gutter="20" class="pt8">
+								<el-col :span="9">
+									<el-form-item label="分配角色" prop="job" required>
+										<el-select v-model="ruleForm.job" placeholder="超级管理员">
+											<el-option label="超级管理员" value="角色0"></el-option>
+											<el-option label="保护区管理员" value="角色1"></el-option>
+											<el-option label="保护站管理员" value="角色2"></el-option>
+											<el-option label="资料录入员" value="角色3"></el-option>
+											<el-option label="巡护员" value="角色4"></el-option>
+										</el-select>
+									</el-form-item>
+								</el-col>
+							</el-row>
+							<el-row :gutter="20" class="pt8">
+								<el-col :span="24">
+									<el-form-item label="权限分配" prop="power" required>
+										<el-checkbox-group v-model="ruleForm.power">
+											<el-checkbox label="权限一"></el-checkbox>
+											<el-checkbox label="权限二"></el-checkbox>
+											<el-checkbox label="权限三"></el-checkbox>
+											<el-checkbox label="权限四"></el-checkbox>
+											<el-checkbox label="权限五"></el-checkbox>
+											<el-checkbox label="权限六"></el-checkbox>
+											<el-checkbox label="权限七"></el-checkbox>
+											<el-checkbox label="权限八"></el-checkbox>
+											<el-checkbox label="权限九"></el-checkbox>
+										</el-checkbox-group>
+									</el-form-item>
+								</el-col>
+							</el-row>
+						</div>
 					</div>
+					
+					
 					<div class="add_item_plantinfo">
 						<div class="item_confirm">
 							<el-form-item style="margin-left:-100px;" v-show="creatItem">
@@ -268,26 +332,35 @@ var app = new Vue({
 	searchContent:'', 
 	dataBox:{},
 	ruleForm: {
+		name:'',
+		station:'',
 		username:'',
-        password:'',
-        station:'',
+        userpassword:'',
         sex:'',
         phone:'',
+		joinTime:'',
+		leaveTime:'',
         email:'',
         state:'',
-        state_1:''
+        usestate:'',
+		job:'',
+		power:[]
 	},
 	rules: {
-		username:[
-            { required: true, message: '请输入用户名'},
-		    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
-		],
-		password:[
-            { required: true, message: '请输入用户密码'},
+		name:[
+            { required: true, message: '请输入姓名'},
 		    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
 		],
 		station:[
             { required: true, message: '请选择保护站', trigger: 'change' }
+		],
+		username:[
+            { required: true, message: '请输入用户名'},
+		    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+		],
+		userpassword:[
+            { required: true, message: '请输入用户密码'},
+		    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
 		],
 		sex:[
             { required: true, message: '请选择性别', trigger: 'change' }
@@ -295,6 +368,9 @@ var app = new Vue({
 		phone:[
             { required: true, message: '请输入电话号码'}
 		],
+	    joinTime: [
+		    { type: 'date', required: true, message: '请选择开始日期', trigger: 'change' }
+	    ],
 		email:[
             { required: true, message: '请输入邮箱'},
 		    { pattern:/^(\w)+(\.\w+)*@(\w)+((\.\w{2,3}){1,3})$/, message: '邮箱必须为邮箱形式'}
@@ -302,12 +378,15 @@ var app = new Vue({
 	    state:[
             { required: true, message: '请选择状态', trigger: 'change' }
 	    ],
-	    state_1:[
+	    usestate:[
             { required: true, message: '请选择启用状态', trigger: 'change' }
 	    ],
-		remarks: [
-	        { required: true, message: '请填写备注', trigger: 'blur' }
-	    ]
+		job:[
+            { required: true, message: '请选择人员角色', trigger: 'change' } 
+		],
+		power: [
+            { type: 'array', required: true, message: '请至少选择一个权限', trigger: 'change' }
+        ]
 	},
 	excelData:[]
   },
@@ -375,7 +454,7 @@ var app = new Vue({
 		$.ajax({
 			type: "get",
 			dataType: "json",
-			url: "http://rapapi.org/mockjsdata/24551/username",
+			url: "../../localDataTest/roleData.json",
 			//data: app.obj,    不做筛选 默认加载全部数据
 			beforeSend: function( xhr ) { 
 				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
@@ -383,7 +462,7 @@ var app = new Vue({
 			success: function (data) {
 				console.log(data)
 				if (data != "") {
-					app.excelData = data.list
+					app.excelData = data
 					app.totaldata = app.excelData.length;
 				}
 			}
@@ -498,28 +577,31 @@ var app = new Vue({
 		  this.$refs[formName].resetFields();
 		  app.changePage = false;
 	  },
-	  //查看记录跳转 
-	  checkItem:function(event){
-	  	  
-	  },
 	  //修改记录跳转
 	  modifyItem:function(event,excelData){
-	  	  var p = event.currentTarget.parentNode.parentNode.parentNode;
-		  	  $(p).on('click',function()
+		  var line = event.currentTarget.parentNode.parentNode.parentNode;
+		  	  $(line).on('click',this.index,'#change',function()
 		  	  {
-		  	  	var $num = $(this).index()
+				var $num = $(line).index();
 		  	  	dataBox = app.excelData;
 				app.creatItem = false;
 				console.log(dataBox)
 				//遍历？待优化
+				if(app.ruleForm.leaveTime != "无"){
+					app.ruleForm.leaveTime = dataBox[$num].leaveTime;
+				}
+				app.ruleForm.name = dataBox[$num].name;
+				app.ruleForm.station = dataBox[$num].station; 
 				app.ruleForm.username = dataBox[$num].username;
-				app.ruleForm.password = dataBox[$num].password;
-				app.ruleForm.station = dataBox[$num].station;  
+				app.ruleForm.userpassword = dataBox[$num].userpassword;
 				app.ruleForm.sex = dataBox[$num].sex;
 				app.ruleForm.phone = dataBox[$num].phone;
+				app.ruleForm.joinTime = dataBox[$num].joinTime;
 				app.ruleForm.email = dataBox[$num].email;
 				app.ruleForm.state = dataBox[$num].state;
-				app.ruleForm.state_1 = dataBox[$num].state_1;
+				app.ruleForm.usestate = dataBox[$num].usestate;
+				app.ruleForm.job = dataBox[$num].job;
+				app.ruleForm.power = dataBox[$num].power;
 				app.changePage = true;
 		  	  })
 	  },
