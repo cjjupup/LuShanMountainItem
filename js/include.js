@@ -152,6 +152,25 @@ var leftwork={
 }
 
 
+var leftvideo={
+	template:`<div class="dash-sidebar J_dash_sidebar" style="width:206px"><a class="drag-btn" title="拖动调整宽度"></a><div class="J-scroll-project project-nav project-list project-list-common"><div class="list-hd angular-ui-tree"><ul class="own-project-list angular-ui-tree-nodes" id="tree-root">
+<li class="project-item J-project-item angular-ui-tree-node active first"><div class="cat-op-parent level-0"><a class="nowrap project-name"><i class="icon iconfont icon-zhankai"></i> <span>视频监控</span></a></div><ul class="dash-list angular-ui-tree-nodes own-dash-list"><li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class="leftactive == 'ssck'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="evvironmentAnalysis_1_list.html"><i class="icon iconfont icon-zhuzhuangtu"></i><span>实时查看</span></a></div></li><li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'sbyx'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="evvironmentAnalysis_2_list.html"><i class="icon iconfont icon-dianhuazixun-dianhua"></i><span>设备运行</span></a></div></li></ul></li>
+</ul></div></div></div>`,
+	props:['leftactive']
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 var leftaplants={
 	template:`<div class="dash-sidebar J_dash_sidebar" style="width:206px"><a class="drag-btn" title="拖动调整宽度"></a><div class="J-scroll-project project-nav project-list project-list-common"><div class="list-hd angular-ui-tree"><ul class="own-project-list angular-ui-tree-nodes" id="tree-root">
 <li class="project-item J-project-item angular-ui-tree-node active first"><div class="cat-op-parent level-0"><a class="nowrap project-name"><i class="icon iconfont icon-zhankai"></i> <span>动物监测</span></a></div><ul class="dash-list angular-ui-tree-nodes own-dash-list"><li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class="leftactive == 'animation_ssck'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="animalMonitor.html"><i class="icon iconfont icon-zhuzhuangtu"></i><span>实时查看</span></a></div></li><li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'animation_jcfx'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="animalAnalysis.html"><i class="icon iconfont icon-dianhuazixun-dianhua"></i><span>监测分析</span></a></div></li><li class="J-project-item angular-ui-tree-node has-label dashboard-item" :class = "leftactive == 'animation_sjgl'?'active':''"><div class="cat-op-parent level-1"><a class="nowrap dash-name" href="animalDataManage.html"><i class="icon iconfont icon-xiaoxi"></i><span>数据管理</span></a></div></li></ul></li>

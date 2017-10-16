@@ -1,0 +1,287 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>生态资源监测及风险管控系统-通知公告</title>
+	<!-- 引入样式 -->
+	<link rel="stylesheet" href="../../css/index.css">
+	<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../css/all.css">
+	<link rel="stylesheet" href="../../css/dark.css">
+	<!-- 引入组件库 -->
+	<script src="../../js/include.js"></script>
+	<script src="../../js/config.js"></script>
+	<script src="../../js/jquery.min.js"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=cGT9892RVDdKkeIKM2f1d8pX"></script>
+	<script src="../../js/vue.js"></script>
+	<script src="../../js/vue-echarts.js"></script>
+	<script src="../../js/vue-resource.1.3.4.js"></script>
+	<script src="../../js/elementui.js"></script>
+	<script src="../../js/mock.js"></script>
+	<script src="../../js/url.js"></script>
+</head>
+<body>
+	<div id="app" :class = "once?'show':''">
+		<myheader navactive="video"></myheader>
+		<!-- 内容区域 -->
+		<div class="main header-wraper-height">
+			<!-- 左侧 -->
+			<leftvideo leftactive="sbyx"></leftvideo>
+			<!-- 右侧 -->
+			<div class="contentbody">
+			    <div class="view-date" style="padding-left: 226px;">
+			        <el-row :gutter="20">
+			      	    <el-col :span="16">
+							<div class="view-header-wrap wth-view-header" style="z-index: 1">
+							<div style="right:5%;position: absolute;z-index: 999999; line-height: 64px;">
+								<el-select v-model="searchType" clearable placeholder="请选择" style="width:100px;">
+									<el-option
+									  v-for="item in option_search"
+									  :key="item.value"
+									  :label="item.label"
+									  :value="item.value">
+									</el-option>
+								</el-select>
+								<el-input
+								  placeholder="请输入相关搜索内容"
+								  icon="search"
+								  v-model="searchContent"
+								  :on-icon-click="handleIconClick"
+								  style="width:200px;">
+								</el-input>
+							</div>
+						</div>
+							<table class="table-normal database-table table-left" style="width:100%;opacity: 0.8;">
+							<thead>
+								<tr>
+									<th class="db-9">探测器</th>
+									<th class="db-9">所属站点</th>
+									<th class="db-9">负责人</th>
+									<th class="db-9">状态</th>
+									<th class="db-11">位置</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="user in tableData">
+									<td>
+										<span :title="user.name" class="fs12">{{user.name}}</span>
+									</td>
+									<td>
+										<span :title="user.station" class="fs12">{{user.station}}</span>
+									</td>
+									<td>
+										<span :title="user.person" class="fs12">{{user.person}}</span>
+									</td>
+									<td>
+										<span :title="user.state" class="fs12">{{user.state}}</span>
+									</td>
+									<td>
+										<span :title="user.lng +' , '+ user.lat" class="fs12">{{user.lng +' , '+ user.lat}}</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+							</br>
+							<div class="pageChange">
+							<div v-show="total > 0">
+								<div style="display:inline-block;float:right;margin-right:5%;color:#B7B7BD;">
+									<el-pagination
+									  @current-change="pageCurrentChange"
+									  layout="prev, pager, next, jumper"
+									  :page-size="10"
+									  :total=total>
+									</el-pagination>
+								</div>
+								<span style="float:right;margin-right:10px;">共<b>{{total}}</b>条数据</span>
+							</div>
+						</div>
+			      	    </el-col>
+			      	    <el-col :span="8">
+			      	    	<div class="analysisContent" style="opacity: 0.8;margin-top:64px;">
+						    	<div class="grid-content">
+									<chart :options="polar_1" ref="pie_1" id="achart_1" style="width:100%;"></chart>
+								</div>
+							</div>
+			      	    </el-col>
+			        </el-row>
+					
+			    </div>
+	    
+		    </div>
+		</div>
+	</div>
+	
+</body>
+</html>
+<script>
+window.onresize = function () {
+    $("#achart_1").css("width","100%");
+	app.size = document.body.clientWidth;
+};
+var chartData_1 = {
+	"title":{
+		"text":"监控设备故障率",
+		textStyle: {  
+			fontWeight:'normal', 
+			color:'#fff'  
+		},
+		x:"10%"
+	},
+	"tooltip":{
+		"trigger":"item",
+		"formatter":"{a} <br/>{b}: {c} ({d}%)"
+	},
+	legend:{
+		"orient":"vertical",
+		x:"80%",
+		"data":[{name:'正常',textStyle:{color:"#fff"}},{name:'故障',textStyle:{color:"#fff"}}]
+	},
+	backgroundColor:"#24263E",
+	"series":[
+		{
+			"name":"故障率",
+			"type":"pie",
+			"radius":["50%","70%"],
+			"avoidLabelOverlap": false,
+            "label": {
+                "normal": {
+                    "show": false,
+                    "position": "center"
+                },
+                "emphasis": {
+                    "show": true,
+                    "textStyle": {
+                        "fontSize": "30",
+                        "fontWeight": "bold"
+                    }
+                }
+            },
+            "labelLine": {
+                "normal": {
+                    "show": false
+                }
+            },
+			data:[
+				{"value":0,"name":"正常"},
+				{"value":0,"name":"故障"}
+			]
+		}
+	],
+	"color": ["#5083E5","#00E1E1"]
+};
+var app = new Vue({
+  el: '#app',
+  components: {
+    // <my-component> 将只在父模板可用
+    chart:VueECharts,
+	myheader:myheader,
+	myfooter:myfooter,
+	leftvideo:leftvideo
+  },
+  data: {
+	once:true,
+	tableData: [],
+	total:0,
+	newsinfo:[],
+	message:'',
+	//obj:{method:6,startTime:"2017-09-01",endTime:"2017-09-30",depart:"全站",type:2,pageIndex:1,pageSize:10,level:"3",department:"局机关",userid:"116"},
+	//pValue:{byValue:''},
+	patrol_data:{},
+	option_search: [{
+	  value: 'name',
+	  label: '负责人'
+	}, {
+	  value: 'station',
+	  label: '站点'
+	}],
+	searchType: '',
+	searchContent:'', 
+	//饼图
+	size:'',
+	polar_1:{},
+	work_box:[],
+	work_num:0,
+	stop_box:[],
+	stop_num:0
+  },
+  methods:{
+	  getonce:function(){ 
+		//app.pValue.byValue = JSON.stringify(app.obj);
+		$.ajax({
+			type: "get",
+			//type: "post",
+			dataType: "json",
+			url:"../../localDataTest/smokeMonitorData.json",
+			//url: 'http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletPatrol,
+			//data: { byValue: '{"method":6,"startTime":"2017-09-01","endTime":"2017-09-30","depart":"全站","type":2,"pageIndex":1,"pageSize":10,"level":"3","department":"局机关","userid":"116"}'},
+			beforeSend: function( xhr ) { 
+				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
+			}, 
+			success: function (data) {
+				if (data != "") {
+					app.tableData = data;
+					app.total = data.length;
+					data.forEach(function(item){
+						 if(item.state == "正常"){app.work_box.push(item);}
+						 if(item.state == "故障"){app.stop_box.push(item);}
+					 })
+					 app.work_num = app.work_box.length;
+					 app.stop_num = app.stop_box.length;
+					 chartData_1.series[0].data[0].value = app.work_num;
+					 chartData_1.series[0].data[1].value = app.stop_num;
+					console.log(app.work_box);
+					console.log(app.stop_box);
+					console.log(app.work_num);
+					console.log(app.stop_num);
+					app.polar_1 = chartData_1;
+				}
+			}
+		});
+	  },
+	  pageCurrentChange:function(val){
+		/*app.obj.pageIndex = val;
+		$.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletPatrol,{ byValue: JSON.stringify(app.obj) }, function(data) {
+			  if (data != "") {
+				    data = JSON.parse(data);
+					app.totalData = data.splice(-1,1);
+					app.tableData = data;
+					app.once = true;
+				}
+		  });*/
+	  },
+	  //搜索
+	  handleIconClick:function(){
+		  if(!this.searchType){alert("请选择搜索类型");return}
+		  if(!this.searchContent){alert("请输入搜索内容");return}
+		  switch(this.searchType){
+			  case "name":
+				  //app.obj.name = this.searchType;
+				  console.log(app.searchContent);
+				  break;
+			  case "station":
+				  //app.obj.station = this.searchType;
+				  console.log(app.searchContent);
+				  break;
+		  }
+		  //正式使用更改URL
+		  /*$.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletPatrol,{ byValue: JSON.stringify(app.obj) }, function(data) {
+			  if (data != "") {
+					app.tableData = data.list;
+				    app.totaldata = app.tableData.length
+					app.once = true;
+					console.log(app.totaldata);
+				}
+		  });*/
+	  }
+	  
+  },
+ watch:{
+	size:function(){
+		this.$refs.pie_1.resize();
+	}
+  }
+});
+app.getonce();
+
+</script>
