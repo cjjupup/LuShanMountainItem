@@ -33,164 +33,125 @@
 			<leftsystem leftactive="yhqxpz"></leftsystem>
 			<!-- 右侧 --><!--数据管理界面-->
 			<div class="contentbody" v-show="!changePage">
-			<div class="view-date" style="padding-left: 226px;" id="dataManage" v-show="!changePage">
+			    <div class="view-date" style="padding-left: 226px;" id="dataManage" v-show="!changePage">
 				<div class="view-header-wrap wth-view-header">
 					<div class="view-header">
 						<h2 class="nowrap with-tail-btn" title="总演示数据">
 							用户角色权限配置
 						</h2>
 					</div>
-					<div style="right:5%;position: absolute;z-index: 999999; line-height: 64px;">
-						<el-button type="primary" id="additem_plant" @click="addItemPage()">新增记录</el-button>
-						<el-select v-model="searchType" clearable placeholder="保护站" style="width:100px;">
-							<el-option
-							  v-for="item in option_search"
-							  :key="item.value"
-							  :label="item.label"
-							  :value="item.value">
-							</el-option>
-						</el-select>
-					    <el-input
-						  placeholder="请输入相关搜索内容"
-						  icon="search"
-						  v-model="searchContent"
-						  :on-icon-click="handleIconClick"
-						  style="width:200px;">
-						</el-input>
-					</div>
 				</div>
 				<div>
-					<el-row :gutter="30">
-						<el-col :span="7">
-							<p style="color:#fff;font-size:16px;margin-bottom:5px">青山湖站</p>
-							<br/>
-							<table class="table-normal database-table table-left" style="width:100%;opacity: 0.8;">
-								<thead>
-									<tr>
-										<th class="db-role">角色</th>
-										<th class="db-id">姓名</th>
-										<th class="db-edit">编辑</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr v-for="user in tableData">
-										<td><span :title="user.role" class="fs12">{{user.role}}</td>
-										<td><span :title="user.id" class="fs12">{{user.id}}</td>
-										<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
-									</tr>
-								</tbody>
-							</table>
-							<br/>
-						</el-col>
-						<el-col :span="7">
-							<p style="color:#fff;font-size:16px;margin-bottom:5px">艾西湖站</p>
-							<br/>
-							<table class="table-normal database-table table-left" style="width:100%;opacity: 0.8;">
-								<thead>
-									<tr>
-										<th class="db-role">角色</th>
-										<th class="db-id">姓名</th>
-										<th class="db-edit">编辑</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr v-for="user in tableData">
-										<td><span :title="user.role" class="fs12">{{user.role}}</td>
-										<td><span :title="user.id" class="fs12">{{user.id}}</td>
-										<td><span class="modify" @click="checkItem($event,user)">查看</span> / <span class="modify" @click="modifyItem($event,user)">修改</span> / <span class="modify" @click="deleteItem($event)">删除</span></td>
-									</tr>
-								</tbody>
-							</table>
-						</el-col>
+					<el-row>
+						<p style="color:#fff;font-size:16px;margin-bottom:5px">站点一</p>
+						<table class="table-normal database-table table-center" style="width:100%;opacity: 0.9;">
+							<thead>
+								<tr>
+									<th class="db">姓名</th>
+									<th class="db">角色</th>
+									<th class="db">权限一</th>
+									<th class="db">权限二</th>
+									<th class="db">权限三</th>
+									<th class="db">权限四</th>
+									<th class="db">权限五</th>
+									<th class="db">权限六</th>
+									<th class="db">权限七</th>
+									<th class="db">权限八</th>
+									<th class="db">权限九</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="user in tableData_1">
+									<td><span :title="user.name" class="fs12">{{user.name}}</span></td>
+									<td><span :title="user.job" class="fs12">{{user.job}}</span></td>
+									<td><span :title="user.power[0]" class="fs18">{{user.power[0]}}</span></td>
+									<td><span :title="user.power[1]" class="fs18">{{user.power[1]}}</span></td>
+									<td><span :title="user.power[2]" class="fs18">{{user.power[2]}}</span></td>
+									<td><span :title="user.power[3]" class="fs18">{{user.power[3]}}</span></td>
+									<td><span :title="user.power[4]" class="fs18">{{user.power[4]}}</span></td>
+									<td><span :title="user.power[5]" class="fs18">{{user.power[5]}}</span></td>
+									<td><span :title="user.power[6]" class="fs18">{{user.power[6]}}</span></td>
+									<td><span :title="user.power[7]" class="fs18">{{user.power[7]}}</span></td>
+									<td><span :title="user.power[8]" class="fs18">{{user.power[8]}}</span></td>
+								</tr>
+							</tbody>
+						</table>
+						<br/>
+					</el-row>
+					<el-row>
+						<p style="color:#fff;font-size:16px;margin-bottom:5px">站点二</p>
+						<table class="table-normal database-table table-left" style="width:100%;opacity: 0.9;">
+							<thead>
+								<tr>
+									<th class="db">姓名</th>
+									<th class="db">角色</th>
+									<th class="db">权限一</th>
+									<th class="db">权限二</th>
+									<th class="db">权限三</th>
+									<th class="db">权限四</th>
+									<th class="db">权限五</th>
+									<th class="db">权限六</th>
+									<th class="db">权限七</th>
+									<th class="db">权限八</th>
+									<th class="db">权限九</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="user in tableData_2">
+									<td><span :title="user.name" class="fs12">{{user.name}}</span></td>
+									<td><span :title="user.job" class="fs12">{{user.job}}</span></td>
+									<td><span :title="user.power[0]" class="fs18">{{user.power[0]}}</span></td>
+									<td><span :title="user.power[1]" class="fs18">{{user.power[1]}}</span></td>
+									<td><span :title="user.power[2]" class="fs18">{{user.power[2]}}</span></td>
+									<td><span :title="user.power[3]" class="fs18">{{user.power[3]}}</span></td>
+									<td><span :title="user.power[4]" class="fs18">{{user.power[4]}}</span></td>
+									<td><span :title="user.power[5]" class="fs18">{{user.power[5]}}</span></td>
+									<td><span :title="user.power[6]" class="fs18">{{user.power[6]}}</span></td>
+									<td><span :title="user.power[7]" class="fs18">{{user.power[7]}}</span></td>
+									<td><span :title="user.power[8]" class="fs18">{{user.power[8]}}</span></td>
+								</tr>
+							</tbody>
+						</table>
+					</el-row>
+					<el-row>
+						<p style="color:#fff;font-size:16px;margin-bottom:5px">站点三</p>
+						<table class="table-normal database-table table-left" style="width:100%;opacity: 0.9;">
+							<thead>
+								<tr>
+									<th class="db">姓名</th>
+									<th class="db">角色</th>
+									<th class="db">权限一</th>
+									<th class="db">权限二</th>
+									<th class="db">权限三</th>
+									<th class="db">权限四</th>
+									<th class="db">权限五</th>
+									<th class="db">权限六</th>
+									<th class="db">权限七</th>
+									<th class="db">权限八</th>
+									<th class="db">权限九</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="user in tableData_3">
+									<td><span :title="user.name" class="fs12">{{user.name}}</span></td>
+									<td><span :title="user.job" class="fs12">{{user.job}}</span></td>
+									<td><span :title="user.power[0]" class="fs18">{{user.power[0]}}</span></td>
+									<td><span :title="user.power[1]" class="fs18">{{user.power[1]}}</span></td>
+									<td><span :title="user.power[2]" class="fs18">{{user.power[2]}}</span></td>
+									<td><span :title="user.power[3]" class="fs18">{{user.power[3]}}</span></td>
+									<td><span :title="user.power[4]" class="fs18">{{user.power[4]}}</span></td>
+									<td><span :title="user.power[5]" class="fs18">{{user.power[5]}}</span></td>
+									<td><span :title="user.power[6]" class="fs18">{{user.power[6]}}</span></td>
+									<td><span :title="user.power[7]" class="fs18">{{user.power[7]}}</span></td>
+									<td><span :title="user.power[8]" class="fs18">{{user.power[8]}}</span></td>
+								</tr>
+							</tbody>
+						</table>
 					</el-row>
 				</div>
 				
 				
 				<br/><br/>
-			</div>
-			</div>
-			<!--新增记录界面-->
-			<div class="contentbody" v-show="changePage">
-			<div class="view-date" style="padding-left: 226px;" id="addItemPage" v-show="changePage">
-				<div class="view-header-wrap wth-view-header">
-					<div class="view-header">
-						<h2 class="nowrap with-tail-btn" title="总演示数据">
-							用户角色权限配置
-						</h2>
-					</div>
-				</div>
-				<div class="add_item">
-				<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-					<div class="add_item_baseinfo">
-						<div class="item_title">
-							<el-row>
-								<el-col><span style="margin-left:10px;">基本信息</span></el-col>
-							</el-row>
-						</div>
-						<div class="item_content">
-	                        <el-row :gutter="20" class="pt8">
-								<el-col :span="9">
-									<el-form-item label="保护站" prop="station" required>
-									    <el-select v-model="ruleForm.station" placeholder="庐山自然保护区">
-											<el-option label="庐山自然保护区" value="1"></el-option>
-											<el-option label="保护站2" value="2"></el-option>
-											<el-option label="保护站3" value="3"></el-option>
-											<el-option label="保护站4" value="4"></el-option>
-									    </el-select>
-									</el-form-item>
-								</el-col>
-								<el-col :span="9">
-									<el-form-item label="人员姓名" prop="id" required>
-									    <el-select v-model="ruleForm.id" placeholder="人员1">
-											<el-option label="人员1" value="人员1"></el-option>
-											<el-option label="人员2" value="人员2"></el-option>
-											<el-option label="人员3" value="人员3"></el-option>
-											<el-option label="人员4" value="人员4"></el-option>
-									    </el-select>
-									</el-form-item>
-								</el-col>
-							</el-row>
-							<el-row :gutter="20" class="pt8">
-								<el-col :span="9">
-								  	<el-form-item label="人员角色" prop="role" required>
-									    <el-select v-model="ruleForm.role" placeholder="超级管理员">
-									        <el-option label="超级管理员" value="角色0"></el-option>
-											<el-option label="保护区管理员" value="角色1"></el-option>
-											<el-option label="保护站管理员" value="角色2"></el-option>
-											<el-option label="资料录入员" value="角色3"></el-option>
-											<el-option label="巡护员" value="角色4"></el-option>
-									    </el-select>
-									</el-form-item>
-								</el-col>
-							</el-row>
-							<el-row :gutter="20" class="pt8">
-		                        <el-form-item label="权限分配" prop="action" required>
-		                            <el-checkbox-group v-model="ruleForm.action">
-                                        <el-checkbox label="角色功能1" name="action"></el-checkbox>
-                                        <el-checkbox label="角色功能2" name="action"></el-checkbox>
-                                        <el-checkbox label="角色功能3" name="action"></el-checkbox>
-                                        <el-checkbox label="角色功能4" name="action"></el-checkbox>
-                                        <el-checkbox label="角色功能5" name="action"></el-checkbox>
-		                            </el-checkbox-group>
-								</el-form-item>
-							</el-row>
-						</div>
-					</div>
-					<div class="add_item_plantinfo">
-						<div class="item_confirm">
-							<el-form-item style="margin-left:-100px;" v-show="creatItem">
-								<el-button @click="addItem('ruleForm')">创建</el-button>
-								<el-button @click="addItemCancel('ruleForm')">取消</el-button>
-							</el-form-item>
-							<el-form-item style="margin-left:-100px;" v-show="!creatItem">
-								<el-button @click="modify('ruleForm')">提交修改</el-button>
-								<el-button @click="modifyCancel('ruleForm')">取消修改</el-button>
-							</el-form-item>
-						</div>
-					</div>
-				</el-form>
-				</div>
-			    <br/><br/><br/><br/><br/>
 			</div>
 			</div>
 		</div>
@@ -209,47 +170,10 @@ var app = new Vue({
   },
   data: {
 	once:true,
-	changePage:false,
-	creatItem:true,
 	tableData:[],
-	totaldata:0,
-   isIndeterminate: true,
-	obj:{station:"全站",pageIndex:1,pageSize:10,behavior:"觅食",id:"张三"},
-	dynamicValidateForm: {
-        domains: [{
-            value: ''
-        }],
-        email: ''
-    },
-    option_search: [
-		{
-	        value: 'station',
-	        label: '保护站'
-	    }
-	],
-	searchType: '',
-	searchContent:'', 
-	dataBox:{},
-	ruleForm: {
-		station:'',
-		id:'',
-		role:'',
-		action:[]
-	},
-	rules: {
-		station:[
-            { required: true, message: '请选择保护站', trigger: 'change' }
-		],
-		id:[
-           { required: true, message: '请选择人员姓名', trigger: 'change' } 
-		],
-		role:[
-            { required: true, message: '请选择人员角色', trigger: 'change' } 
-		],
-		action: [
-            { type: 'array', required: true, message: '请至少选择一个权限', trigger: 'change' }
-        ]
-	}
+	tableData_1:[],
+	tableData_2:[],
+	tableData_3:[],
   },
   methods:{
 	  getonce:function(){ 
@@ -257,151 +181,44 @@ var app = new Vue({
 		$.ajax({
 			type: "get",
 			//dataType: "json",
-			url: "http://rapapi.org/mockjsdata/24551/role",
+			url: "../../localDataTest/roleData.json",
 			beforeSend: function( xhr ) { 
 				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); 
 			},
 			success: function (data) {
 				if (data != "") {
-					app.tableData = data.list;
-					app.totaldata = app.tableData.length;
+					app.tableData = data;
+					app.tableData.forEach(function(item){
+						var power = ["--","--","--","--","--","--","--","--","--"];
+						if(item.power.indexOf("1") > -1){power[0] = "√";}
+						if(item.power.indexOf("2") > -1){power[1] = "√";}
+						if(item.power.indexOf("3") > -1){power[2] = "√";}
+						if(item.power.indexOf("4") > -1){power[3] = "√";}
+						if(item.power.indexOf("5") > -1){power[4] = "√";}
+						if(item.power.indexOf("6") > -1){power[5] = "√";}
+						if(item.power.indexOf("7") > -1){power[6] = "√";}
+						if(item.power.indexOf("8") > -1){power[7] = "√";}
+						if(item.power.indexOf("9") > -1){power[8] = "√";}
+						item.power = power;
+						switch(item.station){
+							case "站点一":
+								app.tableData_1.push(item);
+								break;
+							case "站点二":
+								app.tableData_2.push(item);
+								break;
+							case "站点三":
+								app.tableData_3.push(item);
+								break;
+						}
+					});
+					
+					
+					
+					
 				}
 			}
 		});
-	  },
-	  handleCheckAllChange(event) {
-        this.checkedCities = event.target.checked ? cityOptions : [];
-        this.isIndeterminate = false;
-      },
-      handleCheckedCitiesChange(value) {
-        let checkedCount = value.length;
-        this.checkAll = checkedCount === this.cities.length;
-        this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
-      },
-	  pageCurrentChange:function(val){
-		  //更新页码
-		  app.obj.pageIndex = val;
-		  //正式使用更改URL
-		  $.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletPatrol,{ byValue: JSON.stringify(app.obj) }, function(data) {
-			  if (data != "") {
-					app.tableData = data.list;
-				    app.totaldata = app.tableData.length
-					app.once = true;
-					console.log(app.totaldata);
-				}
-		  });
-	  },
-	  handleIconClick:function(){
-		  if(!this.searchType){alert("请选择搜索类型");return}
-		  if(!this.searchContent){alert("请输入搜索内容");return}
-		  switch(this.searchType){
-			  case "station":
-				  app.obj.station = this.searchContent;
-				  break;
-			  case "id":
-				  app.obj.id = this.searchContent;
-				  break;
-			  case "habitat":
-				  app.obj.habitat = this.searchContent;
-				  break;
-		  }
-		  //正式使用更改URL
-		  $.post('http://' + urlServer.ip + ':' + urlServer.port + '/'+urlServer.servletPatrol,{ byValue: JSON.stringify(app.obj) }, function(data) {
-			  if (data != "") {
-					app.tableData = data.list;
-				    app.totaldata = app.tableData.length;
-					app.once = true;
-					console.log(app.totaldata);
-			  }else{    //数据为空的提示
-				  alert("暂无相关数据") //测试暂做简单处理 后期以页面字段提示
-			  }
-		  });
-	  },
-	  //新增记录页面跳转
-	  addItemPage:function(){
-		  app.changePage = true;
-		  app.creatItem = true;
-	  },
-	  //打开gps选址
-	  showGPSmap:function(){
-		  $(".selectGPS").css("display","block");
-		  var map = new BMap.Map("GPSmap");
-		  var point = new BMap.Point(115.996112, 29.547892);
-		  map.enableScrollWheelZoom(); 
-	      map.centerAndZoom(point, 15);
-		  var marker = new BMap.Marker(point);  // 创建标注
-	      map.addOverlay(marker);               // 将标注添加到地图中
-	      marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
-		  map.addEventListener("mousemove",function(e){  //鼠标移动显示坐标
-			  //console.log(e.point.lng + "," + e.point.lat);
-		  });
-		  map.addEventListener("click",function(e){   //鼠标点击定位坐标
-				  //询问框
-				layer.confirm('已选定经纬坐标：'+e.point.lng + " / " + e.point.lat, {
-				  btn: ['确认定位','重新定位'] //按钮
-				}, function(){
-					layer.msg('定位成功',{time:700},{icon: 1} );
-				  app.ruleForm.gps = e.point.lng + "," + e.point.lat;
-				  $(".selectGPS").css("display","none");
-				  //layer.msg('的确很重要', {icon: 1});
-				}, function(){
-				  app.ruleForm.gps ="";
-				  layer.msg('请重新定位');
-			  });
-		  });
-	  },
-	  //新增提交
-	  addItem(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!'); 
-			//此处添加提交创建代码
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
-	  //取消新增
-	  addItemCancel:function(formName){
-		  this.$refs[formName].resetFields();
-		  app.changePage = false;
-	  },
-	  //修改提交
-	  modify:function(formName){
-		  this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!'); 
-			//此处添加提交修改代码
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-	  },
-	  //取消修改
-	  modifyCancel:function(formName){
-		  this.$refs[formName].resetFields();
-		  app.changePage = false;
-	  },
-	  //查看记录跳转 
-	  checkItem:function(event,user){
-		  
-	  },
-	  //修改记录跳转
-	  modifyItem:function(event,user){
-		  //遍历？待优化
-		  app.dataBox = user;
-		  app.creatItem = false;
-		  app.ruleForm.station = app.dataBox.station;
-		  app.ruleForm.id = app.dataBox.id;
-		  app.ruleForm.role = app.dataBox.role;
-		  app.ruleForm.action=app.dataBox.action;
-		  app.changePage = true;
-	  },
-	  //删除记录
-	  deleteItem:function(event){
-
 	  }
   } 
 });
