@@ -68,6 +68,7 @@ var app = new Vue({
 		  map.addControl(new BMap.MapTypeControl());  //地图类型选择
 		  map.centerAndZoom(new BMap.Point(115.996112, 29.547892), 15);
 		  map.enableScrollWheelZoom();
+		  map.setDefaultCursor("crosshair");  //鼠标样式
 		  var tips = document.getElementById("positionTip");
 		  map.addEventListener("mousemove",function(e){  //鼠标移动显示坐标
 			  //console.log(e.point.lng + "," + e.point.lat);

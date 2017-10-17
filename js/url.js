@@ -14,6 +14,7 @@ $(function(){
 	}); 
 	$(".video").on("click",function(){
 		//window.location.href = urlServer.baseUrl + urlServer.baseVideo;
+		window.location.href = "../4_video/videocheck.html";
 	}); 
 	$(".ecology").on("click",function(){
 		//window.location.href = urlServer.baseUrl + urlServer.baseEcology;
