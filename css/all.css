@@ -1525,19 +1525,27 @@ iframe.full_Iframe{overflow-x: hidden;}
 
 /*表格颜色分布*/
 .el-table tr:nth-child(odd) {
-    background: #313449;
+    background: rgb(50,62,83);
   }
 
 .el-table tr:nth-child(even) {
-    background: #2B2E44;
+    background: rgb(47,51,79);
   }
 
 .cell{
-	color:#BEBFC6
+	color:white;
+	text-align: center;
 }
 
 .el-table th{
 	background-color: #24273E;
+}
+
+.el-table td, .el-table th{
+	height: 32px;
+}
+.el-table__body, .el-table__footer, .el-table__header{
+	opacity: 0.7;
 }
 
 .el-table__footer-wrapper thead div, .el-table__header-wrapper thead div{
@@ -1555,6 +1563,7 @@ iframe.full_Iframe{overflow-x: hidden;}
 .el-table{
 	border: 1px solid #24273E;
 	background-color: #24273E;
+	opacity: 0.8;
 }
 .el-table td, .el-table th.is-leaf{
 	border-bottom: 0;

@@ -20,6 +20,8 @@
 	<script src="../../js/elementui.js"></script>
 	<script src="../../js/mock.js"></script>
 	<script src="../../js/url.js"></script>
+	<!--引入xlsx插件-->
+	<script src="https://cdn.bootcss.com/xlsx/0.11.4/xlsx.full.min.js"></script>
 </head>
 <body>
 	<div id="app" :class = "once?'show':''">
@@ -38,8 +40,11 @@
 							<button class="list_form_btn active">列表</button>
 							<button class="list_form_btn" @click="jumpPage">图表</button>
 							<div style="display:inline-block;margin-left:50%;">
-						    	<el-button type="primary" id="additem_plant">导入</el-button>
-					            <el-button type="primary" id="additem_plant">导出</el-button>
+						    	<a id="downlink"></a>
+							    <a class="file">
+							    	导入<input type="file" onchange="importf(this)" style="position: absolute;left:0;"/>
+							    </a>
+							    <el-button type="primary" id="additem_plant" @click="downloadFile(excelData)">导出</el-button>
 						    </div>
 							<span class="wrapper_2">
 								<el-date-picker
@@ -52,50 +57,17 @@
 						</div>
 						
 					</div>
-			    </div>
-			    
-			    <table class="table-normal database-table table-center" style="width:100%;opacity: 0.8;">
-					<thead>
-						<tr>
-							<th class="db-11">采样日期</th>
-							<th class="db-9">铁</th>
-							<th class="db-9">镁</th>
-							<th class="db-9">锌</th>
-							<th class="db-9">镉</th>
-							<th class="db-9">汞</th>
-							<th class="db-9">钴</th>
-							<th class="db-9">镍</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="user in tableData">
-							<td>
-								<span :title="user.date" class="fs12">{{user.date}}</span>
-							</td>
-							<td>
-								<span :title="user.fe" class="fs12">{{user.fe}}</span>
-							</td>
-							<td>
-								<span :title="user.mg" class="fs12">{{user.mg}}</span>
-							</td>
-							<td>
-								<span :title="user.zn" class="fs12">{{user.zn}}</span>
-							</td>
-							<td>
-								<span :title="user.cd" class="fs12">{{user.cd}}</span>
-							</td>
-							<td>
-								<span :title="user.hg" class="fs12">{{user.hg}}</span>
-							</td>
-							<td>
-								<span :title="user.co" class="fs12">{{user.co}}</span>
-							</td>
-							<td>
-								<span :title="user.ni" class="fs12">{{user.ni}}</span>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+			   </div>
+				<el-table :data="excelData" max-height="800"  border>
+				    <el-table-column label="采样日期" prop="date" show-overflow-tooltip></el-table-column>
+					<el-table-column label="铁" prop="fe" show-overflow-tooltip></el-table-column>
+					<el-table-column label="镁" prop="mg" show-overflow-tooltip></el-table-column>
+					<el-table-column label="锌" prop="zn" show-overflow-tooltip></el-table-column>
+					<el-table-column label="镉" prop="cd" show-overflow-tooltip></el-table-column>
+					<el-table-column label="汞" prop="hg" show-overflow-tooltip></el-table-column>
+					<el-table-column label="钴" prop="co" show-overflow-tooltip></el-table-column>
+					<el-table-column label="镍" prop="ni" show-overflow-tooltip></el-table-column>
+				</el-table>
 				</br>
 				<div class="pageChange">
 					<div v-show="pagetotal > 0">
@@ -118,6 +90,9 @@
 </body>
 </html>
 <script>
+var wb;//读取完成的数据 
+var rABS = false; //是否将文件读取为二进制字符串
+
 var app = new Vue({
   el: '#app',
   components: {
@@ -133,11 +108,70 @@ var app = new Vue({
 	tableData: [],
 	pagetotal:0,
 	timeselect_0:'',
-	timeselect_1:''
+	timeselect_1:'',
+	excelData:[]
 	//obj:{method:6,startTime:"2017-09-01",endTime:"2017-09-30",depart:"全站",type:2,pageIndex:1,pageSize:10,level:"3",department:"局机关",userid:"116"},
 	//pValue:{byValue:''},
   },
+  mounted(){
+  	this.outFile = document.getElementById('downlink')
+  },
   methods:{
+  	downloadFile: function (rs) { // 点击导出按钮
+	  let data = [{}]
+	  for (let k in rs[0]) {
+	    data[0][k] = k
+	  }
+	  data = data.concat(rs)
+	  this.downloadExl(data, '用户管理统计表')
+	},
+	downloadExl: function (json, downName, type) {  // 导出到excel
+	  let keyMap = [] // 获取键
+	  for (let k in json[0]) {
+	    keyMap.push(k)
+	  }
+	  console.info('keyMap', keyMap, json)
+	  let tmpdata = [] // 用来保存转换好的json
+	  json.map((v, i) => keyMap.map((k, j) => Object.assign({}, {
+	    v: v[k],
+	    position: (j > 25 ? this.getCharCol(j) : String.fromCharCode(65 + j)) + (i + 1)
+	  }))).reduce((prev, next) => prev.concat(next)).forEach(function (v) {
+	    tmpdata[v.position] = {
+	      v: v.v
+	    }
+	  })
+	  let outputPos = Object.keys(tmpdata)  // 设置区域,比如表格从A1到D10
+	  let tmpWB = {
+	    SheetNames: ['mySheet'], // 保存的表标题
+	    Sheets: {
+	      'mySheet': Object.assign({},
+	        tmpdata, // 内容
+	        {
+	          '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 1] // 设置填充区域
+	        })
+	    }
+	  }
+	  let tmpDown = new Blob([this.s2ab(XLSX.write(tmpWB,
+	    {bookType: (type === undefined ? 'xlsx' : type), bookSST: false, type: 'binary'} // 这里的数据是用来定义导出的格式类型
+	  ))], {
+	    type: ''
+	  })  // 创建二进制对象写入转换好的字节流
+	  var href = URL.createObjectURL(tmpDown)  // 创建对象超链接
+	  this.outFile.download = downName + '.xlsx'  // 下载名称
+	  this.outFile.href = href  // 绑定a标签
+	  this.outFile.click()  // 模拟点击实现下载
+	  setTimeout(function () {  // 延时释放
+	    URL.revokeObjectURL(tmpDown) // 用URL.revokeObjectURL()来释放这个object URL
+	  }, 100)
+	},
+	s2ab: function (s) { // 字符串转字符流
+	  var buf = new ArrayBuffer(s.length)
+	  var view = new Uint8Array(buf)
+	  for (var i = 0; i !== s.length; ++i) {
+	    view[i] = s.charCodeAt(i) & 0xFF
+	  }
+	  return buf
+	},
 	  getonce:function(){ 
 		//app.pValue.byValue = JSON.stringify(app.obj);
 		$.ajax({
@@ -152,7 +186,7 @@ var app = new Vue({
 			}, 
 			success: function (data) {
 				if (data != "") {
-					app.tableData = data[2];
+					app.excelData = data[2];
 					app.pagetotal = data[2].length;
 				}
 			}
@@ -198,5 +232,43 @@ var app = new Vue({
   } 
 });
 app.getonce();
+function importf(obj) {//导入
+    if(!obj.files) {
+        return;
+    }
+    var f = obj.files[0];
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        var data = e.target.result;
+        if(rABS) {
+            wb = XLSX.read(btoa(fixdata(data)), {//手动转化
+                type: 'base64'
+            });
+        } else {
+            wb = XLSX.read(data, {
+                type: 'binary'
+            });
+        }
+        //wb.SheetNames[0]是获取Sheets中第一个Sheet的名字
+        //wb.Sheets[Sheet名]获取第一个Sheet的数据
+    	var formData = [];
+    	var formCode = [];
+    	formData = ( XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]) )
+    	console.log(formData)
+    };
+    if(rABS) {
+        reader.readAsArrayBuffer(f);
+    } else {
+        reader.readAsBinaryString(f);
+    }
+}
 
+function fixdata(data) { //文件流转BinaryString
+    var o = "",
+        l = 0,
+        w = 10240;
+    for(; l < data.byteLength / w; ++l) o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
+    o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
+    return o;
+}
 </script>

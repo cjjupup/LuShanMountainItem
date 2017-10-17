@@ -43,7 +43,6 @@
 						</div>
 						<div style="right:5%;position: absolute;z-index: 999999; line-height: 64px;">
 							<a id="downlink"></a>
-						    <!--<el-button type="primary" id="additem_plant">导入</el-button>-->
 						    <a class="file">
 						    	导入<input type="file" onchange="importf(this)" style="position: absolute;left:0;"/>
 						    </a>
@@ -85,32 +84,6 @@
 							</template>
 						</el-table-column>
 					</el-table>
-					<!--<table class="table-normal database-table table-left" style="width:100%;">
-						<thead>
-							<tr>
-							    <th class="db-username">用户名</th>
-							    <th class="db-password">用户密码</th>
-							    <th class="db-station">保护站</th>
-								<th class="db-sex">性别</th>
-								<th class="db-phone">手机号码</th>
-								<th class="db-state">状态</th>
-								<th class="db-edit">编辑</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr v-for="user in tableData">
-							    <td><span :title="user.username" class="fs12">{{user.username}}</td>
-							    <td><span :title="user.password" class="fs12">{{user.password}}</td>
-							    <td><span :title="user.station" class="fs12">{{user.station}}</span></td>
-								<td><span :title="user.sex" class="fs12">{{user.sex}}</span></td>
-								<td><span :title="user.phone" class="fs12">{{user.phone}}</span></td>
-								<td><span :title="user.state" class="fs12">{{user.state}}</span></td>
-								<td><span class="modify" @click="checkItem($event,user)">查看</span> / 
-									<span class="modify" @click="modifyItem($event,user)">修改</span> / 
-									<span class="modify" @click="deleteItem($event)">删除</span></td>
-							</tr>
-						</tbody>
-					</table>-->
 					</br>
 					<div>
 						<div v-show="totaldata > 10" style="text-align:right;margin-right:5%;">
