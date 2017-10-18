@@ -1,68 +1,4 @@
 html body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,input,textarea,p,th,td,img,em,hr{margin:0;padding:0;-webkit-text-size-adjust:none}
-html{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
-*,:before,:after{-webkit-box-sizing:inherit;-moz-box-sizing:inherit;box-sizing:inherit}
-.per-container{width:100%;height:100%;background:url(../img/login_bg.jpg) 0 0 no-repeat;background-size: 100% 100%;}
-.per-container .flexbox-container{width:52.1%;height:auto;}
-.per-container .flexbox-container h1{width: 646px; margin: 0 auto; text-align: center; line-height: 80px; font-size: 26px; color: #E8E8E8;}
-.per-container .flexbox-container .flexbox-box{width:646px;margin:0 auto;position:relative;box-shadow:0 0 8px 0 rgba(0,0,0,.2),0 26px 24px 0 rgba(12,23,44,.1)}
-.per-container .flexbox-container .flexbox-box.J-static-box{position:static;margin-top:32px}
-.per-container .flexbox-container .flexbox-box-bd{width:346px;min-height:384px;margin-left:300px;padding:32px 48px;text-align:left;background:#fff;-webkit-transition:all .3s ease-in-out;-o-transition:all .3s ease-in-out;transition:all .3s ease-in-out}
-.form-banner{position:absolute;top:0;left:0;width:300px;height:100%;text-align:center;background:url(../img/login1.png) center center no-repeat;background-size:cover}
-.form-banner .form-banner-img{position:relative;left:50%;top:50%;width: 290px; height: 380px; margin-top: -190px; margin-left: -145px;}
-.tab-mobile{display:none;height:32px;line-height:32px;text-align:center;font-size:18px;font-weight:700;color:#fff}
-.tab-content{color:rgba(0,0,0,.7)}
-.tab-content ul{width:100%;display:inline-block;border-bottom:1px solid rgba(81,130,228,.15)}
-.tab-content li{float:left;width:100%;padding:8px 0;text-align:center;cursor:pointer;font-size:28px;transition:all .2s ease-in-out}
-.tab-content li:hover,.tab-content li.active{color:#5182E4}
-.tab-content li.active{font-weight:700;transition:all .2s ease-in-out;box-shadow:inset 0 -1px 0 #5182E4,0 1px 0 #5182E4}
-.tab-content li+li{margin-left:16px}
-.form{margin-top:32px}
-.form .row{overflow:visible;margin-bottom:24px;position:relative}
-.form .row.mb0{margin-bottom:0}
-.form label{position:absolute;top:0;line-height:32px;text-align:left;font-size:14px;color:rgba(0,0,0,.5);-webkit-transition:.2s ease-in-out all;-o-transition:.2s ease-in-out all;transition:.2s ease-in-out all}
-.form .input-account{position:relative;z-index:2;width:100%;height:28px;margin:2px 0;line-height:28px;vertical-align:bottom;font-size:14px;border:0;background:0 0;box-shadow:inset 0 -1px 0 0 rgba(81,130,228,.6);color:rgba(10,18,32,.87);-webkit-transition:.2s ease-in-out all;-o-transition:.2s ease-in-out all;transition:.2s ease-in-out all}
-.form .input-account.s-input{padding-right:90px}
-.form .input-account:focus,.form .input-account.active{box-shadow:inset 0 -2px 0 0 #5182e4;-webkit-transition:.2s ease-in-out all;-o-transition:.2s ease-in-out all;transition:.2s ease-in-out all}
-.form .focus-input,.form .has-text{line-height:28px;top:-24px;font-size:12px;-webkit-transition:.2s ease-in-out all;-o-transition:.2s ease-in-out all;transition:.2s ease-in-out all}
-.form .focus-input{color:$borderFormactive;-webkit-transition:.2s ease-in-out all;-o-transition:.2s ease-in-out all;transition:.2s ease-in-out all}
-.hint-layer{min-height:32px;line-height:32px;color:#e45151;font-size:12px;text-align:left}
-.submit-layer{text-align:center}
-.submit-layer .hide-submit{display:none}
-.btn-submit.btn-blue{}
-.btn-submit.btn-blue:hover{text-decoration:none}
-.btn-submit.btn-blue.disabled{background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 2px rgba(255,255,255,.5);opacity:.4}
-.vt-img{position:absolute;top:-4px;right:0;z-index:10}
-.login-btn{position:absolute;top:-2px;right:0;z-index:10;display:block;margin:3px 0 0;padding:6px 0;cursor:pointer;color:#5182E4;font-size:13px;transition:all .2s ease-in-out}
-.login-btn:hover{text-decoration:underline;transition:all .2s ease-in-out}
-.login-btn.disable{cursor:not-allowed;color:rgba(10,18,32,.46)}
-.login-btn.disable:hover{font-weight:400;text-decoration:none}
-.p-btn{background:0 0;border:0}
-.p-btn.disable{opacity:.6}
-.per-container .flexbox-container .flexbox-box.info-box{width:703px}
-.per-container .flexbox-container .flexbox-box.info-box .flexbox-box-bd{width:403px}
-.free-use-btn{display:inline-block;font-weight:700;cursor:pointer;transition:all .2s ease-in-out}
-.free-use-btn.btn-blue{min-width:120px;padding:0 32px;line-height:40px;border-radius:40px;font-size:14px;background:#2E68DC;box-shadow:0 4px 8px 0 rgba(30,62,124,.15);color:#fff}
-.free-use-btn.btn-blue:hover{background:#3B69C3;box-shadow:0 16px 24px 0 rgba(23,57,126,.15),0 4px 8px 0 rgba(30,62,124,.15)}
-.free-use-btn.btn-white{padding:0 40px;line-height:48px;border-radius:40px;font-size:15px;background:#fff;color:rgba(10,18,32,.64);box-shadow:0 4px 8px 0 rgba(30,62,124,.15)}
-.free-use-btn.btn-white:hover{color:rgba(10,18,32,.87);background:#FFF;box-shadow:0 16px 24px 0 rgba(23,57,126,.15),0 4px 8px 0 rgba(30,62,124,.15)}
-.btn-animation{line-height:28px;padding:0 14px;font-weight:700;font-size:14px;background:transparent;color:#fff;border:1px solid #fff;cursor:pointer;overflow:hidden;position:relative;transition:.2s all 0s cubic-bezier(0.2,1,.3,1)}
-.btn-animation span{position:relative;z-index:2}
-.btn-animation::before{content:'';position:absolute;top:0;left:0;width:150%;height:100%;z-index:0;opacity:0;-webkit-transform:rotate3d(0,0,1,-45deg) translate3d(0,-3em,0);transform:rotate3d(0,0,1,-45deg) translate3d(0,-3em,0);-webkit-transform-origin:0 100%;transform-origin:0 100%;-webkit-transition:-webkit-transform .3s,opacity .3s,background .3s;transition:transform .3s,opacity .3s,background .3s}
-.btn-animation:hover{border:1px solid #fff;color:#5182e4;transition:.2s all 0s cubic-bezier(0.2,1,.3,1)}
-.btn-animation:hover::before{background:#fff;opacity:1;-webkit-transform:rotate3d(0,0,1,0deg);transform:rotate3d(0,0,1,0deg);-webkit-transition-timing-function:cubic-bezier(0.2,1,.3,1);transition-timing-function:cubic-bezier(0.2,1,.3,1)}
-.form .input-account:focus, .form .input-account.active {box-shadow: inset 0 -2px 0 0 #5182e4; -webkit-transition: .2s ease-in-out all; -o-transition: .2s ease-in-out all; transition: .2s ease-in-out all;}
-input { -webkit-appearance: none; -moz-appearance: none; appearance: none;}
-input[type=text] { border-radius: 0;}
-input:focus { outline: 0;}
-:focus { outline: 0;}
-.lg-box{height:400px;width:100%;position:absolute;left:0;top:150px;display:none}
-.lg-box .mask{position:absolute;width:100%;height:100%;left:0;top:0;background-color:#000;opacity:.6;z-index:0;filter:alpha(opacity=20)}
-.lg-box .main{position:absolute;left:50%;top:0;width:800px;margin-left:-400px;height:100%;text-align:center;color:#fff;background:url(/personal/img/account/chrome_8f08306.png) no-repeat center bottom}
-.lg-box h6{font-size:22px;padding-top:70px;font-weight:400}
-.lg-box p{font-size:16px;margin-bottom:50px}
-.lg-box a{color:#fff;border:1px #fff solid;padding:12px 25px;border-radius:2px}
-.personal-footer { position: fixed; left: 0; right: 0; bottom: 30px; width: 100%; text-align: center; color: #5A5A5A;}
-
 
 /**改版**/
 html,body{
@@ -82,7 +18,6 @@ html,body{
 	position: absolute;
 	top:22.2%;
 	margin-left:24%;
-	border:1px solid #eee;
 }
 
 .loginPage .loginBox .login_pic{
@@ -114,28 +49,9 @@ html,body{
 }
 .loginPage .loginBox .login_input .inputBar{
 	width:100%;
-	margin-top:30px;
+	margin-top:8.3%;
 	padding:0 11%;
 	box-sizing: border-box;
-}
-.loginPage .loginBox .login_input .inputBar .input_user{
-	width:100%;
-	height:40px;
-	font-size: 18px;
-	padding-left:10px;
-	box-shadow: none;
-	border:1px solid #d3d3d3;
-	border-radius: 2px;
-}
-.loginPage .loginBox .login_input .inputBar .input_password{
-	width:100%;
-	height:40px;
-	font-size: 18px;
-	padding-left:10px;
-	margin-top:15px;
-	box-shadow: none;
-	border:1px solid #d3d3d3;
-	border-radius: 2px;
 }
 
 

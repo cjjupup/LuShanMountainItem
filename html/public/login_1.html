@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>生态资源监测及风险管控系统-登录系统</title>
 <!-- 引入样式 -->
-<!--<link rel="stylesheet" href="../../css/index.css">-->
+<link rel="stylesheet" href="../../css/index.css">
 <link rel="stylesheet" href="../../css/fonts/iconfont.css">
 <!--<link rel="stylesheet" href="../../css/all.css">-->
-<link rel="stylesheet" href="../../css/dark.css">
+<!--<link rel="stylesheet" href="../../css/dark.css">-->
 <link rel="stylesheet" href="../../css/login.css">
 <!-- 引入组件库 -->
 <script src="../../js/jquery.min.js"></script>
@@ -28,7 +28,19 @@
 				<p class="login_logo"><img src="../../img/logo.png"></p>
 				<p class="logo_tip">生态资源监测及风险管控系统</p>
 				<div class="inputBar">
-			        
+			        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0" class="demo-ruleForm">
+			            <el-form-item prop="username">
+							<el-input v-model="ruleForm.username" placeholder="请输入账号"></el-input>
+						</el-form-item>
+		                <el-form-item prop="password">
+							<el-input type='password' v-model="ruleForm.password" placeholder="请输入密码"></el-input>
+						</el-form-item>
+	                    <el-checkbox v-model="checked" @change="remberPassword" style="color:#8a8a8a;">记住密码</el-checkbox>
+		                <el-form-item>
+		                    <el-button type="primary" @click="loginTest" style="width:100%;margin-top:12%;">登录</el-button> <!--测试用-->
+							<!--<el-button type="primary" @click="login('ruleForm')" style="width:100%;margin-top:50px;">登录</el-button>-->  <!--正式-->
+						</el-form-item>
+			        </el-form>
 				</div>
 			</div>
 		</div>
@@ -42,44 +54,112 @@ var app = new Vue({
   },
   data: {
 	once:true,
+	ruleForm:{
+		username:"",
+		password:"",
+	},
+	rules:{
+		 username: [
+            { required: true, message: '请输入账号', trigger: 'blur' }
+          ],
+		 password: [
+            { required: true, message: '请输入密码', trigger: 'blur' }
+          ],
+	},
+	checked:false,
   },
   methods:{
-	  login:function(){
-		if(this.username == 'admin' && this.password =='admin'){
-			sessionStorage.username=this.username;
+	  loginTest:function(){
+		if(app.ruleForm.username == 'admin' && app.ruleForm.password =='admin'){
+			sessionStorage.username=app.ruleForm.username;
 			var startTime = new Date(); 
 			sessionStorage.startTime= startTime.getFullYear()+'-'+(startTime.getMonth()+1)+'-'+startTime.getDate()+' '+startTime.getHours()+':'+startTime.getMinutes()+':' +startTime.getSeconds();
 			window.location.href = "../1_home/index.html";
 		}
-	      /*$.post(url,{"username":this.username,"password":this.password},function(res){
-			  //账号密码验证成果
-			  if(res != "fail") {
-				  //载入服务器该账号信息
-            	  var dateSesssion = JSON.parse(data);
-            	  sessionStorage.name=dateSesssion[0].name;
-            	  sessionStorage.department=dateSesssion[0].department;
-            	  sessionStorage.area=dateSesssion[0].area;
-            	  sessionStorage.type=dateSesssion[0].type;
-            	  sessionStorage.tel=dateSesssion[0].tel;
-            	  sessionStorage.level=dateSesssion[0].level;
-				  //
-				  sessionStorage.computerIp=dateSesssion[0].computerIp;   //IP
-            	  sessionStorage.username=this.username;       //在线缓存人名 
-				  var startTime = new Date();                  //进入时间
-            	  sessionStorage.startTime= startTime.getFullYear()+'-'+(startTime.getMonth()+1)+'-'+startTime.getDate()+' '+startTime.getHours()+':'+startTime.getMinutes()+':' +startTime.getSeconds();
-				  //尚未录入退出时间和操作模块
-				  app.isRight = true;
-              }
-			  if(app.isRight){
-				  //账号验证成果 跳转界面
-			  }else{
-				  //验证错误
-			  }
-		  })*/
+	      
 	  },
 	  getonce:function(){
+		  //验证cookie 若有 则自动导入账号密码
+		  if(app.checkCookie("username")&&app.checkCookie("password")){
+			  app.ruleForm.username = app.getCookie("username");
+			  app.ruleForm.password = app.getCookie("password");
+		  }
 		  
-	  }
+	  },
+	  login:function(formName) {
+		  //已有验证input不为空 正确性发送请求服务器验证
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+              alert('submit!');
+			  //请求服务器验证账号面
+			  $.post(url,date,function(){
+				  //验证成功执行
+				  //设置在线缓存
+				  /*sessionStorage.username=this.username;       //在线缓存人名 
+				  var startTime = new Date();                  //进入时间
+            	  sessionStorage.startTime= startTime.getFullYear()+'-'+(startTime.getMonth()+1)+'-'+startTime.getDate()+' '+startTime.getHours()+':'+startTime.getMinutes()+':' +startTime.getSeconds();*/
+				  
+				  
+				  //记住账号密码
+				  if(app.checked == true){
+					  //cookie 记住账号密码
+					  app.setCookie("username",app.ruleForm.username,"d30");
+					  app.setCookie("password",app.releForm.password,"d30");
+				  }
+				  
+				  //页面跳转
+				  window.location.href = "../1_home/index.html";
+				  
+			  })
+			  
+			  
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+	  remberPassword:function(){
+		  console.log(app.checked);
+	  },
+	  //cookies   time为 "d10" -- 10天  "h12" -- 12小时  "s30" -- 30秒
+	  setCookie:function(name,value,time){
+		  var strsec = app.getsec(time);
+		  var exp = new Date();
+		  exp.setTime(exp.getTime() + strsec*1);
+		  document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
+	  },
+	  getsec:function(str){
+		  var str1 = str.substring(1,str.length)*1;
+		  var str2 = str.substring(0,1);
+		  switch(str2){
+			  case "s":
+				  return Number(str1)*1000
+				  break;
+			  case "h":
+				  return Number(str1)*60*60*1000
+				  break;
+			  case "d":
+				  return Number(str1)*24*60*60*1000
+				  break;
+		  }
+	  },
+	  getCookie:function(name){
+	      var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+		  if(arr = document.cookie.match(reg)){
+			  return unescape(arr[2]);
+		  }else{return null;}
+      },
+	  delCookie:function(name){
+		  var exp = new Date();
+		  exp.setTime(exp.getTime() - 1);
+		  var cval = app.getCookie(name);
+		  if(cval != null){document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString();}
+	  },
+	  checkCookie:function(nameOfCookie){
+		  var ishave = document.cookie.indexOf(nameOfCookie + "=");
+		  if(ishave != -1){return true;}else{return false;}
+	  },
   }
 });
 app.getonce();

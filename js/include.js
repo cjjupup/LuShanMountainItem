@@ -56,7 +56,7 @@ var myheader={
 				data:{},
 				success:function(){}
 			});*/
-			window.location.href = "../public/login.html";
+			window.location.href = "../public/login_1.html";
 		}
 	}
 }
