@@ -1,8 +1,8 @@
 html body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,input,textarea,p,th,td,img,em,hr{margin:0;padding:0;-webkit-text-size-adjust:none}
 html{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
 *,:before,:after{-webkit-box-sizing:inherit;-moz-box-sizing:inherit;box-sizing:inherit}
-.per-container{display:table;width:100%;height:100%;margin:0 auto}
-.per-container .flexbox-container{display:table-cell;width:100%;height:auto;vertical-align:middle}
+.per-container{width:100%;height:100%;background:url(../img/login_bg.jpg) 0 0 no-repeat;background-size: 100% 100%;}
+.per-container .flexbox-container{width:52.1%;height:auto;margin:0 auto;margin-top:240px;}
 .per-container .flexbox-container h1{width: 646px; margin: 0 auto; text-align: center; line-height: 80px; font-size: 26px; color: #E8E8E8;}
 .per-container .flexbox-container .flexbox-box{width:646px;margin:0 auto;position:relative;box-shadow:0 0 8px 0 rgba(0,0,0,.2),0 26px 24px 0 rgba(12,23,44,.1)}
 .per-container .flexbox-container .flexbox-box.J-static-box{position:static;margin-top:32px}
