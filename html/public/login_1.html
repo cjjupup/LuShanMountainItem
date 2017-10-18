@@ -19,7 +19,7 @@
 <script src="../../js/mock.js"></script>
 
 </head>
-<body>
+<body onkeydown="app.onKeyDown();">
 <div id="app" :class = "once?'show':''">
 	<div class="loginPage">
 		<div class="loginBox">
@@ -85,6 +85,11 @@ var app = new Vue({
 			  app.ruleForm.password = app.getCookie("password");
 		  }
 		  
+	  },
+	  onKeyDown:function(){
+		  if(event.keyCode == 13){
+			  app.loginTest();
+		  }  
 	  },
 	  login:function(formName) {
 		  //已有验证input不为空 正确性发送请求服务器验证
