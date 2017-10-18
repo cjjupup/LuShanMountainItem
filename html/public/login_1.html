@@ -1,0 +1,92 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>生态资源监测及风险管控系统-登录系统</title>
+<!-- 引入样式 -->
+<!--<link rel="stylesheet" href="../../css/index.css">-->
+<link rel="stylesheet" href="../../css/fonts/iconfont.css">
+<!--<link rel="stylesheet" href="../../css/all.css">-->
+<link rel="stylesheet" href="../../css/dark.css">
+<link rel="stylesheet" href="../../css/login.css">
+<!-- 引入组件库 -->
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/vue.js"></script>
+<script src="../../js/vue-echarts.js"></script>
+<script src="../../js/vue-resource.1.3.4.js"></script>
+<script src="../../js/elementui.js"></script>
+<script src="../../js/mock.js"></script>
+
+</head>
+<body>
+<div id="app" :class = "once?'show':''">
+	<div class="loginPage">
+		<div class="loginBox">
+			<div class="login_pic"></div>
+			<div class="login_input">
+				<p class="login_logo"><img src="../../img/logo.png"></p>
+				<p class="logo_tip">生态资源监测及风险管控系统</p>
+				<div class="inputBar">
+			        
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+var app = new Vue({
+  el: '#app',
+  components: {
+    chart:VueECharts
+  },
+  data: {
+	once:true,
+  },
+  methods:{
+	  login:function(){
+		if(this.username == 'admin' && this.password =='admin'){
+			sessionStorage.username=this.username;
+			var startTime = new Date(); 
+			sessionStorage.startTime= startTime.getFullYear()+'-'+(startTime.getMonth()+1)+'-'+startTime.getDate()+' '+startTime.getHours()+':'+startTime.getMinutes()+':' +startTime.getSeconds();
+			window.location.href = "../1_home/index.html";
+		}
+	      /*$.post(url,{"username":this.username,"password":this.password},function(res){
+			  //账号密码验证成果
+			  if(res != "fail") {
+				  //载入服务器该账号信息
+            	  var dateSesssion = JSON.parse(data);
+            	  sessionStorage.name=dateSesssion[0].name;
+            	  sessionStorage.department=dateSesssion[0].department;
+            	  sessionStorage.area=dateSesssion[0].area;
+            	  sessionStorage.type=dateSesssion[0].type;
+            	  sessionStorage.tel=dateSesssion[0].tel;
+            	  sessionStorage.level=dateSesssion[0].level;
+				  //
+				  sessionStorage.computerIp=dateSesssion[0].computerIp;   //IP
+            	  sessionStorage.username=this.username;       //在线缓存人名 
+				  var startTime = new Date();                  //进入时间
+            	  sessionStorage.startTime= startTime.getFullYear()+'-'+(startTime.getMonth()+1)+'-'+startTime.getDate()+' '+startTime.getHours()+':'+startTime.getMinutes()+':' +startTime.getSeconds();
+				  //尚未录入退出时间和操作模块
+				  app.isRight = true;
+              }
+			  if(app.isRight){
+				  //账号验证成果 跳转界面
+			  }else{
+				  //验证错误
+			  }
+		  })*/
+	  },
+	  getonce:function(){
+		  
+	  }
+  }
+});
+app.getonce();
+
+</script>
+
+	
+
+</body>
+</html>

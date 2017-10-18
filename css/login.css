@@ -2,7 +2,7 @@ html body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,input,textarea,p
 html{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}
 *,:before,:after{-webkit-box-sizing:inherit;-moz-box-sizing:inherit;box-sizing:inherit}
 .per-container{width:100%;height:100%;background:url(../img/login_bg.jpg) 0 0 no-repeat;background-size: 100% 100%;}
-.per-container .flexbox-container{width:52.1%;height:auto;margin:0 auto;margin-top:240px;}
+.per-container .flexbox-container{width:52.1%;height:auto;}
 .per-container .flexbox-container h1{width: 646px; margin: 0 auto; text-align: center; line-height: 80px; font-size: 26px; color: #E8E8E8;}
 .per-container .flexbox-container .flexbox-box{width:646px;margin:0 auto;position:relative;box-shadow:0 0 8px 0 rgba(0,0,0,.2),0 26px 24px 0 rgba(12,23,44,.1)}
 .per-container .flexbox-container .flexbox-box.J-static-box{position:static;margin-top:32px}
@@ -62,3 +62,83 @@ input:focus { outline: 0;}
 .lg-box p{font-size:16px;margin-bottom:50px}
 .lg-box a{color:#fff;border:1px #fff solid;padding:12px 25px;border-radius:2px}
 .personal-footer { position: fixed; left: 0; right: 0; bottom: 30px; width: 100%; text-align: center; color: #5A5A5A;}
+
+
+/**改版**/
+html,body{
+	width:100%;
+	height:100%;
+}
+.loginPage{
+	width:100%;
+	height:100%;
+	background:url(../img/login_bg.jpg) 0 0 no-repeat;
+	background-size: 100% 100%;
+	box-sizing: content-box;
+}
+.loginPage .loginBox{
+	width:52%;
+	height:55.6%;
+	position: absolute;
+	top:22.2%;
+	margin-left:24%;
+	border:1px solid #eee;
+}
+
+.loginPage .loginBox .login_pic{
+	float:left;
+	display:inline-block;
+	width:55%;
+	height:100%;
+	background:url(../img/login_info_bg.jpg) no-repeat;
+	background-size: 100% 100%;
+}
+.loginPage .loginBox .login_input{
+	float:left;
+	display:inline-block;
+	width:45%;
+	height:100%;
+	background-color:#fff;
+}
+
+.loginPage .loginBox .login_input .login_logo{
+	text-align: center;
+	margin-top:10%;
+}
+.loginPage .loginBox .login_input .logo_tip{
+	margin-top:5px;
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
+	color:#666;
+}
+.loginPage .loginBox .login_input .inputBar{
+	width:100%;
+	margin-top:30px;
+	padding:0 11%;
+	box-sizing: border-box;
+}
+.loginPage .loginBox .login_input .inputBar .input_user{
+	width:100%;
+	height:40px;
+	font-size: 18px;
+	padding-left:10px;
+	box-shadow: none;
+	border:1px solid #d3d3d3;
+	border-radius: 2px;
+}
+.loginPage .loginBox .login_input .inputBar .input_password{
+	width:100%;
+	height:40px;
+	font-size: 18px;
+	padding-left:10px;
+	margin-top:15px;
+	box-shadow: none;
+	border:1px solid #d3d3d3;
+	border-radius: 2px;
+}
+
+
+
+
+
